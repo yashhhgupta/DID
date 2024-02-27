@@ -3,30 +3,19 @@ import Modal from "../../common/Modal";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import { useRef } from "react";
 import Logo from "../../../assets/logo.png";
-import { FaHome } from "react-icons/fa";
-import { MdDashboard } from "react-icons/md";
-import { MdGroups } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import classNames from "classnames";
+import options from "./utls";
+import { useNavigate } from "react-router-dom";
 
-const options = [
-  {
-    title: "Home",
-    icon : <FaHome />
-  },
-  {
-    title: "Dashboard",
-    icon : <MdDashboard />
-  },
-  {
-    title: "Teams",
-    icon: <MdGroups />
-  }
-]
-
-const Tab = ({option}) => {
+const Tab = ({ option, sidebarCloseHandler }) => {
+  const navigate = useNavigate();
+  const tabClickHandler = () => {
+    sidebarCloseHandler();
+    navigate(option.redirect);
+  };
   return (
-    <div className={styles.tab}>
+    <div className={styles.tab} onClick={tabClickHandler}>
       {option.icon}
       <span>{option.title}</span>
     </div>
@@ -48,7 +37,7 @@ const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
           </div>
           <div className={styles.options}>
             {options.map((option, index) => (
-              <Tab key={index} option={option} />
+              <Tab key={index} option={option} sidebarCloseHandler={ sidebarCloseHandler} />
             ))}
           </div>
         </div>

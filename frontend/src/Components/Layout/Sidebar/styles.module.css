@@ -16,7 +16,7 @@
     width: 100%;
     padding: 0.75rem 0rem;
     cursor: pointer;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 3px 3px 5px var(--color-dark);
 }
 .options {
     display: flex;
@@ -34,7 +34,7 @@
     font-size: 1.5rem;
     border-radius: 0.3rem;
     &:hover {
-        background-color: #0359E0;
+        background-color: var(--color-extra);
     }
 }
 .logout {

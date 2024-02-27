@@ -16,5 +16,9 @@ code {
 
 html {
   --color-primary:#3284FF;
-  --color-secondary:#1F2425;
+  --color-secondary:#237cb3;
+  --color-tertiary:#99d8ff;
+  --color-extra:#0359E0;
+  --color-light: #ccecff;
+  --color-dark: #1F2425;
 }

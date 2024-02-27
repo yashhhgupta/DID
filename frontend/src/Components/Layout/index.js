@@ -9,11 +9,11 @@ import { useState } from "react";
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarOpenHandler = () => {
-    console.log("sidebarOpenHandler")
+    
     setSidebarOpen(true);
   };
   const sidebarCloseHandler = () => {
-    console.log("sidebarCloseHandler");
+    
     setSidebarOpen(false);
   };
   return (
