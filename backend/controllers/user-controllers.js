@@ -1,7 +1,8 @@
 const HttpError = require('../models/http-error');
-const User = require('../models/user');
+const User = require('../models/employee');
 const bcrypt = require('bcrypt');
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -11,7 +12,8 @@ const signup = async (req, res, next) => {
       );
     }
     // console.log(req.body);
-    const { name, email, password } = req.body;
+    const { firstname, email, password, orgId, departmentId, dateOfJoining } =
+      req.body;
   
     //   console.log(req.body);
     let existingEmail;
@@ -35,12 +37,15 @@ const signup = async (req, res, next) => {
     }
   
     const createdUser = new User({
-      name: name,
+      firstname: firstname,
       email: email,
       password: password,
+      orgId: orgId,
+      departmentId: departmentId,
+      dateOfJoining: dateOfJoining,
     });
     try {
-      const newuser = await createdUser.save();
+      await createdUser.save();
       // console.log(newuser,'no new user error')
     } catch (err) {
       console.log(err);
@@ -79,7 +84,7 @@ const signup = async (req, res, next) => {
         401
       );
       res.json(existingUser);
-  
+
       return next(error);
     } else {
       const pass = await bcrypt.compare(password, existingUser.password);
@@ -92,8 +97,45 @@ const signup = async (req, res, next) => {
         return next(error);
       }
     }
-    res.json({message:"Logged in", user: existingUser.toObject({ getters: true }) });
+    let token;
+    try {
+      token = jwt.sign(
+        { userId: existingUser.id, email: existingUser.email, role: "User" },
+        process.env.SECRET_KEY,
+        { expiresIn: "1d" }
+      );
+      // lo;
+    } catch (err) {
+      const error = new HttpError(
+        "Logging in failed, please try again later.",
+        500
+      );
+      return next(error);
+    }
+    // console.log(existingUser.id + " " + "possible?");
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 1);
+
+    res.cookie("token", token, { expires: expirationDate });
+
+    res.status(200).json({
+      userId: existingUser.id,
+      email: existingUser.email,
+      token: token,
+    });
+    // res.json({message:"Logged in", user: existingUser.toObject({ getters: true }) });
   };
+const logout = async (req, res, next) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out" });
+};
+
+const checking = (req, res, next) => {
+  res.json({ message: "Checking" });
+};
+
 
 exports.signup = signup;
 exports.login = login;
+exports.logout = logout;
+exports.checking = checking;

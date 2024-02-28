@@ -8,20 +8,22 @@ const employeeSchema = new Schema({
   lastname: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 6 },
+  orgId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Organization",
+    required: true,
+  },
   departmentId: {
     type: mongoose.Types.ObjectId,
     required: true,
     ref: "Department",
   },
+  dateOfJoining: { type: Date, required: true },
   teamId: {
     type: mongoose.Types.ObjectId,
     ref: "Team",
   },
-  orgId: {
-    type: mongoose.Types.ObjectId,
-    ref: "Organization",
-  },
-  dateOfJoining: { type: Date, required: true },
+
   dateOfLeaving: { type: Date },
   role: {
     type: String,
