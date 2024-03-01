@@ -52,7 +52,7 @@ const signupAsAdmin = async (req, res, next) => {
       );
       return next(error);
     }
-    res.status(201).json({ user: createdOrg.toObject({ getters: true }) });
+    res.status(201).json({ message: "Admin created successfully"});
 };
 
 const loginAsAdmin = async (req, res, next) => {

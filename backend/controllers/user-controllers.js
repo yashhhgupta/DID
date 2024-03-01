@@ -97,6 +97,7 @@ const signup = async (req, res, next) => {
         return next(error);
       }
     }
+    delete existingUser.password;
     let token;
     try {
       token = jwt.sign(

@@ -5,17 +5,19 @@
     margin: 0rem 1rem;
     padding: 0.1rem 2rem;
     background-color: var(--color-light);
-        color: var(--color-extra);
+    color: var(--color-extra);
     border-radius: 0.5rem;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
 }
 .dashboard{
     border-radius: 1rem;
+    
 }
 .dashboardTop {
     height: 300px;
     padding: 2.2rem 1rem 0 1rem;
     display:flex;
+    justify-content: center;
     flex-direction: row;
     gap: 1.5rem;
 }

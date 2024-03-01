@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import Modal from "../../common/Modal";
+import {Modal} from "../../common";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import { useRef } from "react";
 import Logo from "../../../assets/logo.png";
@@ -7,6 +7,7 @@ import { FiLogOut } from "react-icons/fi";
 import classNames from "classnames";
 import options from "./utls";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/authcontext";
 
 const Tab = ({ option, sidebarCloseHandler }) => {
   const navigate = useNavigate();
@@ -23,10 +24,17 @@ const Tab = ({ option, sidebarCloseHandler }) => {
 }
 
 const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
+  const navigate = useNavigate();
+  const {logout} = useAuth();
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
     sidebarCloseHandler();
   });
+  const LogoutHandler = () => {
+    logout();
+    sidebarCloseHandler();
+    navigate("/");
+  };
   
   return (
     <Modal isOpen={isOpen}>
@@ -44,7 +52,9 @@ const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
         <div className={classNames({
           [styles.tab]: true,
           [styles.logout]: true
-        })}>
+        })}
+          onClick={LogoutHandler}
+        >
           <FiLogOut />
           Logout
         </div>
