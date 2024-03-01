@@ -7,8 +7,7 @@
     /* justify-content: space-between; */
 }
 .date {
-    height: 90px;
-    width: 100px;
+    
     position: relative;
     .top{
         height: 35%;
@@ -22,8 +21,8 @@
     }
     .bottom{
         display: flex;
-            justify-content: center;
-            align-items: center;
+        justify-content: center;
+        align-items: center;
         height: 65%;
         color: var(--color-extra);
         font-weight: bold;

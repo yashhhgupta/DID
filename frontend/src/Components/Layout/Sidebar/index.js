@@ -49,10 +49,8 @@ const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
             ))}
           </div>
         </div>
-        <div className={classNames({
-          [styles.tab]: true,
-          [styles.logout]: true
-        })}
+        <div className={classNames(styles.tab,
+          styles.logout)}
           onClick={LogoutHandler}
         >
           <FiLogOut />

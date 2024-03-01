@@ -12,12 +12,16 @@ export const AuthProvider = ({ children }) => {
     setUserID(id);
     setIsLoggedIn(true);
     Cookies.set("token", token, { expires: 7 });
+    Cookies.set("userId", id);
+    Cookies.set("isAdmin", isAdmin);
     setIsAdmin(isAdmin);
   };
 
   const logout = () => {
     setUserID(null);
     Cookies.remove("token");
+    Cookies.remove("userId");
+    Cookies.remove("isAdmin");
     setIsLoggedIn(false);
     setIsAdmin(false);
   };
