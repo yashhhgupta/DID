@@ -8,10 +8,15 @@
   flex-wrap: wrap;
   gap: 1.5rem;
 }
-
+.container > div {
+  flex: 49%;
+  box-shadow: 0 0 0 1px var(--color-extra);
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
 .surveyCard {
+  width: 100%;
   background-color: white;
-  width: 49%;
   .surveyHeader {
     color: var(--color-extra);
     background-color: white;
@@ -26,7 +31,7 @@
     align-items: center;
     padding: 0.2rem 0.5rem;
     border-radius: 0.1rem;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     font-weight: bold;
   }
   .open {
@@ -41,27 +46,42 @@
     padding: 1rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     gap: 1rem;
     .prog {
-      width: 100px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: bold;
     }
-    .dateContainer{
+    
+    .description {
+      flex: 1;
+      font-size:1rem;
+    }
+  }
+  .participation {
+    align-self: start;
+    width: 100%;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+  }
+  .dateeee{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding:0rem 5rem 1rem 1rem;
+  }
+  .dateContainer {
       display: flex;
       flex-direction: row;
       align-items: center;
       font-weight: bold;
-      gap: 0.5rem;
-      font-size: 2rem;
+      gap: 1.5rem;
     }
-    
-  }
-    .participation{
-        align-self: start;
-        width: 100%;
-        background-color: blue;
-        color: white;
-        font-weight: bold;
-    }
-
 }

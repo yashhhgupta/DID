@@ -9,6 +9,7 @@ const DUMMY_DATA = [
     status: "ENDED",
     created_at: "2021-10-10",
     inclusionScore: "80",
+    description:"This is a survey about the inclusion of people with disabilities in the workplace. It is important to have a diverse and inclusive workplace. We want to know how you feel about this topic. Please take the time to answer the questions. Thank you!"
   },
   {
     id: "2",
@@ -18,6 +19,7 @@ const DUMMY_DATA = [
     status: "ACTIVE",
     created_at: "2021-10-10",
     inclusionScore: "60",
+    description:"This is a survey about the inclusion of people with disabilities in the workplace. It is important to have a diverse and inclusive workplace. We want to know how you feel about this topic. Please take the time to answer the questions. Thank you!"
   },
   {
     id: "2",
@@ -27,6 +29,7 @@ const DUMMY_DATA = [
     status: "ACTIVE",
     created_at: "2021-10-10",
     inclusionScore: "20",
+    description:"This is a survey about the inclusion of people with disabilities in the workplace. It is important to have a diverse and inclusive workplace. We want to know how you feel about this topic. Please take the time to answer the questions. Thank you!"
   },
   {
     id: "2",
@@ -36,6 +39,7 @@ const DUMMY_DATA = [
     status: "ACTIVE",
     created_at: "2021-10-10",
     inclusionScore: "10",
+    description:"This is a survey about the inclusion of people with disabilities in the workplace. It is important to have a diverse and inclusive workplace. We want to know how you feel about this topic. Please take the time to answer the questions. Thank you!"
   },
 ];
 

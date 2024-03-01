@@ -6,12 +6,12 @@ const Scoremeter = ({ score, size=200 }) => {
     <ReactSpeedometer
       maxValue={100}
       value={score}
-      needleColor="blue"
-      startColor="red"
-      segments={10}
-        endColor="green"
-          height={size}
-          width={w}
+      needleColor="black"
+      startColor="#71CEFF"
+      segments={6}
+      endColor="blue"
+      height={size}
+      width={w}
     />
   );
 };
