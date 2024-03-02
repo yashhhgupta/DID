@@ -8,6 +8,8 @@ require("dotenv").config();
 const userRoutes = require('./routes/user-routes')
 const adminRoutes = require('./routes/admin-routes')
 const departmentRoutes = require('./routes/department-routes')
+const surveyRoutes = require('./routes/survey-routes')
+
 const app = express();
 const cors = require("cors");
 app.use(cors());
@@ -27,6 +29,7 @@ app.use((req, res, next) => {
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/department', departmentRoutes);
+app.use('/survey', surveyRoutes);
 
 
 

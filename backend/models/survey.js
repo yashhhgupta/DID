@@ -6,6 +6,10 @@ const surveySchema = new Schema({
         type: String,
         required: true,
     },
+    description: {
+        type: String,
+        required: true,
+    },
     orgId: {
         type: mongoose.Types.ObjectId,
         required: true,
@@ -25,11 +29,6 @@ const surveySchema = new Schema({
     questions: [{
         type: mongoose.Types.ObjectId,
         ref: "Question",
-        required: true,
-        weightage: {
-            type: Number,
-            required: true,
-        },
     }]
 });
 module.exports = mongoose.model("Survey", surveySchema);
