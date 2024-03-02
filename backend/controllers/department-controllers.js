@@ -1,6 +1,6 @@
 const Department = require('../models/department');
 const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
+const HttpError = require("../utils/http-error");
 
 
 const addDepartment = async (req, res,next) => { 
