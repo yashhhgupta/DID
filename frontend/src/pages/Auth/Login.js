@@ -9,7 +9,6 @@ import { useRequest } from "../../hooks/useRequest";
 import { useAuth } from "../../context/authcontext";
 import { BASE_URL } from "../../consts";
 
-
 const Login = () => {
   const {sendRequest} = useRequest();
   const navigate = useNavigate();
@@ -74,7 +73,7 @@ const Login = () => {
       alert("Invalid Credentials, Try Again");
     }
     else {
-      login(response.userId,formData.isAdmin, response.token);
+      login(response.userId,response.orgId, response.token);
       navigate("/dashboard");
     }
   };
@@ -82,6 +81,7 @@ const Login = () => {
   const buttonProps = {
     type: "button",
     onClick: submitHandler,
+    style: { width: "100%" },
   };
 
   return (

@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    z-index: 1000;
+}
+.popup {
+    background-color: var(--color-light);
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    width: 40%;
+    padding: 0.5rem 1rem;
+    text-align : center;
+    font-size: 1.25rem;
+}
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    gap: 1rem;
+}

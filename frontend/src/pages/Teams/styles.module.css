@@ -1,0 +1,18 @@
+.container {
+    margin-top:2rem;
+}
+.heading{
+    margin: 0rem 1rem;
+    padding: 0.1rem 2rem;
+    background-color: var(--color-light);
+    color: var(--color-extra);
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+}
+.buttons {
+    display: flex;
+
+    gap:1rem;
+}

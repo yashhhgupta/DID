@@ -11,8 +11,8 @@ function App() {
     let token = Cookies.get("token");
     if (token) {
       let id = Cookies.get("userId");
-      let isAdmin = Cookies.get("isAdmin");
-      login(id,isAdmin,token);
+      let orgId = Cookies.get("orgId");
+      login(id, orgId, token);
     }
   },[])
   let routes;

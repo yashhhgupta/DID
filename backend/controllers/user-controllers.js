@@ -122,6 +122,7 @@ const signup = async (req, res, next) => {
     res.status(200).json({
       userId: existingUser.id,
       email: existingUser.email,
+      orgId: existingUser.orgId,
       token: token,
     });
     // res.json({message:"Logged in", user: existingUser.toObject({ getters: true }) });

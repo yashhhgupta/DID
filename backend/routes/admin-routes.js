@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
+const { validateAdminToken } = require("../middlewares/authAdmin");
+
 
 
 const adminController = require("../controllers/admin-controllers");
@@ -11,4 +13,8 @@ router.post("/login", [
     check("password").isLength({ min: 8 })
   ],adminController.loginAsAdmin);
 router.post("/logout", adminController.logout);
+router.post("/add-employee", validateAdminToken, adminController.addEmployee);
+router.post("/add-employees", validateAdminToken, adminController.addMultipleEmployees);
+router.post("/getAllUsers", validateAdminToken, adminController.getAllUsers);
+
 module.exports = router;

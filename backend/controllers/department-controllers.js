@@ -49,4 +49,28 @@ const addDepartment = async (req, res,next) => {
       .status(201)
       .json({message:"Department created successfully", department: createdDepartment.toObject({ getters: true }) });
 }
+const getDepartments = async (req, res, next) => {
+  let {orgId} = req.body;
+    let departments;
+    try {
+        departments = await Department.find({orgId: orgId});
+    } catch (err) {
+        const error = new HttpError(
+            "Fetching departments failed, please try again later.",
+            500
+        );
+        return next(error);
+    }
+    if (!departments) {
+        const error = new HttpError(
+            "No departments found.",
+            404
+        );
+        return next(error);
+    }
+    res.json({ departments: departments.map(department => department.toObject({ getters: true })) });
+ }
+
+
 exports.addDepartment = addDepartment;
+exports.getDepartments = getDepartments;

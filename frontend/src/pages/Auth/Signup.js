@@ -29,6 +29,7 @@ const Signup = () => {
       alert("Please enter your email.");
       return;
     }
+    
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
@@ -70,6 +71,7 @@ const Signup = () => {
   const buttonProps = {
     type: "button",
     onClick: submitHandler,
+  style: { width: "100%" }
   };
   return (
     <AuthWrapper>

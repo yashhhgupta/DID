@@ -25,11 +25,6 @@ const employeeSchema = new Schema({
   },
 
   dateOfLeaving: { type: Date },
-  role: {
-    type: String,
-    enum: ["Admin", "User"],
-    default: "User",
-  },
   age: {
     type: Number,
   },
@@ -100,7 +95,7 @@ const employeeSchema = new Schema({
   },
   generationalDiversity: {
     type: String,
-    enum: ["Boomers", "Generation X", "Millenial", "Generation Z"],
+    enum: ["Boomers", "Generation X", "Millennials", "Generation Z"],
   },
 });
 
