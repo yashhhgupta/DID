@@ -1,10 +1,9 @@
 import styles from "./styles.module.css";
-import useOutsideClick from "../../../hooks/useOutsideClick";
+import useOutsideClick from "../../../../hooks/useOutsideClick";
 import { useEffect, useRef } from "react";
 import CsvUpload from "./CsvUpload";
 import Form from "./Form";
 import { useState } from "react";
-
 
 const AddEmployeForm = ({ modalCloseHandler }) => {
   const [formType, setFormType] = useState(true);
@@ -12,13 +11,12 @@ const AddEmployeForm = ({ modalCloseHandler }) => {
   useOutsideClick(containerRef, () => {
     modalCloseHandler();
   });
-  
+
   return (
     <>
-      
       <div className={styles.container}>
         <div ref={containerRef} className={styles.form}>
-          {formType ? <Form /> : <CsvUpload closeModal={ modalCloseHandler} />}
+          {formType ? <Form /> : <CsvUpload closeModal={modalCloseHandler} />}
           <div
             className={styles.multiEmp}
             onClick={() => {

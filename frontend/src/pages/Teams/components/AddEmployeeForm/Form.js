@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useAuth } from "../../../context/authcontext";
+import { useAuth } from "../../../../context/authcontext";
 import Cookies from "js-cookie";
-import { CustomButton, CustomInput } from "../../../Components/common";
-import { useRequest } from "../../../hooks/useRequest";
-import { BASE_URL } from "../../../consts";
+import { CustomButton, CustomInput } from "../../../../Components/common";
+import { useRequest } from "../../../../hooks/useRequest";
+import { BASE_URL } from "../../../../consts";
 import Dropdown from "react-dropdown";
 import { useEffect } from "react";
 import "react-dropdown/style.css";
+import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 
 
 const Form = ({ modalCloseHandler }) => {
@@ -96,6 +97,7 @@ const Form = ({ modalCloseHandler }) => {
         type="text"
         placeholder="First Name"
         name="firstName"
+        icon={<AiOutlineUser />}
         required
         value={formData.firstName}
         onChange={handleInputChange}
@@ -104,6 +106,7 @@ const Form = ({ modalCloseHandler }) => {
         type="email"
         placeholder="Email"
         name="email"
+        icon={<AiOutlineMail />}
         required
         value={formData.email}
         onChange={handleInputChange}

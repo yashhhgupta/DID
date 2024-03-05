@@ -3,6 +3,7 @@ import { CustomButton } from "../../Components/common";
 import { useState } from "react";
 import { Modal } from "../../Components/common";
 import AddEmployeForm from "./components/AddEmployeeForm";
+import { FaPlus } from "react-icons/fa";
 
 const Teams = () => {
   const [modal, setModal] = useState(false);
@@ -26,7 +27,7 @@ const Teams = () => {
         <div className={styles.heading}>
           <h1>TEAMS</h1>
           <div className={styles.buttons}>
-            <CustomButton text="Create Team" />{" "}
+            <CustomButton text="Create Team" icon={<FaPlus size={18}/>} />
             <CustomButton text="Add Employee" buttonProps={buttonProps} />
           </div>
         </div>

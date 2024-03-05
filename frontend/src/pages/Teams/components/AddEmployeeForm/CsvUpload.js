@@ -1,13 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { CustomButton } from "../../../Components/common";
+import { CustomButton } from "../../../../Components/common";
 import styles from "./styles.module.css";
-import { ConfirmationPopUp, Modal } from "../../../Components/common";
-import { BASE_URL } from "../../../consts";
-import { useAuth } from "../../../context/authcontext";
+import { ConfirmationPopUp, Modal } from "../../../../Components/common";
+import { BASE_URL } from "../../../../consts";
+import { useAuth } from "../../../../context/authcontext";
 import Cookies from "js-cookie";
-import { useRequest } from "../../../hooks/useRequest";
+import { useRequest } from "../../../../hooks/useRequest";
 
 const CsvUpload = ({ closeModal }) => {
   const token = Cookies.get("token");
@@ -73,8 +73,8 @@ const CsvUpload = ({ closeModal }) => {
       <Modal isOpen={modal}>
         <ConfirmationPopUp
           title="Add Employee"
-          subTitle="Do you want to add 400 employe"
-          onCancel={modalCloseHandler}
+          subTitle={`Do you really want to add ${employeesToAdd.length} employee`}
+         onCancel={modalCloseHandler}
           onConfirm={handleSubmit}
           modalCloseHandler={modalCloseHandler}
         />

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const surveySchema = new Schema({
-    name: {
+    title: {
         type: String,
         required: true,
     },
@@ -26,9 +26,6 @@ const surveySchema = new Schema({
     inclusionScore: {
         type: Number,
     },
-    questions: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Question",
-    }]
+    questions: []
 });
 module.exports = mongoose.model("Survey", surveySchema);

@@ -18,7 +18,6 @@ input::placeholder {
 .input_wrapp {
     display: flex;
     width: 100%;
-
 }
 
 .input_container:has(input:focus) {
@@ -43,8 +42,18 @@ input::placeholder {
     height: 20px;
     padding-right: 5px;
 }
+.input_icon{
+    cursor: pointer;
+}
 
 
-.input_wrapper {
-    padding: 1rem 0;
+/* .input_wrapper {
+  padding: 1rem 0;
+} */
+
+.input_label {
+    padding: 0 1rem;
+  font-weight: bold;
+  display: block;
+  color: var(--color-primary);
 }

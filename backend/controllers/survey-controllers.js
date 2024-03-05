@@ -26,9 +26,9 @@ const addSurvey = async (req, res, next) => {
         );
     }
     const date = new Date();
-    const { name,description, orgId,deadline, questions } = req.body;
+    const { title,description, orgId,deadline, questions } = req.body;
     const createdSurvey = new Survey({
-        name,
+        title,
         description,
         orgId,
         createdOn: date,
@@ -36,6 +36,7 @@ const addSurvey = async (req, res, next) => {
         questions
     });
     try {
+        // console.log(createdSurvey);
         await createdSurvey.save();
     } catch (err) {
         console.log(err);

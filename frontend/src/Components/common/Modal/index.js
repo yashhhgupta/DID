@@ -1,5 +1,6 @@
 import styles from "./styles.module.css";
 const Modal = ({ isOpen, children }) => {
+  
   if (!isOpen) return null;
 
   return (
