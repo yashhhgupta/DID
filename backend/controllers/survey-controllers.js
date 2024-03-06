@@ -4,7 +4,7 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../utils/http-error");
 
 const getSurvey = async (req, res, next) => {
-    const {orgId} = req.body;
+    const {orgId} = req.params;
     let surveys;
     try {
         surveys = await Survey.find({orgId: orgId});
@@ -33,6 +33,8 @@ const addSurvey = async (req, res, next) => {
         orgId,
         createdOn: date,
         deadline,
+        participation: 0,
+        inclusionScore: 0,
         questions
     });
     try {

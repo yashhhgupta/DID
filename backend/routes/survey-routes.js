@@ -5,7 +5,7 @@ const { validateAdminToken } = require("../middlewares/authAdmin");
 
 const surveyController = require("../controllers/survey-controllers");
 
-router.get("/getAll", surveyController.getSurvey);
+router.get("/get/:orgId", validateUserToken ,surveyController.getSurvey);
 router.post("/add",validateAdminToken, surveyController.addSurvey);
 
 module.exports = router;

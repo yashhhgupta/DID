@@ -19,16 +19,30 @@ const SurveyForm = ({ modalCloseHandler }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-     questions: Array(3).fill(""), // Initial questions array with 5 empty strings
-     deadline: new Date(),
-   });
+    questions: Array(2).fill({
+      text: "",
+      weightage: undefined,
+    }),
+    deadline: new Date(),
+  });
+  
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
     modalCloseHandler();
   });
-  const handleQuestionChange = (index, value) => {
+  const handleQuestionChange = (index, key, value) => {
     const newQuestions = [...formData.questions];
-    newQuestions[index] = value;
+    newQuestions[index] = {
+      ...newQuestions[index],
+      [key]: value,
+    };
+    setFormData({ ...formData, questions: newQuestions });
+  };
+
+  const DeleteQuestion = (index, e) => {
+    e.stopPropagation();
+    const newQuestions = [...formData.questions];
+    newQuestions.splice(index, 1);
     setFormData({ ...formData, questions: newQuestions });
   };
 
@@ -36,13 +50,9 @@ const SurveyForm = ({ modalCloseHandler }) => {
     e.stopPropagation();
     setFormData({ ...formData, deadline: date });
   };
-  const DeleteQuestion = (index, e) => {
-    e.stopPropagation();
-    const newQuestions = [...formData.questions];
-    newQuestions.splice(index, 1);
-    setFormData({ ...formData, questions: newQuestions });
-  }
-  const submitHandler = async() => {
+
+  const submitHandler = async () => {
+    // console.log(formData);
     if(formData.title === "" || formData.description === ""){
       alert("Please fill all the fields");
       return;
@@ -56,10 +66,19 @@ const SurveyForm = ({ modalCloseHandler }) => {
       return;
     }
     for(let i=0;i<formData.questions.length;i++){
-      if(formData.questions[i] === ""){
-        alert("Please fill all the questions");
+      if (formData.questions[i].text === "" || formData.questions[i].weightage==="") {
+        alert("Please fill all the questions ans its weightage");
         return;
       }
+    }
+    let cnt = 0;
+    for (let i = 0; i < formData.questions.length; i++) {
+      cnt += Number(formData.questions[i].weightage);
+    }
+    if (cnt != 100) {
+      console.log(cnt);
+      alert("weightage sum needs to be 100")
+      return;
     }
     let url = BASE_URL + "/survey/add";
     const response = await sendRequest(
@@ -129,17 +148,31 @@ const SurveyForm = ({ modalCloseHandler }) => {
         <div className={styles.questions}>
           {formData.questions.map((question, index) => {
             return (
-              <CustomInput
-                type="text"
-                placeholder="Enter question"
-                
-                icon={<FaRegQuestionCircle />}
-                key={index}
-                value={question}
-                onChange={(e) => handleQuestionChange(index, e.target.value)}
-                endIcon={<MdDelete />}
-                onEndIconClick={(e) => DeleteQuestion(index, e)}
-              />
+              <div key={index} className={styles.questionContainer}>
+                <div style={{ flexGrow: "1" }}>
+                  <CustomInput
+                    type="text"
+                    placeholder="Enter question"
+                    icon={<FaRegQuestionCircle />}
+                    value={question.text}
+                    label={`Question ${ index+ 1}`}
+                    onChange={(e) =>
+                      handleQuestionChange(index, "text", e.target.value)
+                    }
+                    endIcon={<MdDelete />}
+                    onEndIconClick={(e) => DeleteQuestion(index, e)}
+                  />
+                </div>
+                <CustomInput
+                  type="number"
+                  placeholder="0"
+                  value={question.weightage}
+                  label={"Weightage"}
+                  onChange={(e) =>
+                    handleQuestionChange(index, "weightage", e.target.value)
+                  }
+                />
+              </div>
             );
           })}
         </div>

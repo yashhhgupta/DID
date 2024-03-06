@@ -1,4 +1,13 @@
-import { Home, Dashboard, Survey, Teams, Error, Login, Signup } from "./pages";
+import {
+  Home,
+  Dashboard,
+  SurveyAdmin,
+  SurveyEmployee,
+  Teams,
+  Error,
+  Login,
+  Signup,
+} from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
 import { useAuth } from "./context/authcontext";
@@ -34,7 +43,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/survey" element={<Survey />} />
+              <Route path="/survey" element={<SurveyAdmin />} />
               <Route path="/teams" element={<Teams />} />
               <Route path="*" element={<Error />} />
             </Routes>
@@ -47,7 +56,7 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/survey" element={<Survey />} />
+              <Route path="/survey" element={<SurveyEmployee />} />
               <Route path="*" element={<Error />} />
             </Routes>
           </Layout>

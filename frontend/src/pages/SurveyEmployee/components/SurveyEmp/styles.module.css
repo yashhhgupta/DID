@@ -14,11 +14,3 @@
     overflow-y: auto;
     max-height: 80vh;
 }
-.subButtons {
-    display: flex;
-    justify-content: space-between;
-}
-.datepicker{
-    color: var(--color-extra);
-    font-weight: bold;
-}

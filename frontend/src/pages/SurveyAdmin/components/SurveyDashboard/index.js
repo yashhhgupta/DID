@@ -1,4 +1,4 @@
-import { Graph, CircularProgr, SurveyDate, Scoremeter } from "../UI";
+import { Graph, SurveyDate, Scoremeter } from "../UI";
 import styles from "./styles.module.css";
 
 const SurveyDashboard = () => {

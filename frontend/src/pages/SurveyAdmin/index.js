@@ -1,13 +1,10 @@
 import styles from "./styles.module.css";
-import SurveyDashboard from "./components/SurveyDashboard";
-import Surveylist from "./components/SurveyList";
-import { CustomButton } from "../../Components/common";
+import { Surveylist,SurveyDashboard,SurveyForm } from "./components";
+import { CustomButton,Modal } from "../../Components/common";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
-import { Modal } from "../../Components/common";
-import SurveyForm from "./components/SurveyForm";
 
-const Survey = () => {
+const SurveyAdmin = () => {
   const [modal, setModal] = useState(false);
   const AddSurveyHandler = (e) => {
     e.stopPropagation();
@@ -28,12 +25,16 @@ const Survey = () => {
       <div className={styles.container}>
         <div className={styles.heading}>
           <h1>SURVEY</h1>
-          <CustomButton text="CREATE SURVEY" buttonProps={buttonProps} icon={<FaPlus size={18} />} />
+          <CustomButton
+            text="CREATE SURVEY"
+            buttonProps={buttonProps}
+            icon={<FaPlus size={18} />}
+          />
         </div>
         <SurveyDashboard />
-        <Surveylist />
+        <Surveylist callOn={modal} />
       </div>
     </>
   );
 };
-export default Survey;
+export default SurveyAdmin;

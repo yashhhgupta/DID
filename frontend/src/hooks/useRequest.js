@@ -7,7 +7,13 @@ export const useRequest = () => {
     async (url, method = "GET", body = null, headers = {}) => {
       setisLoading(true);
       try {
-        const response = await fetch(url, { method, body, headers });
+        let response;
+        if (method === "GET") {
+          response = await fetch(url, { method, headers });
+         }
+        else {
+          response=await fetch(url, { method, body, headers });
+        }
         const responseData = await response.json();
         if (!response.ok) {
           console.log(responseData);

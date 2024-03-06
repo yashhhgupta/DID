@@ -26,7 +26,7 @@ const validateUserToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-    if (decoded && decoded.role === "User") {
+    if (decoded && (decoded.role === "User"||decoded.role === "Admin")) {
       next();
     } else {
       return catchError(err, res);

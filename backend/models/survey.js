@@ -26,6 +26,9 @@ const surveySchema = new Schema({
     inclusionScore: {
         type: Number,
     },
+    participation: {
+        type: Number,
+    },
     questions: []
 });
 module.exports = mongoose.model("Survey", surveySchema);

@@ -16,4 +16,8 @@
     &:hover{
         background-color: var(--color-secondary);
     }
+    &:disabled{
+        background-color: var(--color-gray);
+        cursor: not-allowed;
+    }
 }
