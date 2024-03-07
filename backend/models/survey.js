@@ -26,7 +26,7 @@ const surveySchema = new Schema({
     inclusionScore: {
         type: Number,
     },
-    participation: {
+    countOfUsersFilled: {
         type: Number,
     },
     questions: []

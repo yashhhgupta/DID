@@ -7,7 +7,7 @@ import SurveyEmp from "../SurveyEmp";
 import { useState } from "react";
 
 const SurveyCardEmp = ({ survey }) => {
-  const { title, description, deadline, createdOn, questions } =
+  const { title, description, deadline, createdOn, questions,score } =
     survey;
   const [modal, setModal] = useState(false);
   const SurveyHandler = (e) => {
@@ -21,11 +21,18 @@ const SurveyCardEmp = ({ survey }) => {
   const today = new Date();
   const deadlineDate = new Date(deadline);
   const createdDate = new Date(createdOn);
-  if (today > deadlineDate) {
-    status = "ENDED";
+  if (score) {
+    status = "COMPLETED";
+  }
+  else if (today > deadlineDate) {
+    status = "MISSED";
   } else {
     status = "ACTIVE";
   }
+  const createdOnDate = createdDate.getDate();
+  const deadlineDateDate = deadlineDate.getDate();
+  const deadlineDateMonth = getMonthInWords(deadlineDate);
+  const createdOnDateMonth = getMonthInWords(createdDate);
   const buttonProps = {
     type:"button",
     onClick: (event) => { 
@@ -40,7 +47,7 @@ const SurveyCardEmp = ({ survey }) => {
   return (
     <>
       <Modal isOpen={modal}>
-        <SurveyEmp modalCloseHandler={modalCloseHandler} />
+        <SurveyEmp modalCloseHandler={modalCloseHandler} survey={survey} />
       </Modal>
       <div className={styles.surveyCard}>
         <div className={styles.surveyHeader}>
@@ -66,7 +73,11 @@ const SurveyCardEmp = ({ survey }) => {
         <div className={styles.footer}>
           <div className={styles.dateContainer}>
             <h4>Valid Till </h4>
-            <DateCalendar date={12} month={"Dec"} size={50} />
+            <DateCalendar
+              date={deadlineDateDate}
+              month={deadlineDateMonth}
+              size={50}
+            />
           </div>
           <CustomButton text={"START"} buttonProps={buttonProps} />
         </div>
@@ -74,4 +85,28 @@ const SurveyCardEmp = ({ survey }) => {
     </>
   );
 };
+function getMonthInWords(jsDate) {
+  if (!(jsDate instanceof Date) || isNaN(jsDate)) {
+    throw new Error("Invalid Date object");
+  }
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const monthIndex = jsDate.getMonth();
+
+  return monthNames[monthIndex];
+}
 export default SurveyCardEmp;

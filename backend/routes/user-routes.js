@@ -11,5 +11,6 @@ router.post("/login", [
     check("password").isLength({ min: 8 })
   ],usersController.login);
 router.post("/logout", usersController.logout);
-router.get("/getuser",validateUserToken, usersController.checking);
+router.post("/fillSurvey", validateUserToken, usersController.fillSurvey);
+router.get("/getSurveys/:userId", usersController.getSurveys);
 module.exports = router;

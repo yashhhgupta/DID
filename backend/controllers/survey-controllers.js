@@ -33,7 +33,7 @@ const addSurvey = async (req, res, next) => {
         orgId,
         createdOn: date,
         deadline,
-        participation: 0,
+        countOfUsersFilled: 0,
         inclusionScore: 0,
         questions
     });
@@ -51,7 +51,8 @@ const addSurvey = async (req, res, next) => {
     res
         .status(201)
         .json({ message: "Survey created successfully", survey: createdSurvey.toObject({ getters: true }) });
- }
+}
+
 
 exports.getSurvey = getSurvey;
 exports.addSurvey = addSurvey;  

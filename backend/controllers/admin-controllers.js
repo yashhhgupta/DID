@@ -165,7 +165,7 @@ const addEmployee = async (req, res, next) => {
   const createdUser = new User({
     firstname: firstname,
     email: email,
-    password: firstname+"@12345678",
+    password: "12345678",
     orgId: orgId,
     departmentId: departmentId,
     dateOfJoining: new Date(),

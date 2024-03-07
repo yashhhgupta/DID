@@ -3,6 +3,7 @@ const User = require('../models/employee');
 const bcrypt = require('bcrypt');
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const Survey = require("../models/survey");
 
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -131,13 +132,82 @@ const logout = async (req, res, next) => {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
 };
+const fillSurvey = async (req, res, next) => {
+  const { userId, surveyId, score } = req.body;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "Cant find User, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+  //if user has already filled the survey then return
+  let survey = user.surveyResponses.find(
+    (survey) => survey.surveyId == surveyId
+  );
+  if (survey) {
+    const error = new HttpError("Survey already filled", 400);
+    return next(error);
+  }
+  user.surveyResponses.push({ surveyId: surveyId, score: score });
+  let existingSurvey;
+  try {
+    existingSurvey = await Survey.findById(surveyId);
+  } catch (err) {
+    const error = new HttpError(
+      "Cant update Survey Score, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!existingSurvey) { 
+    const error = new HttpError("Survey not found", 404);
+    return next(error);
+  }
+  existingSurvey.countOfUsersFilled += 1;
+  existingSurvey.inclusionScore = (existingSurvey.inclusionScore * (existingSurvey.countOfUsersFilled - 1) + score) / existingSurvey.countOfUsersFilled;
 
-const checking = (req, res, next) => {
-  res.json({ message: "Checking" });
+  try {
+    await user.save();
+    await existingSurvey.save();
+  }
+  catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      "Filling survey failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Survey filled successfully" });
+}
+
+const getSurveys = (req, res, next) => {
+  const userId = req.params.userId;
+  User.findById(userId)
+    .then((user) => {
+      res.json({ surveys: user.surveyResponses });
+    })
+    .catch((err) => {
+      const error = new HttpError(
+        "Fetching surveys failed, please try again later.",
+        500
+      );
+      return next(error);
+    });
 };
+
 
 
 exports.signup = signup;
 exports.login = login;
 exports.logout = logout;
-exports.checking = checking;
+exports.fillSurvey = fillSurvey;
+exports.getSurveys = getSurveys;

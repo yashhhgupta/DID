@@ -97,6 +97,18 @@ const employeeSchema = new Schema({
     type: String,
     enum: ["Boomers", "Generation X", "Millennials", "Generation Z"],
   },
+  //will contain the survey responses of the employee in the form of an array of objects of survey id and score of the survey
+  surveyResponses: [
+    {
+      surveyId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Survey",
+      },
+      score: {
+        type: Number,
+      },
+    },
+  ],
 });
 
 const SALT_WORK_FACTOR = 10;
