@@ -53,7 +53,7 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
     if (!response) {
       alert("Survey filling failed, please try again later");
     } else {
-      alert("Survey Added Successfully");
+      alert("Survey Filled Successfully");
       modalCloseHandler();
     }
   }

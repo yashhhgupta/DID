@@ -2,10 +2,38 @@ import styles from "./styles.module.css";
 import { Surveylist,SurveyDashboard,SurveyForm } from "./components";
 import { CustomButton,Modal } from "../../Components/common";
 import { FaPlus } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { useRequest } from "../../hooks/useRequest";
+import { BASE_URL } from "../../consts";
 
 const SurveyAdmin = () => {
   const [modal, setModal] = useState(false);
+  const token = Cookies.get("token");
+  const orgId = Cookies.get("orgId");
+  const { sendRequest } = useRequest();
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  useEffect(() => { 
+    const getTotalUsers = async () => {
+      let url = BASE_URL + `/admin/getUsersCount/${orgId}`;
+      const response = await sendRequest(
+        url,
+        "GET",
+        {},
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        }
+      );
+      if (!response) {
+        alert("Invalid Credentials, Try Again");
+      } else {
+        setTotalUsers(response.count);
+      }
+    };
+    getTotalUsers();
+  }, []);
   const AddSurveyHandler = (e) => {
     e.stopPropagation();
     setModal(true);
@@ -32,7 +60,7 @@ const SurveyAdmin = () => {
           />
         </div>
         <SurveyDashboard />
-        <Surveylist callOn={modal} />
+        <Surveylist callOn={modal} totalUsers={totalUsers} />
       </div>
     </>
   );

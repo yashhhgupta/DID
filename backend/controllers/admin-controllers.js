@@ -262,9 +262,27 @@ const getAllUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 }
 
+const getUsersCount = async (req, res, next) => { 
+  const { orgId } = req.params;
+  console.log(orgId);
+  let count;
+  try { 
+    count = await User.countDocuments({ orgId: orgId });
+    res.json({ count: count });
+  }
+  catch (err) {
+    const error = new HttpError(
+      "Fetching users count failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+}
+
 exports.signupAsAdmin = signupAsAdmin;
 exports.loginAsAdmin = loginAsAdmin;
 exports.logout = logout;
 exports.addEmployee = addEmployee;
 exports.addMultipleEmployees = addMultipleEmployees;
 exports.getAllUsers = getAllUsers;
+exports.getUsersCount = getUsersCount;

@@ -2,20 +2,17 @@ import styles from "./styles.module.css";
 import classNames from "classnames";
 import { Scoremeter } from "../UI";   
 import { DateCalendar } from "../UI/SurveyDate";
-import { useEffect } from "react";
-const SurveyCard = ({ survey }) => {
+const SurveyCard = ({ survey,totalUsers }) => {
   let {
     title,
     description,
-    participation,
+    countOfUsersFilled=0,
     deadline,
     createdOn,
     inclusionScore,
     questions,
   } = survey;
-  if (participation === undefined) { 
-    participation = 25;
-  }
+  let participation = (countOfUsersFilled / totalUsers) * 100;
   let status;
   const today = new Date();
   const deadlineDate = new Date(deadline);
@@ -26,7 +23,7 @@ const SurveyCard = ({ survey }) => {
   else {
     status = "ACTIVE";
   }
-  
+  inclusionScore = inclusionScore.toFixed(2);
   const createdOnDate = createdDate.getDate();
   const deadlineDateDate = deadlineDate.getDate();
   const deadlineDateMonth = getMonthInWords(deadlineDate);

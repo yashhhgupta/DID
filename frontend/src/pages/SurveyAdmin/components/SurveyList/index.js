@@ -7,14 +7,13 @@ import { useRequest } from '../../../../hooks/useRequest';
 import { BASE_URL } from '../../../../consts';
 import { useState } from 'react';
 
-const SurveyList = ({callOn}) => {
+const SurveyList = ({callOn,totalUsers}) => {
   const token = Cookies.get("token");
   const { sendRequest } = useRequest();
   const { orgId } = useAuth();
   const [surveys, setSurveys] = useState([]);
   useEffect(() => {
     const getSurveys = async () => {
-      console.log("called");
       let url = BASE_URL + `/survey/get/${orgId}`;
       const response = await sendRequest(
         url,
@@ -36,7 +35,13 @@ const SurveyList = ({callOn}) => {
     return (
         <div className={styles.container}>
             {surveys.map((survey) => {
-                return <SurveyCard key={survey.id} survey={survey} />
+                return (
+                  <SurveyCard
+                    key={survey.id}
+                    survey={survey}
+                    totalUsers={totalUsers}
+                  />
+                );
             })}
         </div>
     );
