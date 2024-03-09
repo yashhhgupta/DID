@@ -8,14 +8,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { MdDelete } from "react-icons/md";
 import { BASE_URL } from "../../../../consts";
-import { useAuth } from "../../../../context/authcontext";
 import { useRequest } from "../../../../hooks/useRequest";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const SurveyForm = ({ modalCloseHandler }) => {
-  const token = Cookies.get("token");
+  const orgId = useSelector((state) => state.auth.orgId);
+  const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
-  const { orgId } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     description: "",

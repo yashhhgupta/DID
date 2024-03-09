@@ -5,14 +5,13 @@ import { CustomButton } from "../../../../Components/common";
 import styles from "./styles.module.css";
 import { ConfirmationPopUp, Modal } from "../../../../Components/common";
 import { BASE_URL } from "../../../../consts";
-import { useAuth } from "../../../../context/authcontext";
-import Cookies from "js-cookie";
 import { useRequest } from "../../../../hooks/useRequest";
+import { useSelector } from "react-redux";
 
 const CsvUpload = ({ closeModal }) => {
-  const token = Cookies.get("token");
+  const orgId = useSelector((state) => state.auth.orgId);
+  const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
-  const { orgId } = useAuth();
   const [file, setFile] = useState(null);
   const [modal, setModal] = useState(false);
   const [employeesToAdd, setEmployeesToAdd] = useState([]);

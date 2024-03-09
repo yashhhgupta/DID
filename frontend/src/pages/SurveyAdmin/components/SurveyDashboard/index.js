@@ -1,6 +1,7 @@
 import { Graph, SurveyDate, Scoremeter } from "../UI";
 import styles from "./styles.module.css";
 
+
 const SurveyDashboard = () => {
   const percentage = 80;
   const surveyDate = [

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "../../../../context/authcontext";
-import Cookies from "js-cookie";
 import { CustomButton, CustomInput } from "../../../../Components/common";
 import { useRequest } from "../../../../hooks/useRequest";
 import { BASE_URL } from "../../../../consts";
@@ -8,12 +6,12 @@ import Dropdown from "react-dropdown";
 import { useEffect } from "react";
 import "react-dropdown/style.css";
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
-
+import { useSelector } from "react-redux";
 
 const Form = ({ modalCloseHandler }) => {
-  const token = Cookies.get("token");
+  const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
-  const { orgId } = useAuth();
+  const orgId = useSelector((state) => state.auth.orgId);
   const [departments, setDepartments] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",

@@ -264,7 +264,6 @@ const getAllUsers = async (req, res, next) => {
 
 const getUsersCount = async (req, res, next) => { 
   const { orgId } = req.params;
-  console.log(orgId);
   let count;
   try { 
     count = await User.countDocuments({ orgId: orgId });

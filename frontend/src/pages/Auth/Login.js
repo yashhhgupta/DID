@@ -6,13 +6,15 @@ import { AiOutlineMail, AiFillLock } from "react-icons/ai";
 import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { useRequest } from "../../hooks/useRequest";
-import { useAuth } from "../../context/authcontext";
+import { useDispatch } from "react-redux";
+import {login} from "../../store/auth-slice";
 import { BASE_URL } from "../../consts";
+import Cookies from "js-cookie";
 
 const Login = () => {
-  const {sendRequest} = useRequest();
+  const { sendRequest } = useRequest();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -73,7 +75,12 @@ const Login = () => {
       alert("Invalid Credentials, Try Again");
     }
     else {
-      login(response.userId,response.orgId, response.token);
+      dispatch(
+        login({userId:response.userId, orgId:response.orgId,token: response.token})
+      );
+      Cookies.set("token", response.token, { expires: 7 });
+      Cookies.set("userId", response.userId);
+      Cookies.set("orgId", response.orgId);
       navigate("/dashboard");
     }
   };

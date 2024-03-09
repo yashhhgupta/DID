@@ -10,22 +10,35 @@ import {
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
-import { useAuth } from "./context/authcontext";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import { login } from "./store/auth-slice";
+import { useDispatch } from "react-redux";
 
 function App() {
-  const { isloggedIn, isAdmin,login } = useAuth();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
+  // const userId = useSelector((state) => state.auth.userId);
+  // const orgId = useSelector((state) => state.auth.orgId);
+  // const token = useSelector((state) => state.auth.token);
   useEffect(() => { 
     let token = Cookies.get("token");
     if (token) {
       let id = Cookies.get("userId");
       let orgId = Cookies.get("orgId");
-      login(id, orgId, token);
+      dispatch(login(
+        {
+          userId: id,
+          orgId: orgId,
+          token: token,
+        }
+      ))
     }
   },[])
   let routes;
-  if (!isloggedIn) {
+  if (!isLoggedIn) {
     routes = (
       <Router>
         <Routes>
@@ -50,7 +63,7 @@ function App() {
           </Layout>
         </Router>
       );
-    } else { 
+    } else {
       routes = (
         <Router>
           <Layout>

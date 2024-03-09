@@ -1,16 +1,15 @@
 import styles from './styles.module.css';
 import { SurveyCard } from '../UI';
 import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { useAuth } from '../../../../context/authcontext';
+import { useSelector } from 'react-redux';
 import { useRequest } from '../../../../hooks/useRequest';
 import { BASE_URL } from '../../../../consts';
 import { useState } from 'react';
 
 const SurveyList = ({callOn,totalUsers}) => {
-  const token = Cookies.get("token");
+ const orgId = useSelector((state) => state.auth.orgId);
+ const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
-  const { orgId } = useAuth();
   const [surveys, setSurveys] = useState([]);
   useEffect(() => {
     const getSurveys = async () => {

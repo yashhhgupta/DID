@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import {Modal} from "../../common";
+import { Modal } from "../../common";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import { useRef } from "react";
 import Logo from "../../../assets/logo.png";
@@ -7,7 +7,9 @@ import { FiLogOut } from "react-icons/fi";
 import classNames from "classnames";
 import options from "./utls";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/authcontext";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../store/auth-slice";
+import Cookies from "js-cookie";
 
 const Tab = ({ option, sidebarCloseHandler }) => {
   const navigate = useNavigate();
@@ -21,21 +23,24 @@ const Tab = ({ option, sidebarCloseHandler }) => {
       <span>{option.title}</span>
     </div>
   );
-}
+};
 
 const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {logout} = useAuth();
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
     sidebarCloseHandler();
   });
   const LogoutHandler = () => {
-    logout();
+    dispatch(logout());
+    Cookies.remove("token");
+    Cookies.remove("userId");
+    Cookies.remove("orgId");
     sidebarCloseHandler();
     navigate("/");
   };
-  
+
   return (
     <Modal isOpen={isOpen}>
       <div className={styles.sidebar} ref={containerRef}>
@@ -45,12 +50,16 @@ const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
           </div>
           <div className={styles.options}>
             {options.map((option, index) => (
-              <Tab key={index} option={option} sidebarCloseHandler={ sidebarCloseHandler} />
+              <Tab
+                key={index}
+                option={option}
+                sidebarCloseHandler={sidebarCloseHandler}
+              />
             ))}
           </div>
         </div>
-        <div className={classNames(styles.tab,
-          styles.logout)}
+        <div
+          className={classNames(styles.tab, styles.logout)}
           onClick={LogoutHandler}
         >
           <FiLogOut />
