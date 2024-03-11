@@ -59,8 +59,8 @@ const SurveyAdmin = () => {
             icon={<FaPlus size={18} />}
           />
         </div>
-        <SurveyDashboard />
-        <Surveylist callOn={modal} totalUsers={totalUsers} />
+        <SurveyDashboard totalUsers={totalUsers} />
+        <Surveylist totalUsers={totalUsers} />
       </div>
     </>
   );

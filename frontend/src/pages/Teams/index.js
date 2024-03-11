@@ -2,33 +2,47 @@ import styles from "./styles.module.css";
 import { CustomButton } from "../../Components/common";
 import { useState } from "react";
 import { Modal } from "../../Components/common";
-import AddEmployeForm from "./components/AddEmployeeForm";
+import { AddEmployeeForm, AddDepartmentForm } from "./components";
 import { FaPlus } from "react-icons/fa";
 
 const Teams = () => {
-  const [modal, setModal] = useState(false);
+  const [empModal, setEmpModal] = useState(false);
+  const [depModal, setDepModal] = useState(false);
   const AddEmployeeHandler = (e) => {
     e.stopPropagation();
-    setModal(true);
+    setEmpModal(true);
   };
+  const AddDepartmentHandler = (e) => { 
+    e.stopPropagation();
+    setDepModal(true);
+  }
   const modalCloseHandler = () => {
-    setModal(false);
+    setEmpModal(false);
+    setDepModal(false);
   };
-  const buttonProps = {
+  const EmpbuttonProps = {
     type: "button",
     onClick: AddEmployeeHandler,
   };
+  const DepbuttonProps = {
+    type: "button",
+    onClick: AddDepartmentHandler,
+  };
   return (
     <>
-      <Modal isOpen={modal}>
-        <AddEmployeForm modalCloseHandler={modalCloseHandler} />
+      <Modal isOpen={empModal}>
+        <AddEmployeeForm modalCloseHandler={modalCloseHandler} />
+      </Modal>
+      <Modal isOpen={depModal}>
+        <AddDepartmentForm modalCloseHandler={modalCloseHandler} />
       </Modal>
       <div className={styles.container}>
         <div className={styles.heading}>
           <h1>TEAMS</h1>
           <div className={styles.buttons}>
-            <CustomButton text="Create Team" icon={<FaPlus size={18}/>} />
-            <CustomButton text="Add Employee" buttonProps={buttonProps} />
+            <CustomButton text="Create Team" icon={<FaPlus size={18} />} />
+            <CustomButton text="Add Departmemt" buttonProps={DepbuttonProps} />
+            <CustomButton text="Add Employee" buttonProps={EmpbuttonProps} />
           </div>
         </div>
       </div>

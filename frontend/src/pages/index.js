@@ -6,6 +6,7 @@ import Teams from "./Teams";
 import Home from "./Home";
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
+import Profile from "./Profile";
 
 export {
   Dashboard,
@@ -16,4 +17,5 @@ export {
   Home,
   Login,
   Signup,
+  Profile,
 };

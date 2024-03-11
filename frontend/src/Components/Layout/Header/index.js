@@ -2,7 +2,9 @@ import styles from "./styles.module.css";
 import { GoSidebarCollapse } from "react-icons/go";
 import Logo from "../../../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 const Header = ({ sidebarOpenHandler }) => {
+  const navigate = useNavigate();
   const handleSidebarClick = (e) => {
     e.stopPropagation(); // Stop the event from propagating to document body
     sidebarOpenHandler();
@@ -20,7 +22,7 @@ const Header = ({ sidebarOpenHandler }) => {
         </div>
       </div>
       <div className={styles.headerRight}>
-        <FaRegUserCircle size={25} className={styles.logo} />
+        <FaRegUserCircle size={25} className={styles.logo} onClick={()=>navigate('/profile')}/>
       </div>
     </div>
   );

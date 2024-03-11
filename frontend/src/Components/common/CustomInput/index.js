@@ -4,7 +4,6 @@ import styles from "./styles.module.css";
 
 const CustomInput = ({ label, ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -21,6 +20,7 @@ const CustomInput = ({ label, ...props }) => {
             value={props.value}
             onChange={props.onChange}
             name={props.name}
+            readOnly={props.readOnly}
           />
           {props.type === "password" && (
             <div className={styles.input_icon} onClick={handleTogglePassword}>

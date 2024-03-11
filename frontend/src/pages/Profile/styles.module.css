@@ -1,0 +1,52 @@
+.container {
+  margin: 2rem 1rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+.heading {
+  padding: 0.1rem 2rem;
+  background-color: var(--color-light);
+  color: var(--color-extra);
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.image {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+}
+.horz {
+  display: flex;
+  gap: 3rem;
+  flex-direction: row;
+}
+.horz > div {
+  flex: 1;
+}
+.diversityOptions {
+  padding: 2rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem 8rem;
+}
+.input_label {
+  font-weight: bold;
+  display: block;
+  color: var(--color-primary);
+  margin-bottom: 5px;
+}

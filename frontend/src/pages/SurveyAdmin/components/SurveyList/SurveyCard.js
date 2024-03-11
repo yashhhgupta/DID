@@ -28,6 +28,12 @@ const SurveyCard = ({ survey,totalUsers }) => {
   const deadlineDateDate = deadlineDate.getDate();
   const deadlineDateMonth = getMonthInWords(deadlineDate);
   const createdOnDateMonth = getMonthInWords(createdDate);
+  if (participation === Infinity || isNaN(participation)) {
+    participation = 0;
+  }
+  else {
+    participation = participation.toFixed(2);
+  }
   return (
     <div className={styles.surveyCard}>
       <div className={styles.surveyHeader}>

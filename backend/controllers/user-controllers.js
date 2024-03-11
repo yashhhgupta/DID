@@ -132,6 +132,26 @@ const logout = async (req, res, next) => {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
 };
+
+const getUser = async (req, res, next) => { 
+  const userId = req.params.userId;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching user failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+  res.json({ user: user.toObject({ getters: true }) });
+}
+
 const fillSurvey = async (req, res, next) => {
   const { userId, surveyId, score } = req.body;
   let user;
@@ -211,3 +231,4 @@ exports.login = login;
 exports.logout = logout;
 exports.fillSurvey = fillSurvey;
 exports.getSurveys = getSurveys;
+exports.getUser = getUser;

@@ -10,8 +10,12 @@ import { MdDelete } from "react-icons/md";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector } from "react-redux";
+import { getSurvey } from "../../../../store/suvrey-slice";
+import { useDispatch } from "react-redux";
+import { FaPlus } from "react-icons/fa";
 
 const SurveyForm = ({ modalCloseHandler }) => {
+  const dispatch = useDispatch();
   const orgId = useSelector((state) => state.auth.orgId);
   const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
@@ -22,7 +26,7 @@ const SurveyForm = ({ modalCloseHandler }) => {
       text: "",
       weightage: undefined,
     }),
-    deadline: new Date(),
+    deadline: new Date()+1,
   });
   
   const containerRef = useRef(null);
@@ -100,6 +104,12 @@ const SurveyForm = ({ modalCloseHandler }) => {
     } else {
       alert("Survey Added Successfully");
       modalCloseHandler();
+      dispatch(
+        getSurvey({
+          orgId: orgId,
+          token: token,
+        })
+      );
     }
   }
 
@@ -154,7 +164,7 @@ const SurveyForm = ({ modalCloseHandler }) => {
                     placeholder="Enter question"
                     icon={<FaRegQuestionCircle />}
                     value={question.text}
-                    label={`Question ${ index+ 1}`}
+                    label={`Question ${index + 1}`}
                     onChange={(e) =>
                       handleQuestionChange(index, "text", e.target.value)
                     }
@@ -176,7 +186,11 @@ const SurveyForm = ({ modalCloseHandler }) => {
           })}
         </div>
         <div className={styles.subButtons}>
-          <CustomButton text="Add Question" buttonProps={AddButtonProps} />
+          <CustomButton
+            text="Add Question"
+            buttonProps={AddButtonProps}
+            icon={<FaPlus size={18} />}
+          />
           <div className={styles.datepicker}>
             Deadline &nbsp;
             <DatePicker

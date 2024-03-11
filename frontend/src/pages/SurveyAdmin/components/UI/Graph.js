@@ -6,41 +6,21 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-const DUMMY_DATA = [
-  {
-    title: "Survey 1",
-    participation: "50%",
-    inclusionScore: "80",
-  },
-  {
-    title: "Survey 2",
-    participation: "60%",
-    inclusionScore: "95",
-  },
-  {
-    title: "Survey 3",
-    participation: "70%",
-    inclusionScore: "40",
-  },
-  {
-    title: "Survey 4",
-    participation: "80%",
-    inclusionScore: "50",
-  },
-  {
-    title: "Survey 5",
-    participation: "90%",
-    inclusionScore: "80",
-  },
-];
+import { useSelector } from "react-redux";
 const Graph = () => {
+  const surveys = useSelector((state) => state.survey.survey);
+  let updated = [...surveys]
+  updated.sort((a, b) => {
+    return new Date(b.createdOn) - new Date(a.createdOn);
+  });
+  const last5Surveys = updated.slice(0, 5);
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={DUMMY_DATA} title={"Last 5 Surveys"}>
+      <BarChart data={last5Surveys} title={"Last 5 Surveys"}>
         <XAxis
           dataKey="title"
+          style={{ fontSize: "12px", wordWrap: "break-word" }}
           label={{
-            value: "random text",
             position: "insideBottomRight",
             offset: -20,
           }}

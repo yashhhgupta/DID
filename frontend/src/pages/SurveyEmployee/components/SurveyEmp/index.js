@@ -6,11 +6,15 @@ import "react-rating-emoji/dist/index.css";
 import { CustomButton } from "../../../../Components/common";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
-import Cookies from "js-cookie";
+import { useSelector,useDispatch } from "react-redux";
+import { getUserSurvey } from "../../../../store/suvrey-slice";
+
 const SurveyEmp = ({ modalCloseHandler, survey }) => {
-  const token = Cookies.get("token");
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const orgId = useSelector((state) => state.auth.orgId);
+  const userId = useSelector((state) => state.auth.userId);
   const { sendRequest } = useRequest();
-  const userId = Cookies.get("userId");
     const {title,description,questions} = survey;
    const containerRef = useRef(null);
    useOutsideClick(containerRef, () => {
@@ -54,6 +58,13 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
       alert("Survey filling failed, please try again later");
     } else {
       alert("Survey Filled Successfully");
+      dispatch(
+        getUserSurvey({
+          userId: userId,
+          orgId: orgId,
+          token: token,
+        })
+      );
       modalCloseHandler();
     }
   }
