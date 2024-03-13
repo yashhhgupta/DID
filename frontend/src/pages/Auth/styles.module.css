@@ -17,6 +17,9 @@
     background-color: var(--color-extra);
     flex: 1;
     border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
   .right {
     border-radius: 0.5rem;
@@ -30,16 +33,47 @@
   width: 80%;
 }
 .checkbox {
-  color :var(--color-gray)
+  color: var(--color-gray);
 }
-.formcontainer{
+.formcontainer {
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
 }
-.addOrg{
+.addOrg {
   color: var(--color-primary);
   font-weight: bold;
   cursor: pointer;
+}
+.heading {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+  color: white;
+  padding: 0 5rem;
+  .head1{
+    font-size: 1.8rem;
+  }
+  .head2{
+    font-size: 1.5rem;
+  }
+}
+.images {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.img1 {
+  position: absolute;
+  top: -20px;
+  left: -100px;
+}
+.img2 {
+  position: relative;
+}
+.img3 {
+  position: absolute;
+  top: 200px;
+  left: 150px;
 }

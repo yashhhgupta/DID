@@ -31,7 +31,7 @@ const CsvUpload = ({ closeModal }) => {
     reader.onload = async (event) => {
       const data = new Uint8Array(event.target.result);
       const workbook = XLSX.read(data, { type: "array" });
-      const sheetName = workbook.SheetNames[0]; // Assuming you want to convert the first sheet
+      const sheetName = workbook.SheetNames[0];
       const json_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
       setEmployeesToAdd(json_data);
     };
@@ -58,6 +58,7 @@ const CsvUpload = ({ closeModal }) => {
       alert("Invalid Credentials, Try Again");
     } else {
       alert("Employee Added Successfully");
+      console.log(response);
       modalCloseHandler();
       closeModal();
     }

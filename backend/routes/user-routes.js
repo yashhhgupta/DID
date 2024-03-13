@@ -7,7 +7,7 @@ const usersController = require("../controllers/user-controllers");
 
 router.post("/signup", usersController.signup);
 router.post("/login", [
-    check("email").normalizeEmail().isEmail(),
+    check("email").isEmail(),
     check("password").isLength({ min: 8 })
   ],usersController.login);
 router.post("/logout", usersController.logout);

@@ -1,0 +1,156 @@
+[
+  {
+    $facet: {
+      genderCounts: [
+        {
+          $group: {
+            _id: "$gender",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            gender: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      sexualOrientationCounts: [
+        {
+          $group: {
+            _id: "$sexualOrientation",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            sexualOrientation: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      disabilityStatusCounts: [
+        {
+          $group: {
+            _id: "$disabilityStatus",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            disabilityStatus: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      marriedCounts: [
+        {
+          $group: {
+            _id: "$married",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            married: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      parentalStatusCounts: [
+        {
+          $group: {
+            _id: "$parentalStatus",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            parentalStatus: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      religionCounts: [
+        {
+          $group: {
+            _id: "$religion",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            religion: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      ethnicityCounts: [
+        {
+          $group: {
+            _id: "$ethnicity",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            ethnicity: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      geographicalLocationCounts: [
+        {
+          $group: {
+            _id: "$geographicalLocation",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            geographicalLocation: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      workExperienceCounts: [
+        {
+          $group: {
+            _id: "$workExperience",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            workExperience: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ],
+      generationalDiversityCounts: [
+        {
+          $group: {
+            _id: "$generationalDiversity",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            generationalDiversity: "$_id",
+            count: 1,
+            _id: 0
+          }
+        }
+      ]
+    }
+  }
+]

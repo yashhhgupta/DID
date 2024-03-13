@@ -88,8 +88,8 @@ const signup = async (req, res, next) => {
 
       return next(error);
     } else {
-      const pass = await bcrypt.compare(password, existingUser.password);
-      // console.log(pass)
+      let pass = await bcrypt.compare(password, existingUser.password);
+      
       if (!pass) {
         const error = new HttpError(
           "Invalid credentials, could not log you in.",

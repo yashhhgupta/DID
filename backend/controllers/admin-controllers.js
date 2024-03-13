@@ -1,12 +1,10 @@
 const HttpError = require("../utils/http-error");
-const Org = require("../models/organization");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const Org = require("../models/organization");
 const User = require("../models/employee");
 const Department = require("../models/department");
-
-
 
 const signupAsAdmin = async (req, res, next) => {
     const errors = validationResult(req);
@@ -210,25 +208,32 @@ const addMultipleEmployees = async (req, res, next) => {
 
     // Update employee objects with department ids
     // console.log(departmentMap);
-    const salt = await bcrypt.genSalt(10);
-    const pass = await bcrypt.hash("12345678", salt);
-    employees.forEach((employee) => {
-      employee.password = pass;
-      if (!employee.dateOfJoining) {
-        employee.dateOfJoining = new Date();
-      }
-      else {
-        employee.dateOfJoining = new Date(employee.dateOfJoining);
-      }
-      if(employee.dateOfLeaving) {
-        employee.dateOfLeaving = new Date(employee.dateOfLeaving);
-      }
-      employee.orgId = orgId;
-      employee.departmentId = departmentMap[employee.department];
-      delete employee.department; 
-    });
+    // const salt = await bcrypt.genSalt(10);
+    // const pass = await bcrypt.hash("12345678", salt);
+    const pass = "12345678";
+    await Promise.all(
+      employees.map(async (employee) => {
+        if (!employee.dateOfJoining) {
+          employee.dateOfJoining = new Date();
+        } else {
+          employee.dateOfJoining = new Date(employee.dateOfJoining);
+        }
+
+        if (employee.dateOfLeaving) {
+          employee.dateOfLeaving = new Date(employee.dateOfLeaving);
+        }
+
+        employee.orgId = orgId;
+        employee.departmentId = departmentMap[employee.department];
+
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        employee.password = await bcrypt.hash(pass, salt);
+        // employee.password = pass;
+      })
+    );
     // Insert employees into the database
-    // console.log(employees);
+      
     await User.insertMany(employees);
   } catch (err) {
     console.log(err);
@@ -238,7 +243,7 @@ const addMultipleEmployees = async (req, res, next) => {
     );
     return next(error);
   }
-
+  
   res.status(201).json({ message: "Employees added successfully" });
 }
 const getAllUsers = async (req, res, next) => { 

@@ -1,6 +1,7 @@
 export const userAttributesOptions = [
   {
     title: "Gender",
+    value : "gender",
     options: [
       {
         value: "Male",
@@ -32,6 +33,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Sexual Orientation",
+    value : "sexualOrientation",
     options: [
       {
         value: "Heterosexual",
@@ -58,6 +60,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Ethnicity",
+    value:"ethnicity",
     options: [
       {
         value: "White",
@@ -92,6 +95,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Disability Status",
+    value : "disabilityStatus",
     options: [
       {
         value: "Yes",
@@ -110,6 +114,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Marital Status",
+    value : "married",
     options: [
       {
         value: "Single",
@@ -128,6 +133,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Parental Status",
+    value : "parentalStatus",
     options: [
       {
         value: "Parent",
@@ -146,6 +152,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Religion",
+    value : "religion",
     options: [
       {
         value: "Christianity",
@@ -180,6 +187,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Geographical Location",
+    value : "geographicalLocation",
     options: [
       {
         value: "Urban",
@@ -198,6 +206,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Work Experience",
+    value : "workExperience",
     options: [
       {
         value: "Entry level",
@@ -216,6 +225,7 @@ export const userAttributesOptions = [
   },
   {
     title: "Generational Diversity",
+    value : "generationalDiversity",
     options: [
       {
         value: "Boomers",

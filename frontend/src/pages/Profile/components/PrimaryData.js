@@ -5,9 +5,10 @@ import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { GiAges } from "react-icons/gi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 const PrimaryData = ({ user }) => {
   let {
-    firstname="",
+    firstname = "",
     lastName = null,
     email,
     age = null,
@@ -15,22 +16,38 @@ const PrimaryData = ({ user }) => {
     departmentId,
     dateOfJoining,
     dateOfLeaving = null,
+    img
   } = user;
+  const [primaryFormData, setPrimaryFormData] = useState({
+    lastName: lastName || "",
+    age: age || "",
+  });
+  const [profileImage, setProfileImage] = useState(img || "https://www.w3schools.com/howto/img_avatar.png");
   const deps = useSelector((state) => state.department.departments);
   const depName = deps.find((dep) => dep.value === departmentId)?.label;
   dateOfJoining = new Date(dateOfJoining).toLocaleDateString();
   const EditProfileHandler = () => {
-    console.log("Edit Profile");
+    console.log("Edit Profile", primaryFormData);
+    document.getElementById("file").click();
   };
-
+  const ProfileImageHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setProfileImage(reader.result); 
+    };
+  };
   return (
     <div className={styles.top}>
       <Card style={{ padding: "1rem 5rem 0.5rem 5rem" }}>
         <div className={styles.profile}>
-          <img
-            src="https://www.w3schools.com/howto/img_avatar.png"
-            alt="profile"
-            className={styles.image}
+          <img src={profileImage} alt="profile" className={styles.image} />
+          <input
+            type="file"
+            id="file"
+            style={{ display: "none" }} // Hidden by default
+            onChange={ProfileImageHandler}
           />
           <CustomButton
             text="Edit"
@@ -58,7 +75,14 @@ const PrimaryData = ({ user }) => {
             placeholder="Enter Last Name"
             style={{ width: "100%" }}
             label="Last Name"
+            value={primaryFormData.lastName}
             icon={<AiOutlineUser />}
+            onChange={(e) => {
+              setPrimaryFormData({
+                ...primaryFormData,
+                lastName: e.target.value,
+              });
+            }}
           />
         </div>
         <div className={styles.horz}>
@@ -76,15 +100,23 @@ const PrimaryData = ({ user }) => {
             placeholder="Age"
             style={{ width: "100%" }}
             label="Age "
+            value={primaryFormData.age}
             icon={<GiAges />}
+            onChange={(e) => {
+              setPrimaryFormData({
+                ...primaryFormData,
+                age: e.target.value,
+              });
+            }}
           />
         </div>
         <div className={styles.horz}>
           <CustomInput
             type="text"
-            placeholder="Team"
+            placeholder="No team assigned"
             style={{ width: "100%" }}
             label={"Team"}
+            readOnly="true"
             icon={<AiOutlineTeam />}
           />
           <CustomInput
@@ -114,10 +146,10 @@ const PrimaryData = ({ user }) => {
               style={{ width: "100%" }}
               label={"Date of Leaving"}
               icon={<MdOutlineDateRange />}
-            />) : (
-              <div></div>
-            )}
-          
+            />
+          ) : (
+            <div></div>
+          )}
         </div>
       </Card>
     </div>
