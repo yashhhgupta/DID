@@ -2,7 +2,8 @@ import styles from "./styles.module.css";
 import { SurveyCard } from "../UI";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSurvey, surveyActions } from "../../../../store/suvrey-slice";
+import { getSurvey } from "../../../../store/suvrey-slice";
+import { EmptyContainer } from "../../../../Components/common";
 
 const SurveyList = ({ totalUsers }) => {
   const orgId = useSelector((state) => state.auth.orgId);
@@ -18,19 +19,23 @@ const SurveyList = ({ totalUsers }) => {
       })
     );
   }, []);
-  return  (
+  return (
     <>
       {status === "loading" || status === "idle" ? (
         <div>Loading...</div>
       ) : (
         <div className={styles.container}>
-          {surveys.map((survey) => (
-            <SurveyCard
-              key={survey.id}
-              survey={survey}
-              totalUsers={totalUsers}
-            />
-          ))}
+            {surveys.length === 0 && <EmptyContainer title={"No Survey Found"}
+              description="Create a new survey to see it here"
+            />}
+          {surveys.length > 0 &&
+            surveys.map((survey) => (
+              <SurveyCard
+                key={survey.id}
+                survey={survey}
+                totalUsers={totalUsers}
+              />
+            ))}
         </div>
       )}
     </>

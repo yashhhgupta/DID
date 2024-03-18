@@ -6,28 +6,31 @@ import { GiAges } from "react-icons/gi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-const PrimaryData = ({ user }) => {
+const PrimaryData = ({ user, updateProfileData, currentUpdateData }) => {
   let {
     firstname = "",
-    lastName = null,
+    lastname = null,
     email,
     age = null,
-    team,
+    teamId,
     departmentId,
     dateOfJoining,
     dateOfLeaving = null,
-    img
+    img,
   } = user;
   const [primaryFormData, setPrimaryFormData] = useState({
-    lastName: lastName || "",
+    lastname: lastname || "",
     age: age || "",
   });
-  const [profileImage, setProfileImage] = useState(img || "https://www.w3schools.com/howto/img_avatar.png");
+  const [profileImage, setProfileImage] = useState(
+    img || "https://www.w3schools.com/howto/img_avatar.png"
+  );
   const deps = useSelector((state) => state.department.departments);
+  const teams = useSelector((state) => state.team.teams);
   const depName = deps.find((dep) => dep.value === departmentId)?.label;
+  const teamName = teams.find((team) => team.id === teamId)?.name;
   dateOfJoining = new Date(dateOfJoining).toLocaleDateString();
   const EditProfileHandler = () => {
-    console.log("Edit Profile", primaryFormData);
     document.getElementById("file").click();
   };
   const ProfileImageHandler = (e) => {
@@ -35,7 +38,7 @@ const PrimaryData = ({ user }) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setProfileImage(reader.result); 
+      setProfileImage(reader.result);
     };
   };
   return (
@@ -75,12 +78,16 @@ const PrimaryData = ({ user }) => {
             placeholder="Enter Last Name"
             style={{ width: "100%" }}
             label="Last Name"
-            value={primaryFormData.lastName}
+            value={primaryFormData.lastname}
             icon={<AiOutlineUser />}
             onChange={(e) => {
               setPrimaryFormData({
                 ...primaryFormData,
-                lastName: e.target.value,
+                lastname: e.target.value,
+              });
+              updateProfileData({
+                ...currentUpdateData,
+                lastname: e.target.value,
               });
             }}
           />
@@ -107,6 +114,10 @@ const PrimaryData = ({ user }) => {
                 ...primaryFormData,
                 age: e.target.value,
               });
+              updateProfileData({
+                ...currentUpdateData,
+                age: e.target.value,
+              });
             }}
           />
         </div>
@@ -116,6 +127,7 @@ const PrimaryData = ({ user }) => {
             placeholder="No team assigned"
             style={{ width: "100%" }}
             label={"Team"}
+            value={teamName}
             readOnly="true"
             icon={<AiOutlineTeam />}
           />

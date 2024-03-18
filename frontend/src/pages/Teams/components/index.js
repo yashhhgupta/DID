@@ -1,3 +1,5 @@
-import AddDepartmentForm from "./AddDepartmentForm";
-import AddEmployeeForm from "./AddEmployeeForm";
-export { AddDepartmentForm, AddEmployeeForm };
+import AddDepartmentForm from "../../Employees/components/AddDepartmentForm";
+import AddEmployeeForm from "../../Employees/components/AddEmployeeForm";
+import AddTeamForm from "./AddTeamForm";
+import TeamList from "./TeamList";
+export { AddDepartmentForm, AddEmployeeForm,AddTeamForm,TeamList};

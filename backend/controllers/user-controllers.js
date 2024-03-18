@@ -221,10 +221,42 @@ const getSurveys = (req, res, next) => {
         500
       );
       return next(error);
-    });
+    }); 
 };
 
-
+const updateProfile = async (req, res, next) => { 
+  const { userId, dateToUpdate } = req.body;
+  console.log(dateToUpdate,userId);
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "Cant find User, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+  //update certain fields of user given in dateToUpdate
+  for (let key in dateToUpdate) {
+    user[key] = dateToUpdate[key];
+  }
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Updating user failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  console.log("userUpdates",user);
+  res.json({ message: "User updated" });
+}
 
 exports.signup = signup;
 exports.login = login;
@@ -232,3 +264,4 @@ exports.logout = logout;
 exports.fillSurvey = fillSurvey;
 exports.getSurveys = getSurveys;
 exports.getUser = getUser;
+exports.updateProfile = updateProfile;

@@ -6,7 +6,8 @@ export const customStyles = {
     background: "var(--color-input)",
     display: "flex",
     flexWrap: "nowrap",
-    height:"56px"
+    height: "56px",
+    minWidth: "400px",
   }),
   menu: (provided) => ({
     ...provided,

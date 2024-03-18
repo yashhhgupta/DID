@@ -2,16 +2,17 @@ import { FaHome } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { MdGroups } from "react-icons/md";
 import { FaPoll } from "react-icons/fa";
+import { FaUserTie } from "react-icons/fa";
 const options = [
-  {
-    title: "Home",
-    icon: <FaHome />,
-    redirect: "/",
-  },
   {
     title: "Dashboard",
     icon: <MdDashboard />,
     redirect: "/dashboard",
+  },
+  {
+    title: "Employees",
+    icon: <FaUserTie />,
+    redirect: "/employees",
   },
   {
     title: "Teams",

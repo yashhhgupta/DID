@@ -12,9 +12,7 @@ export const options = {
 };
 const Pie = ({data}) => {
   let graphData = convertData(data.v,data.k);
-  console.log("temp", graphData);
-  console.log("dummy", DUMMY_DATA);
-  console.log("data", data);
+  
   return (
     <Card>
       <div

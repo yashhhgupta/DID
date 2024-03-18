@@ -4,7 +4,7 @@ import Select from "react-select";
 import styles from "../styles.module.css";
 import { customStyles } from "../../../consts";
 import { useState } from "react";
-const SecondaryData = ({ user }) => {
+const SecondaryData = ({ user, updateProfileData, currentUpdateData }) => {
   const {
     gender,
     sexualOrientation,
@@ -29,7 +29,6 @@ const SecondaryData = ({ user }) => {
     workExperience: workExperience || "",
     generationalDiversity: generationalDiversity || "",
   });
-  console.log(secondaryData);
   return (
     <Card>
       <div className={styles.diversityOptions}>
@@ -49,6 +48,10 @@ const SecondaryData = ({ user }) => {
                 onChange={(selectedOption) => {
                   setSecondaryData({
                     ...secondaryData,
+                    [attribute.value]: selectedOption.value,
+                  });
+                  updateProfileData({
+                    ...currentUpdateData,
                     [attribute.value]: selectedOption.value,
                   });
                 }}

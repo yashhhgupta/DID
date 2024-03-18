@@ -8,6 +8,7 @@ import { useRequest } from "../../hooks/useRequest";
 import { BASE_URL } from "../../consts";
 
 const SurveyAdmin = () => {
+  
   const [modal, setModal] = useState(false);
   const token = Cookies.get("token");
   const orgId = Cookies.get("orgId");
@@ -59,6 +60,7 @@ const SurveyAdmin = () => {
             icon={<FaPlus size={18} />}
           />
         </div>
+
         <SurveyDashboard totalUsers={totalUsers} />
         <Surveylist totalUsers={totalUsers} />
       </div>

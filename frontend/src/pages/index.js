@@ -7,6 +7,7 @@ import Home from "./Home";
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
 import Profile from "./Profile";
+import Employees from "./Employees";
 
 export {
   Dashboard,
@@ -18,4 +19,5 @@ export {
   Login,
   Signup,
   Profile,
+  Employees,
 };

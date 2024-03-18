@@ -10,6 +10,7 @@ const adminRoutes = require('./routes/admin-routes')
 const departmentRoutes = require('./routes/department-routes')
 const surveyRoutes = require('./routes/survey-routes')
 const diversityRoutes = require('./routes/diversity-routes')
+const teamRoutes = require('./routes/team-routes')
 
 const app = express();
 const cors = require("cors");
@@ -32,6 +33,7 @@ app.use('/admin', adminRoutes);
 app.use('/department', departmentRoutes);
 app.use('/survey', surveyRoutes);
 app.use('/diversity', diversityRoutes);
+app.use('/team', teamRoutes);
 
 
 

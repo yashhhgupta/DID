@@ -9,6 +9,11 @@ router.get(
   "/get/:orgId",
   diversityController.getDiversityData
 );
+router.get(
+  "/get/:orgId/:depId",
+  diversityController.getDiversityData
+);
+router.get("/get/:orgId/:depId/:teamId", diversityController.getDiversityData);
 
 
 module.exports = router;

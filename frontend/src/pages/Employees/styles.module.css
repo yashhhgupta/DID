@@ -1,14 +1,13 @@
 .container {
     margin-top:2rem;
+    margin-bottom:2rem;
     display: flex;
     flex-direction: column;
-    gap:1.5rem;
+    width: 100%;
+    gap: 1rem;
 }
-/* .teamContainer{
-    padding: 2rem;
-} */
 .heading{
-    padding: 0.1rem 2rem;
+    padding: 0.1rem 2rem;   
     background-color: var(--color-light);
     color: var(--color-extra);
     border-radius: 0.5rem;

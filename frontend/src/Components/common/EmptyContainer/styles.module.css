@@ -1,0 +1,20 @@
+.container {
+flex:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  text-align: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  border-radius: 1rem;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+}

@@ -15,7 +15,7 @@ router.post("/login", [
 router.post("/logout", adminController.logout);
 router.post("/add-employee", validateAdminToken, adminController.addEmployee);
 router.post("/add-employees", validateAdminToken, adminController.addMultipleEmployees);
-router.post("/getAllUsers", validateAdminToken, adminController.getAllUsers);
+router.get("/getAllUsers/:orgId", validateAdminToken, adminController.getAllUsers);
 router.get("/getUsersCount/:orgId", adminController.getUsersCount);
 
 module.exports = router;

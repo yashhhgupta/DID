@@ -247,7 +247,7 @@ const addMultipleEmployees = async (req, res, next) => {
   res.status(201).json({ message: "Employees added successfully" });
 }
 const getAllUsers = async (req, res, next) => { 
-  const { orgId } = req.body;
+  const { orgId } = req.params;
   let users;
   try {
     users = await User.find

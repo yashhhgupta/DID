@@ -5,14 +5,20 @@ import { useRequest } from "../../../../hooks/useRequest";
 import { useEffect ,useState} from "react";
 import { BASE_URL } from "../../../../consts";
 
-const Dashbody = () => {
+const Dashbody = ({department,team}) => {
   const { sendRequest } = useRequest();
   const orgId = useSelector((state) => state.auth.orgId);
   const token = useSelector((state) => state.auth.token);
   const [orgData, setOrgData] = useState(null);
   useEffect(() => {
     const fetchOrgData = async () => {
-      const url = BASE_URL + "/diversity/get/" + orgId;
+      let url = BASE_URL + "/diversity/get/" + orgId;
+      if (department) {
+        url += "/" + department.value;
+        if (team) {
+          url += "/" + team.value;
+        }
+      }
       const response = await sendRequest(url, "GET", null, {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -21,7 +27,8 @@ const Dashbody = () => {
       else setOrgData(response.diversityData);
     };
     fetchOrgData();
-  }, []);
+    console.log("called");
+  }, [department,team]);
     if (!orgData) return <div>Loading...</div>;
   return (
     <div className={styles.container}>

@@ -1,12 +1,20 @@
 const mongoose = require("mongoose");
 
-const diversityPipeline = (orgId) => {
+const diversityPipeline = (orgId,depId,teamId) => {
+   const matchStage = {
+     $match: {
+       orgId: new mongoose.Types.ObjectId(orgId),
+     },
+   };
+
+  if (depId) {
+    matchStage.$match.departmentId = new mongoose.Types.ObjectId(depId);
+    if (teamId) {
+      matchStage.$match.teamId = new mongoose.Types.ObjectId(teamId);
+    }
+  }
   return [
-    {
-      $match: {
-        orgId: new mongoose.Types.ObjectId(orgId),
-      },
-    },
+    matchStage,
     {
       $facet: {
         gender: [

@@ -75,6 +75,12 @@ const Form = ({ modalCloseHandler }) => {
   return (
     <form>
       <h1>Add Employee</h1>
+      {departments.length === 0 && (
+        <p>
+          No departments added, <br />
+          To add a team add a department
+        </p>
+      )}
       <CustomInput
         type="text"
         placeholder="First Name"
@@ -103,14 +109,13 @@ const Form = ({ modalCloseHandler }) => {
           styles={customStyles}
           options={departments}
           onChange={(selectedOption) => {
-            console.log(selectedOption);
             setFormData((prevData) => ({
               ...prevData,
-              department: selectedOption, // Assuming the value is the department ID
+              department: selectedOption,
             }));
           }}
           value={formData.department}
-          placeholder="Select an option"
+          placeholder="Select a department"
         />
       </div>
       <CustomButton text="Add Employee" buttonProps={buttonProps} />
