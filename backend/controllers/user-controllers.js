@@ -225,8 +225,7 @@ const getSurveys = (req, res, next) => {
 };
 
 const updateProfile = async (req, res, next) => { 
-  const { userId, dateToUpdate } = req.body;
-  console.log(dateToUpdate,userId);
+  const { userId, datatoUpdate } = req.body;
   let user;
   try {
     user = await User.findById(userId);
@@ -242,8 +241,8 @@ const updateProfile = async (req, res, next) => {
     return next(error);
   }
   //update certain fields of user given in dateToUpdate
-  for (let key in dateToUpdate) {
-    user[key] = dateToUpdate[key];
+  for (let key in datatoUpdate) {
+    user[key] = datatoUpdate[key];
   }
   try {
     await user.save();
@@ -254,9 +253,9 @@ const updateProfile = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log("userUpdates",user);
   res.json({ message: "User updated" });
 }
+
 
 exports.signup = signup;
 exports.login = login;

@@ -11,6 +11,7 @@ const departmentRoutes = require('./routes/department-routes')
 const surveyRoutes = require('./routes/survey-routes')
 const diversityRoutes = require('./routes/diversity-routes')
 const teamRoutes = require('./routes/team-routes')
+const serviceRoutes = require('./routes/service-routes')
 
 const app = express();
 const cors = require("cors");
@@ -34,6 +35,7 @@ app.use('/department', departmentRoutes);
 app.use('/survey', surveyRoutes);
 app.use('/diversity', diversityRoutes);
 app.use('/team', teamRoutes);
+app.use("/service", serviceRoutes);
 
 
 

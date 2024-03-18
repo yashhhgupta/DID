@@ -9,7 +9,7 @@ import { getDepartments } from "../../store/department-slice";
 import { getTeams } from "../../store/team-slice";
 import { ConfirmationPopUp, CustomButton, Modal } from "../../Components/common";
 
-const Profile = () => {
+const ProfileEmp = () => {
   const [datatoUpdate, setDatatoUpdate] = useState({});
   const [showModal, setShowModal] = useState(false);
   const { sendRequest, isLoading } = useRequest();
@@ -53,12 +53,12 @@ const Profile = () => {
   const updateProfileData = (data) => {
     setDatatoUpdate(data);
   };
-  const EditProfileHandler = async() => {
+  const EditProfileHandler = async () => {
     const response = await sendRequest(
       BASE_URL + "/user/updateProfile",
       "POST",
       JSON.stringify({
-        dateToUpdate:datatoUpdate,
+        datatoUpdate,
         userId: userId,
       }),
       {
@@ -87,7 +87,7 @@ const Profile = () => {
       </Modal>
       <div className={styles.container}>
         <div className={styles.heading}>
-          <h1>TEAMS</h1>
+          <h1>PROFILE</h1>
           <div className={styles.buttons}>
             <CustomButton
               text="Edit Profile"
@@ -117,4 +117,4 @@ const Profile = () => {
     </>
   );
 };
-export default Profile;
+export default ProfileEmp;

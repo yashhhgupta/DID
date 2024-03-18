@@ -127,7 +127,65 @@ const loginAsAdmin = async (req, res, next) => {
    res.clearCookie("token");
    res.json({ message: "Logged out" });
  };
+const getOrg = async (req, res, next) => { 
+  const orgId = req.params.orgId;
+  let org;
+  try {
+    org = await Org.findById(orgId);
+  }
+  catch (err) {
+    const error = new HttpError(
+      "Fetching organization failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!org) {
+    const error = new HttpError("No organization found", 404);
+    return next(error);
+  }
+  res.json({ org: org.toObject({ getters: true }) });
 
+}
+const updateOrg = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data.", 422)
+    );
+  }
+
+  const { orgId, dataToUpdate } = req.body;
+  console.log(dataToUpdate);
+  let org;
+  try {
+    org = await Org.findById(orgId);
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching organization failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!org) {
+    const error = new HttpError("No organization found", 404);
+    return next(error);
+  }
+  for (let key in dataToUpdate) {
+    org[key] = dataToUpdate[key];
+  }
+  console.log(org);
+  try {
+    await org.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Updating organization failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ org: org.toObject({ getters: true }) });
+}
 const addEmployee = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -193,10 +251,12 @@ const addMultipleEmployees = async (req, res, next) => {
   const orgId = req.body.orgId;
 
   try {
-    // Fetch department ids based on department names
+    // Fetch department ids based on department names with orgId
     const departmentNames = employees.map((employee) => employee.department);
     const departments = await Department.find(
-      { name: { $in: departmentNames } },
+      { name: { $in: departmentNames },
+        orgId: orgId
+      },
       "name id"
     );
 
@@ -233,7 +293,7 @@ const addMultipleEmployees = async (req, res, next) => {
       })
     );
     // Insert employees into the database
-      
+    // console.log(employees);
     await User.insertMany(employees);
   } catch (err) {
     console.log(err);
@@ -290,3 +350,5 @@ exports.addEmployee = addEmployee;
 exports.addMultipleEmployees = addMultipleEmployees;
 exports.getAllUsers = getAllUsers;
 exports.getUsersCount = getUsersCount;
+exports.getOrg = getOrg;
+exports.updateOrg = updateOrg;

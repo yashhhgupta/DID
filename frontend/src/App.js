@@ -7,7 +7,9 @@ import {
   Error,
   Login,
   Signup,
-  Profile,
+  ProfileEmp,
+  ProfileAdmin,
+  Employees,
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
@@ -59,7 +61,8 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/survey" element={<SurveyAdmin />} />
               <Route path="/teams" element={<Teams />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<ProfileAdmin/>} />
+              <Route path="/employees" element={<Employees />} />
               <Route path="*" element={<Error />} />
             </Routes>
           </Layout>
@@ -73,7 +76,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/survey" element={<SurveyEmployee />} />
               <Route path="*" element={<Error />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<ProfileEmp />} />
             </Routes>
           </Layout>
         </Router>

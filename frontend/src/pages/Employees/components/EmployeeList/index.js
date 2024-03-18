@@ -9,7 +9,6 @@ const EmployeeList = ({
   title = "",
 }) => {
   const [showModal, setShowModal] = useState(null);
-  console.log("EmployeeList", employees);
   return (
     <div>
       {title && <h1>{title}</h1>}

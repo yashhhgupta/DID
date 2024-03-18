@@ -23,7 +23,7 @@ const employeeSchema = new Schema({
     type: mongoose.Types.ObjectId,
     ref: "Team",
   },
-
+  image : {type: String},
   dateOfLeaving: { type: Date },
   age: {
     type: Number,

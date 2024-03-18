@@ -6,7 +6,11 @@ import { GiAges } from "react-icons/gi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { BASE_URL } from "../../../consts";
+
 const PrimaryData = ({ user, updateProfileData, currentUpdateData }) => {
+  const token = useSelector((state) => state.auth.token);
+
   let {
     firstname = "",
     lastname = null,
@@ -16,15 +20,13 @@ const PrimaryData = ({ user, updateProfileData, currentUpdateData }) => {
     departmentId,
     dateOfJoining,
     dateOfLeaving = null,
-    img,
+    image,
   } = user;
   const [primaryFormData, setPrimaryFormData] = useState({
     lastname: lastname || "",
     age: age || "",
+    image : image || "https://www.w3schools.com/howto/img_avatar.png",
   });
-  const [profileImage, setProfileImage] = useState(
-    img || "https://www.w3schools.com/howto/img_avatar.png"
-  );
   const deps = useSelector((state) => state.department.departments);
   const teams = useSelector((state) => state.team.teams);
   const depName = deps.find((dep) => dep.value === departmentId)?.label;
@@ -33,19 +35,35 @@ const PrimaryData = ({ user, updateProfileData, currentUpdateData }) => {
   const EditProfileHandler = () => {
     document.getElementById("file").click();
   };
-  const ProfileImageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setProfileImage(reader.result);
-    };
+  // console.log(profileImage);
+  const ProfileImageHandler = async (e) => {
+    const profileImage = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", profileImage);
+    const res = await fetch(BASE_URL + "/service/upload", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      body: formData,
+    });
+
+    const { link } = await res.json();
+    setPrimaryFormData({
+      ...primaryFormData,
+      image: link,
+    });
+    updateProfileData({
+      ...currentUpdateData,
+      image: link,
+    });
   };
+  
   return (
     <div className={styles.top}>
       <Card style={{ padding: "1rem 5rem 0.5rem 5rem" }}>
         <div className={styles.profile}>
-          <img src={profileImage} alt="profile" className={styles.image} />
+          <img src={primaryFormData.image} alt="profile" className={styles.image} />
           <input
             type="file"
             id="file"

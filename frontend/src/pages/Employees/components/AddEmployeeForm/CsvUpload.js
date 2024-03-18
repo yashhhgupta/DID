@@ -30,17 +30,16 @@ const CsvUpload = ({ closeModal }) => {
     const reader = new FileReader();
     reader.onload = async (event) => {
       const data = new Uint8Array(event.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
+      const workbook = XLSX.read(data, { type: "array", cellDates: true });
       const sheetName = workbook.SheetNames[0];
       const json_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
       setEmployeesToAdd(json_data);
     };
-
     reader.readAsArrayBuffer(file);
     setModal(true);
   };
   const handleSubmit = async () => {
-    console.log(employeesToAdd);
+    // console.log(employeesToAdd);
     let url = BASE_URL + "/admin/add-employees";
     const response = await sendRequest(
       url,

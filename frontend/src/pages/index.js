@@ -6,7 +6,8 @@ import Teams from "./Teams";
 import Home from "./Home";
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
-import Profile from "./Profile";
+import ProfileEmp from "./Profile/ProfileEmp";
+import ProfileAdmin from "./Profile/ProfileAdmin";
 import Employees from "./Employees";
 
 export {
@@ -18,6 +19,7 @@ export {
   Home,
   Login,
   Signup,
-  Profile,
+  ProfileEmp,
+  ProfileAdmin,
   Employees,
 };
