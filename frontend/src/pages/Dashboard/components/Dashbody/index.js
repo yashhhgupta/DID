@@ -27,12 +27,12 @@ const Dashbody = ({department,team}) => {
       else setOrgData(response.diversityData);
     };
     fetchOrgData();
-    console.log("called");
-  }, [department,team]);
+  }, [department, team]);
+  
     if (!orgData) return <div>Loading...</div>;
   return (
     <div className={styles.container}>
-      <LineGraph />
+      <LineGraph selectedDep={department} selectedTeam={team}/>
       <div className={styles.pies}>
         {
             orgData.map((data, index) => {

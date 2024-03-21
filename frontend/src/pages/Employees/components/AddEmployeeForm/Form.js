@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDepartments } from "../../../../store/department-slice";
 import Select from "react-select";
 import { customStyles } from "../../../../consts";
+import { toast } from "sonner";
 
 const Form = ({ modalCloseHandler }) => {
   const token = useSelector((state) => state.auth.token);
@@ -34,13 +35,13 @@ const Form = ({ modalCloseHandler }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!formData.email.trim()) {
-      alert("Please enter your email.");
+      toast.error("Please enter your email.");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
-      alert("Please enter a valid Gmail format email address.");
+      toast.error("Please enter a valid Gmail format email address.");
       return;
     }
     let url = BASE_URL + "/admin/add-employee";
@@ -59,9 +60,9 @@ const Form = ({ modalCloseHandler }) => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Adding Employee Failed, Please try again.");
     } else {
-      alert("Employee Added Successfully");
+      toast.success("Employee Added Successfully");
       modalCloseHandler();
     }
   };

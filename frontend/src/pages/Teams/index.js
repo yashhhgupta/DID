@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getTeams } from "../../store/team-slice";
 import { getDepartments } from "../../store/department-slice";
 import { getEmployees } from "../../store/employee-slice";
+import { Loader } from "../../Components/common";
 
 const Teams = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,9 @@ const Teams = () => {
   const teams = useSelector((state) => state.team.teams);
   const deps = useSelector((state) => state.department.departments);
   const employees = useSelector((state) => state.employee.employees);
+  const statusEmployees = useSelector((state) => state.employee.status);
+  const statusDepartments = useSelector((state) => state.department.status);
+  const statusTeams = useSelector((state) => state.team.status);
 
   useEffect(() => {
     dispatch(getTeams({ orgId, token }));
@@ -32,7 +36,16 @@ const Teams = () => {
     e.stopPropagation();
     setModal(true);
   };
-
+  if (
+    statusEmployees === "idle" ||
+    statusEmployees === "loading" ||
+    statusDepartments === "idle" ||
+    statusDepartments === "loading" ||
+    statusTeams === "idle" ||
+    statusTeams === "loading"
+  ) {
+    return <Loader isLoading={true} />;
+  }
   return (
     <>
       <Modal isOpen={modal}>

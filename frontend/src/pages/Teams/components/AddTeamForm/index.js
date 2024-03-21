@@ -11,6 +11,7 @@ import { getDepartments } from "../../../../store/department-slice";
 import Select from "react-select";
 import { customStyles } from "../../../../consts";
 import { getTeams } from "../../../../store/team-slice";
+import { toast } from "sonner";
 
 const AddTeamForm = ({ modalCloseHandler }) => {
   const dispatch = useDispatch();
@@ -38,11 +39,11 @@ const AddTeamForm = ({ modalCloseHandler }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!team.name.trim()) {
-      alert("Please enter team name.");
+      toast.error("Please enter team name.");
       return;
     }
     if (!team.department.value) {
-      alert("Please select department.");
+      toast.error("Please select department.");
       return;
     }
     let url = BASE_URL + "/team/add";
@@ -60,9 +61,9 @@ const AddTeamForm = ({ modalCloseHandler }) => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Team Adding Failed");
     } else {
-      alert("Team Added Successfully");
+      toast.success("Team Added Successfully");
       dispatch(getTeams({ orgId, token }));
       modalCloseHandler();
     }

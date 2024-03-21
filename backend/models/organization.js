@@ -2,13 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 
-
 const organizationSchema = new Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true , unique: true},
   password: { type: String, required: true, minlength: 8 },
-  image : { type: String },
+  image: { type: String },
   diversityGoalScore: { type: Number },
+  weightage: {
+    type: Object,
+  },
 });
 const SALT_WORK_FACTOR = 10;
 organizationSchema.pre("save", async function save(next) {

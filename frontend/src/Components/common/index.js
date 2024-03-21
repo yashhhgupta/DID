@@ -5,6 +5,8 @@ import ConfirmationPopUp from "./ConfirmationPopUp";
 import Card from "./Card";
 import DepartmentFilter from "./DepartmentFilter";
 import EmptyContainer from "./EmptyContainer";
+import Notification from "./Notification";
+import Loader from "./Loader";
 export {
   CustomButton,
   CustomInput,
@@ -13,4 +15,6 @@ export {
   Card,
   DepartmentFilter,
   EmptyContainer,
+  Notification,
+  Loader
 }

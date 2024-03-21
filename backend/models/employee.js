@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const employeeSchema = new Schema({
   firstname: { type: String, required: true },
   lastname: { type: String },
-  email: { type: String, required: true},
+  email: { type: String, required: true, unique: true},
   password: { type: String, required: true, minlength: 6 },
   orgId: {
     type: mongoose.Types.ObjectId,
@@ -71,7 +71,7 @@ const employeeSchema = new Schema({
   },
   parentalStatus: {
     type: String,
-    enum: ["Parent", "Non-parent", "Expeing"],
+    enum: ["Parent", "Non-parent", "Expecting"],
   },
   religion: {
     type: String,

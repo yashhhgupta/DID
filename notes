@@ -1,156 +1,185 @@
-[
-  {
-    $facet: {
-      genderCounts: [
-        {
-          $group: {
-            _id: "$gender",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            gender: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      sexualOrientationCounts: [
-        {
-          $group: {
-            _id: "$sexualOrientation",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            sexualOrientation: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      disabilityStatusCounts: [
-        {
-          $group: {
-            _id: "$disabilityStatus",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            disabilityStatus: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      marriedCounts: [
-        {
-          $group: {
-            _id: "$married",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            married: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      parentalStatusCounts: [
-        {
-          $group: {
-            _id: "$parentalStatus",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            parentalStatus: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      religionCounts: [
-        {
-          $group: {
-            _id: "$religion",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            religion: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      ethnicityCounts: [
-        {
-          $group: {
-            _id: "$ethnicity",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            ethnicity: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      geographicalLocationCounts: [
-        {
-          $group: {
-            _id: "$geographicalLocation",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            geographicalLocation: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      workExperienceCounts: [
-        {
-          $group: {
-            _id: "$workExperience",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            workExperience: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ],
-      generationalDiversityCounts: [
-        {
-          $group: {
-            _id: "$generationalDiversity",
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            generationalDiversity: "$_id",
-            count: 1,
-            _id: 0
-          }
-        }
-      ]
-    }
-  }
-]
+{
+    "surveyId" : "65fbf6d28ae685aa895d6f2c",
+    "userIds" :["65fa5237fed876621681b54f", 
+        "65fa5237fed876621681b550",
+        "65fa5237fed876621681b551",
+        "65fa5237fed876621681b552",
+        "65fa5237fed876621681b557",
+        "65fa5237fed876621681b55a",
+        "65fa5237fed876621681b55b",
+        "65fa5237fed876621681b55d",
+        "65fa5237fed876621681b55e",
+        "65fa5237fed876621681b564",
+        "65fa5237fed876621681b570",
+        "65fa5237fed876621681b57d",
+        "65fa5237fed876621681b582",
+        "65fa5237fed876621681b586",
+        "65fa5237fed876621681b589",
+        "65fa5237fed876621681b595",
+        "65fa5237fed876621681b559",
+        "65fa5237fed876621681b565",
+        "65fa5237fed876621681b566",
+        "65fa5237fed876621681b568",
+        "65fa5237fed876621681b56e",
+        "65fa5237fed876621681b571",
+        "65fa5237fed876621681b572",
+        "65fa5237fed876621681b576",
+        "65fa5237fed876621681b579",
+        "65fa5237fed876621681b57a",
+        "65fa5237fed876621681b57b",
+        "65fa5237fed876621681b57c",
+        "65fa5237fed876621681b57e",
+        "65fa5237fed876621681b583",
+        "65fa5237fed876621681b584",
+        "65fa5237fed876621681b588",
+        "65fa5237fed876621681b590",
+        "65fa5237fed876621681b591",
+        "65fa5237fed876621681b594",
+        "65fa5237fed876621681b596",
+        "65fa5237fed876621681b556",
+        "65fa5237fed876621681b558",
+        "65fa5237fed876621681b55c",
+        "65fa5237fed876621681b55f",
+        "65fa5237fed876621681b560",
+        "65fa5237fed876621681b562",
+        "65fa5237fed876621681b569",
+        "65fa5237fed876621681b56a",
+        "65fa5237fed876621681b56b",
+        "65fa5237fed876621681b575",
+        "65fa5237fed876621681b57f",
+        "65fa5237fed876621681b581",
+        "65fa5237fed876621681b585",
+        "65fa5237fed876621681b587",
+        "65fa5237fed876621681b58a",
+        "65fa5237fed876621681b58b",
+        "65fa5237fed876621681b58d",
+        "65fa5237fed876621681b58f",
+        "65fa5237fed876621681b592",
+        "65fa5237fed876621681b593",
+        "65fa5237fed876621681b54f",
+        "65fa5237fed876621681b553",
+        "65fa5237fed876621681b554",
+        "65fa5237fed876621681b555",
+        "65fa5237fed876621681b561",
+        "65fa5237fed876621681b563",
+        "65fa5237fed876621681b567",
+        "65fa5237fed876621681b56c",
+        "65fa5237fed876621681b56d",
+        "65fa5237fed876621681b56f",
+        "65fa5237fed876621681b573",
+        "65fa5237fed876621681b574",
+        "65fa5237fed876621681b577",
+        "65fa5237fed876621681b578",
+        "65fa5237fed876621681b580",
+        "65fa5237fed876621681b58c",
+        "65fa5237fed876621681b58e",
+        "65fa66ccfed876621681b66c",
+        "65fa66ccfed876621681b66d",
+        "65fa66ccfed876621681b66e",
+        "65fa66ccfed876621681b673",
+        "65fa66ccfed876621681b67a",
+        "65fa66ccfed876621681b680",
+        "65fa66ccfed876621681b683",
+        "65fa66ccfed876621681b686",
+        "65fa66ccfed876621681b68c",
+        "65fa66ccfed876621681b691",
+        "65fa66ccfed876621681b693",
+        "65fa66ccfed876621681b695",
+        "65fa66ccfed876621681b698",
+        "65fa66ccfed876621681b699",
+        "65fa66ccfed876621681b69b",
+        "65fa66ccfed876621681b69c",
+        "65fa66ccfed876621681b6a0",
+        "65fa66ccfed876621681b6ac",
+        "65fa66ccfed876621681b6ad",
+        "65fa66ccfed876621681b6b1",
+        "65fa66ccfed876621681b6b2",
+        "65fa66ccfed876621681b6b3",
+        "65fa66ccfed876621681b6b5",
+        "65fa66ccfed876621681b6b7",
+        "65fa66ccfed876621681b6bb",
+        "65fa66ccfed876621681b6c1",
+        "65fa66ccfed876621681b6c4",
+        "65fa66ccfed876621681b6c5",
+        "65fa66ccfed876621681b6c8",
+        "65fa66ccfed876621681b6c9",
+        "65fa66ccfed876621681b6ca",
+        "65fa66ccfed876621681b6ce",
+        "65fa66ccfed876621681b6d6",
+        "65fa66ccfed876621681b667",
+        "65fa66ccfed876621681b66a",
+        "65fa66ccfed876621681b66b",
+        "65fa66ccfed876621681b66f",
+        "65fa66ccfed876621681b678",
+        "65fa66ccfed876621681b679",
+        "65fa66ccfed876621681b67c",
+        "65fa66ccfed876621681b67f",
+        "65fa66ccfed876621681b681",
+        "65fa66ccfed876621681b684",
+        "65fa66ccfed876621681b687",
+        "65fa66ccfed876621681b68e",
+        "65fa66ccfed876621681b690",
+        "65fa66ccfed876621681b69e",
+        "65fa66ccfed876621681b69f",
+        "65fa66ccfed876621681b6a1",
+        "65fa66ccfed876621681b6a3",
+        "65fa66ccfed876621681b6a4",
+        "65fa66ccfed876621681b6a9",
+        "65fa66ccfed876621681b6aa",
+        "65fa66ccfed876621681b6ab",
+        "65fa66ccfed876621681b6b0",
+        "65fa66ccfed876621681b6b6",
+        "65fa66ccfed876621681b6b8",
+        "65fa66ccfed876621681b6ba",
+        "65fa66ccfed876621681b6c6",
+        "65fa66ccfed876621681b6cb",
+        "65fa66ccfed876621681b6cd",
+        "65fa66ccfed876621681b6d0",
+        "65fa66ccfed876621681b6d1",
+        "65fa66ccfed876621681b6d7",
+        "65fa66ccfed876621681b6d8",
+        "65fa66ccfed876621681b6d9",
+        "65fa66ccfed876621681b6dc",
+        "65fa66ccfed876621681b668",
+        "65fa66ccfed876621681b671",
+        "65fa66ccfed876621681b675",
+        "65fa66ccfed876621681b677",
+        "65fa66ccfed876621681b67e",
+        "65fa66ccfed876621681b685",
+        "65fa66ccfed876621681b688",
+        "65fa66ccfed876621681b689",
+        "65fa66ccfed876621681b68a",
+        "65fa66ccfed876621681b68b",
+        "65fa66ccfed876621681b68d",
+        "65fa66ccfed876621681b692",
+        "65fa66ccfed876621681b696",
+        "65fa66ccfed876621681b69a",
+        "65fa66ccfed876621681b6a2",
+        "65fa66ccfed876621681b6a7",
+        "65fa66ccfed876621681b6a8",
+        "65fa66ccfed876621681b6ae",
+        "65fa66ccfed876621681b6b4",
+        "65fa66ccfed876621681b6bd",
+        "65fa66ccfed876621681b6bf",
+        "65fa66ccfed876621681b6c7",
+        "65fa66ccfed876621681b6d4",
+        "65fa66ccfed876621681b6da",
+        "65fa66ccfed876621681b6dd",
+        "65fa66ccfed876621681b6de",
+        "65fa66ccfed876621681b669",
+        "65fa66ccfed876621681b670",
+        "65fa66ccfed876621681b672",
+        "65fa66ccfed876621681b674",
+        "65fa66ccfed876621681b676",
+        "65fa66ccfed876621681b67b",
+        "65fa66ccfed876621681b67d",
+        "65fa66ccfed876621681b682",
+        "65fa66ccfed876621681b68f",
+        "65fa66ccfed876621681b694",
+        "65fa66ccfed876621681b697",
+        "65fa66ccfed876621681b69d",
+        "65fa66ccfed876621681b6a5",
+        "65fa66ccfed876621681b6a6",
+        "65fa66ccfed876621681b6af"
+     ]
+}

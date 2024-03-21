@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 import { CustomButton } from "../../Components/common";
-import { OrgData } from "./components";
+import { OrgData, SetWeightage } from "./components";
 import { useState } from "react";
 import { Modal, ConfirmationPopUp } from "../../Components/common";
 import { useEffect } from "react";
@@ -10,28 +10,31 @@ import { getTeams } from "../../store/team-slice";
 import { BASE_URL } from "../../consts";
 import { useRequest } from "../../hooks/useRequest";
 import { getEmployees } from "../../store/employee-slice";
+import { toast } from "sonner";
+import { Loader } from "../../Components/common";
 
 const ProfileAdmin = () => {
   const dispatch = useDispatch();
-  const { sendRequest } = useRequest();
+  const { sendRequest,isLoading } = useRequest();
   const userId = useSelector((state) => state.auth.userId);
   const token = useSelector((state) => state.auth.token);
-    const orgId = useSelector((state) => state.auth.orgId);
-    const deps = useSelector((state) => state.department.departments);
-    const teams = useSelector((state) => state.team.teams);
-    const emp = useSelector((state) => state.employee.employees);
+  const orgId = useSelector((state) => state.auth.orgId);
+  const deps = useSelector((state) => state.department.departments);
+  const teams = useSelector((state) => state.team.teams);
+  const emp = useSelector((state) => state.employee.employees);
   const [primaryFormData, setPrimaryFormData] = useState({
     name: "",
     email: "",
     image: "",
     diversityGoalScore: "",
   });
+  const [weightage, setWeightage] = useState({});
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     dispatch(getDepartments({ orgId, token }));
-      dispatch(getTeams({ orgId, token }));
-      dispatch(getEmployees({ orgId, token }));
-      
+    dispatch(getTeams({ orgId, token }));
+    dispatch(getEmployees({ orgId, token }));
+
     const getUser = async () => {
       let url = BASE_URL + "/admin/get/" + userId;
       const response = await sendRequest(url, "GET", null, {
@@ -39,7 +42,7 @@ const ProfileAdmin = () => {
         Authorization: "Bearer " + token,
       });
       if (!response) {
-        alert("Invalid Credentials, Try Again");
+        toast.error("Profile Fetching Failed,please try again later.");
       } else {
         setPrimaryFormData({
           name: response.org.name,
@@ -49,6 +52,7 @@ const ProfileAdmin = () => {
             "https://www.w3schools.com/howto/img_avatar.png",
           diversityGoalScore: response.org.diversityGoalScore,
         });
+        setWeightage(response.org.weightage);
       }
     };
     getUser();
@@ -73,9 +77,9 @@ const ProfileAdmin = () => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Profile Update Failed,please try again later.");
     } else {
-      alert("Profile Updated");
+      toast.success("Profile Updated");
       setShowModal(false);
       setPrimaryFormData({
         name: response.org.name,
@@ -85,6 +89,9 @@ const ProfileAdmin = () => {
       });
     }
   };
+  if (isLoading) {
+    return <Loader isLoading={true} />;
+  }
   return (
     <>
       <Modal isOpen={showModal}>
@@ -117,11 +124,11 @@ const ProfileAdmin = () => {
         <OrgData
           orgData={primaryFormData}
           updateFormData={updateProfileData}
-                  dep={deps.length}
-                  team={teams.length}
-                  emp={emp.length}
-                  
+          dep={deps.length}
+          team={teams.length}
+          emp={emp.length}
         />
+        <SetWeightage weightage={weightage} />
       </div>
     </>
   );

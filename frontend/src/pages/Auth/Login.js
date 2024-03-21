@@ -7,9 +7,10 @@ import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { useRequest } from "../../hooks/useRequest";
 import { useDispatch } from "react-redux";
-import {login} from "../../store/auth-slice";
+import { login } from "../../store/auth-slice";
 import { BASE_URL } from "../../consts";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 const Login = () => {
   const { sendRequest } = useRequest();
@@ -30,26 +31,25 @@ const Login = () => {
   };
 
   const submitHandler = async (e) => {
-    // console.log(formData);
     e.preventDefault();
     if (!formData.email.trim()) {
-      alert("Please enter your email.");
+      toast.error("Please enter your email.");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
-      alert("Please enter a valid Gmail format email address.");
+      toast.error("Please enter a valid Gmail format email address.");
       return;
     }
 
     if (!formData.password.trim()) {
-      alert("Please enter your password.");
+      toast.error("Please enter your password.");
       return;
     }
 
     if (formData.password.trim().length < 8) {
-      alert("Password must be at least 8 characters long.");
+      toast.error("Password must be at least 8 characters long.");
       return;
     }
     //if isAdmin is checked, then login as admin
@@ -72,7 +72,7 @@ const Login = () => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Invalid Credentials, Try Again");
     }
     else {
       dispatch(
@@ -81,6 +81,7 @@ const Login = () => {
       Cookies.set("token", response.token, { expires: 7 });
       Cookies.set("userId", response.userId);
       Cookies.set("orgId", response.orgId);
+      toast.success("Logged in successfully");
       navigate("/dashboard");
     }
   };

@@ -7,6 +7,7 @@ import { ConfirmationPopUp, Modal } from "../../../../Components/common";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const CsvUpload = ({ closeModal }) => {
   const orgId = useSelector((state) => state.auth.orgId);
@@ -24,7 +25,7 @@ const CsvUpload = ({ closeModal }) => {
   const handleUpload = async (e) => {
     e.stopPropagation();
     if (!file) {
-      alert("Please select a file");
+      toast.error("Please select a file");
       return;
     }
     const reader = new FileReader();
@@ -54,10 +55,9 @@ const CsvUpload = ({ closeModal }) => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Employees Adding Failed,please try again later.");
     } else {
-      alert("Employee Added Successfully");
-      console.log(response);
+      toast.success("Employee Added Successfully");
       modalCloseHandler();
       closeModal();
     }

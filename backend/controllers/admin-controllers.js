@@ -41,6 +41,18 @@ const signupAsAdmin = async (req, res, next) => {
       name: name,
       email: email,
       password: password,
+      weightage: {
+        gender: 10,
+        sexualOrientation: 10,
+        ethnicity: 10,
+        disabilityStatus: 10,
+        married: 10,
+        parentalStatus: 10,
+        religion: 10,
+        geographicalLocation: 10,
+        workExperience: 10,
+        generationalDiversity: 10,
+      }
     });
     try {
       await createdOrg.save();
@@ -156,7 +168,6 @@ const updateOrg = async (req, res, next) => {
   }
 
   const { orgId, dataToUpdate } = req.body;
-  console.log(dataToUpdate);
   let org;
   try {
     org = await Org.findById(orgId);
@@ -174,7 +185,6 @@ const updateOrg = async (req, res, next) => {
   for (let key in dataToUpdate) {
     org[key] = dataToUpdate[key];
   }
-  console.log(org);
   try {
     await org.save();
   } catch (err) {
@@ -342,6 +352,29 @@ const getUsersCount = async (req, res, next) => {
     return next(error);
   }
 }
+const getSomeUserIds = async (req, res, next) => { 
+  const { orgId ,count} = req.body;
+  let users;
+  try {
+    users = await User.find({ orgId: orgId });
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!users) {
+    const error = new HttpError("No users found", 404);
+    return next(error);
+  }
+  let arr = [];
+  for (let i = 0; i < count; i++) {
+    arr.push(users[i]._id);
+  }
+  res.json({ userIds: arr });
+
+}
 
 exports.signupAsAdmin = signupAsAdmin;
 exports.loginAsAdmin = loginAsAdmin;
@@ -352,3 +385,4 @@ exports.getAllUsers = getAllUsers;
 exports.getUsersCount = getUsersCount;
 exports.getOrg = getOrg;
 exports.updateOrg = updateOrg;
+exports.getSomeUserIds = getSomeUserIds;

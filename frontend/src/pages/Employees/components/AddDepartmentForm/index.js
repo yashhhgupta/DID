@@ -7,10 +7,12 @@ import { FaPlus } from "react-icons/fa";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+
 const AddDepartmentForm = ({ modalCloseHandler }) => {
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
-  const { sendRequest } = useRequest();
+  const { sendRequest, isError } = useRequest();
   const [departments, setDepartments] = useState([""]);
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
@@ -23,9 +25,9 @@ const AddDepartmentForm = ({ modalCloseHandler }) => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    for(let i = 0; i < departments.length; i++){
+    for (let i = 0; i < departments.length; i++) {
       if (!departments[i].trim()) {
-        alert("Please enter department name.");
+        toast.error("Please enter department name.");
         return;
       }
     }
@@ -43,9 +45,10 @@ const AddDepartmentForm = ({ modalCloseHandler }) => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      
+      toast.error("Departments Adding Failed");
     } else {
-      alert("Departments Added Successfully");
+      toast.success("Departments Added Successfully");
       modalCloseHandler();
     }
   };

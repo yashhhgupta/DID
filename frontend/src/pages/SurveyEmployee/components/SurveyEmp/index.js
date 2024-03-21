@@ -8,6 +8,7 @@ import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector,useDispatch } from "react-redux";
 import { getUserSurvey } from "../../../../store/suvrey-slice";
+import { toast } from "sonner";
 
 const SurveyEmp = ({ modalCloseHandler, survey }) => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
   const submitHandler = async () => {
     let inclusionScore = ratings.reduce((x, y) => {
       if(y.score === 0){
-        alert("Please fill all the ratings");
+        toast.error("Please fill all the ratings");
         return 0;
       }
       return x + y.score * y.weightage * 0.2;
@@ -55,9 +56,9 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
       }
     );
     if (!response) {
-      alert("Survey filling failed, please try again later");
+      toast.error("Survey filling failed, please try again later");
     } else {
-      alert("Survey Filled Successfully");
+      toast.success("Survey Filled Successfully");
       dispatch(
         getUserSurvey({
           userId: userId,

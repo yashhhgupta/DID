@@ -18,11 +18,11 @@ const addDepartment = async (req, res, next) => {
       "Creating department failed, please try again later.",
       500
     );
-    return next(error);
+    return res.status(500).json({ message: "Creating department failed, please try again later." });
   }
   if (existingDepartment) {
-    const error = new HttpError("Department exists already.", 422);
-    return next(error);
+    const error = new HttpError("Department exists already.", 500);
+    return res.status(500).json({ message: "Department exists already." });
   }
   const createdDepartment = new Department({
     name,
@@ -59,8 +59,8 @@ const addMultipleDepartments = async (req, res, next) => {
         orgId: orgId,
       });
       if (existingDepartment) {
-        const error = new HttpError("Department exists already.", 422);
-        return next(error);
+        const error = new HttpError("Department exists already.", 500);
+        return res.status(500).json({ message: "Department exists already." });
       }
       const createdDepartment = new Department({
         name: departments[i],

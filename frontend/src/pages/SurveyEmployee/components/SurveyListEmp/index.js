@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getUserSurvey } from "../../../../store/suvrey-slice";
+import { EmptyContainer } from "../../../../Components/common";
+import { Loader } from "../../../../Components/common";
 const SurveyListEmp = ({callOn=false}) => {
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
@@ -20,18 +22,25 @@ const SurveyListEmp = ({callOn=false}) => {
       })
     );
   }, []);
+  if (status === "loading" || status === "idle") {
+    return <Loader isLoading={true} />;
+  }
   
   return (
     <>
-      {status === "loading" || status === "idle" ? (
-        <div>Loading...</div>
-      ) : (
+      
         <div className={styles.container}>
-          {surveys.map((survey) => {
-            return <SurveyCardEmp survey={survey} />;
-          })}
+          {surveys.length === 0 && (
+            <EmptyContainer
+              title={"No Survey Found"}
+              description="Wait for your admin to create a survey."
+            />
+          )}
+          {surveys.length > 0 &&
+            surveys.map((survey) => {
+              return <SurveyCardEmp survey={survey} />;
+            })}
         </div>
-      )}
     </>
   );
 };

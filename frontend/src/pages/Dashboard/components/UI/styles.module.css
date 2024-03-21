@@ -8,3 +8,6 @@
     align-items: center;
     flex-direction: column;
 }
+.image {
+    width: 70%;
+}

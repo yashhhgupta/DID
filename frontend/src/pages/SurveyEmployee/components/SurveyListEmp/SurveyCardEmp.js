@@ -79,12 +79,12 @@ const SurveyCardEmp = ({ survey }) => {
               size={50}
             />
           </div>
-          {status === "COMPLETED" && (
+          {/* {status === "COMPLETED" && (
             <div className={styles.score}>
               <h4>Score</h4>
               <div>{score}</div>
             </div>
-          )}
+          )} */}
           <CustomButton text={"START"} buttonProps={buttonProps} />
         </div>
       </div>

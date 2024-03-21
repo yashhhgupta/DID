@@ -18,28 +18,30 @@ import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { login } from "./store/auth-slice";
 import { useDispatch } from "react-redux";
+import {Loader} from "./Components/common";
 
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const isLoading = useSelector((state) => state.loader.isLoading);
   // const userId = useSelector((state) => state.auth.userId);
   // const orgId = useSelector((state) => state.auth.orgId);
   // const token = useSelector((state) => state.auth.token);
-  useEffect(() => { 
+  useEffect(() => {
     let token = Cookies.get("token");
     if (token) {
       let id = Cookies.get("userId");
       let orgId = Cookies.get("orgId");
-      dispatch(login(
-        {
+      dispatch(
+        login({
           userId: id,
           orgId: orgId,
           token: token,
-        }
-      ))
+        })
+      );
     }
-  },[])
+  }, []);
   let routes;
   if (!isLoggedIn) {
     routes = (
@@ -61,7 +63,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/survey" element={<SurveyAdmin />} />
               <Route path="/teams" element={<Teams />} />
-              <Route path="/profile" element={<ProfileAdmin/>} />
+              <Route path="/profile" element={<ProfileAdmin />} />
               <Route path="/employees" element={<Employees />} />
               <Route path="*" element={<Error />} />
             </Routes>
@@ -74,6 +76,7 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/survey" element={<SurveyEmployee />} />
               <Route path="*" element={<Error />} />
               <Route path="/profile" element={<ProfileEmp />} />
@@ -83,7 +86,13 @@ function App() {
       );
     }
   }
-  return <>{routes}</>;
+
+  return (
+    <>
+      <Loader isLoading={isLoading} />
+      {routes}
+    </>
+  );
 }
 
 export default App;

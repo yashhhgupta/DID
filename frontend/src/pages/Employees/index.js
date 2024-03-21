@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDepartments } from "../../store/department-slice";
 import { getEmployees } from "../../store/employee-slice";
 import { getTeams } from "../../store/team-slice";
+import {Loader} from "../../Components/common";
 
 const Employees = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const Employees = () => {
   const orgId = useSelector((state) => state.auth.orgId);
   const employees = useSelector((state) => state.employee.employees);
   const statusEmployees = useSelector((state) => state.employee.status);
+  const statusDepartments = useSelector((state) => state.department.status);
+  const statusTeams = useSelector((state) => state.team.status);
   const deps = useSelector((state) => state.department.departments);
   const teams = useSelector((state) => state.team.teams);
   const [showModal, setShowModal] = useState(null);
@@ -32,8 +35,17 @@ const Employees = () => {
     dispatch(getEmployees({ orgId, token }));
     dispatch(getTeams({ orgId, token }));
   }, [showModal]);
-  if (statusEmployees === "idle" || statusEmployees === "loading") {
-    return <p>Loading...</p>;
+  if (
+    statusEmployees === "idle" ||
+    statusEmployees === "loading" ||
+    statusDepartments === "idle" ||
+    statusDepartments === "loading" ||
+    statusTeams === "idle" ||
+    statusTeams === "loading"
+  ) {
+    return (
+      <Loader isLoading={true} />
+    );
   }
   const HandleFilterEmployee = (filteredDeps) => {
     if (filteredDeps.length === 0) {
@@ -105,7 +117,7 @@ const Employees = () => {
               description="Choose another filters to see data or add new employee"
               confirmButton={{
                 text: "Add Employee",
-                onClick: () => setShowModal("addEmployee")
+                onClick: () => setShowModal("addEmployee"),
               }}
             />
           ) : (

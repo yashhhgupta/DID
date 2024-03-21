@@ -5,11 +5,12 @@ import { useRef } from "react";
 import Logo from "../../../assets/logo.png";
 import { FiLogOut } from "react-icons/fi";
 import classNames from "classnames";
-import options from "./utls";
+import { optionsAdmin, optionsEmp } from "./utls";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../store/auth-slice";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const Tab = ({ option, sidebarCloseHandler }) => {
   const navigate = useNavigate();
@@ -26,12 +27,14 @@ const Tab = ({ option, sidebarCloseHandler }) => {
 };
 
 const Sidebar = ({ isOpen, sidebarCloseHandler }) => {
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
     sidebarCloseHandler();
   });
+  const options = isAdmin ? optionsAdmin : optionsEmp;
   const LogoutHandler = () => {
     dispatch(logout());
     Cookies.remove("token");

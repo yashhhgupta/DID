@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRequest } from "../../hooks/useRequest";
 import { BASE_URL } from "../../consts";
+import { toast } from "sonner";
 
 const SurveyAdmin = () => {
   
@@ -28,7 +29,7 @@ const SurveyAdmin = () => {
         }
       );
       if (!response) {
-        alert("Invalid Credentials, Try Again");
+        toast.error("Failed to fetch total users");
       } else {
         setTotalUsers(response.count);
       }

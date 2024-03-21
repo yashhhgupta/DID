@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRequest } from "../../hooks/useRequest";
 import { BASE_URL } from "../../consts";
+import { toast } from "sonner";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -26,24 +27,24 @@ const Signup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!formData.email.trim()) {
-      alert("Please enter your email.");
+      toast.error("Please enter your email.");
       return;
     }
     
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
-      alert("Please enter a valid Gmail format email address.");
+      toast.error("Please enter a valid Gmail format email address.");
       return;
     }
 
     if (!formData.password.trim()) {
-      alert("Please enter your password.");
+      toast.error("Please enter your password.");
       return;
     }
 
     if (formData.password.trim().length < 8) {
-      alert("Password must be at least 8 characters long.");
+      toast.error("Password must be at least 8 characters long.");
       return;
     }
     //if isAdmin is checked, then login as admin
@@ -61,10 +62,10 @@ const Signup = () => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Invalid Credentials, Try Again");
     }
     else {
-      console.log(response);
+      toast.success("Organization Added Successfully, Login to continue.");
       navigate("/");
     }
   };

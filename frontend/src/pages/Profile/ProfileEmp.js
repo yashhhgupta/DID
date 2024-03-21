@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { getDepartments } from "../../store/department-slice";
 import { getTeams } from "../../store/team-slice";
 import { ConfirmationPopUp, CustomButton, Modal } from "../../Components/common";
+import { toast } from "sonner";
+import { Loader } from "../../Components/common";
 
 const ProfileEmp = () => {
   const [datatoUpdate, setDatatoUpdate] = useState({});
@@ -17,6 +19,7 @@ const ProfileEmp = () => {
   const userId = useSelector((state) => state.auth.userId);
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
+  
   const status = useSelector((state) => state.department.status);
   const status2 = useSelector((state) => state.team.status);
   const [user, setUser] = useState(null);
@@ -33,7 +36,7 @@ const ProfileEmp = () => {
         Authorization: "Bearer " + token,
       });
       if (!response) {
-        alert("Invalid Credentials, Try Again");
+        toast.error("Profile Fetching Failed,please try again later.");
       } else {
         setUser(response.user);
       }
@@ -48,7 +51,7 @@ const ProfileEmp = () => {
     status2 === "loading" ||
     status2 === "idle"
   ) {
-    return <div>Loading...</div>;
+    return <Loader isLoading={true} />;
   }
   const updateProfileData = (data) => {
     setDatatoUpdate(data);
@@ -67,9 +70,9 @@ const ProfileEmp = () => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Profile Update Failed, Please try again.");
     } else {
-      alert("Profile Updated");
+      toast.success("Profile Updated");
       setShowModal(false);
       setDatatoUpdate({});
     }

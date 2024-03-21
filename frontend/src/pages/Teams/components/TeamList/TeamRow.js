@@ -14,6 +14,7 @@ import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector, useDispatch } from "react-redux";
 import { getEmployees } from "../../../../store/employee-slice";
+import { toast } from "sonner";
 
 const TeamRow = ({
   team,
@@ -57,10 +58,10 @@ const TeamRow = ({
       Authorization: "Bearer " + token,
     });
     if (!response) {
-      alert("Something went wrong");
+      toast.error("Employee adding to team failed, please try again later");
     } else {
       modalCloseHandler();
-      alert("Employee added to team successfully");
+      toast.success("Employee added to team successfully");
       dispatch(getEmployees({ orgId, token }));
     }
   };

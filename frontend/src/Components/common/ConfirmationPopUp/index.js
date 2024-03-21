@@ -15,21 +15,28 @@ const ConfirmationPopUp = ({
   useOutsideClick(containerRef, () => {
     modalCloseHandler();
   });
-  const buttonProps1 = {
+  const cancelProps = {
     type: "button",
     onClick: (e) => {
       e.stopPropagation();
       onCancel();
     },
-    style: { width: "100%", backgroundColor: "red" },
+    style: {
+      backgroundColor: "transparent",
+      color: "black",
+    },
   };
-  const buttonProps2 = {
+  const confirmProps = {
     type: "button",
+    style: {
+      backgroundColor: "rgba(0, 0, 255, 0.2)",
+      color: "blue",
+      borderRadius: "5px",
+    },
     onClick: (e) => {
       e.stopPropagation();
       onConfirm();
     },
-    style: { width: "100%"},
   };
 
 
@@ -39,8 +46,8 @@ const ConfirmationPopUp = ({
         <h2>{title}</h2>
         <p>{subTitle}</p>
         <div className={styles.buttons}>
-          <CustomButton text="Cancel" buttonProps={buttonProps1} />
-          <CustomButton text="Confirm" buttonProps={buttonProps2} />
+          <CustomButton text="Cancel" buttonProps={cancelProps} />
+          <CustomButton text="Confirm" buttonProps={confirmProps} />
         </div>
       </div>
     </div>

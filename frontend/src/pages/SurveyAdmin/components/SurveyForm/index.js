@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { getSurvey } from "../../../../store/suvrey-slice";
 import { useDispatch } from "react-redux";
 import { FaPlus } from "react-icons/fa";
+import { toast } from "sonner";
 
 const SurveyForm = ({ modalCloseHandler }) => {
   const dispatch = useDispatch();
@@ -57,20 +58,20 @@ const SurveyForm = ({ modalCloseHandler }) => {
   const submitHandler = async () => {
     // console.log(formData);
     if(formData.title === "" || formData.description === ""){
-      alert("Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
     if(formData.questions.length < 2){
-      alert("Please add atleast 2 questions");
+      toast.error("Please add atleast 2 questions");
       return;
     }
     if(formData.deadline < new Date()){
-      alert("Please select a valid deadline");
+      toast.error("Please select a valid deadline");
       return;
     }
     for(let i=0;i<formData.questions.length;i++){
       if (formData.questions[i].text === "" || formData.questions[i].weightage==="") {
-        alert("Please fill all the questions ans its weightage");
+        toast.error("Please fill all the questions ans its weightage");
         return;
       }
     }
@@ -80,7 +81,7 @@ const SurveyForm = ({ modalCloseHandler }) => {
     }
     if (cnt != 100) {
       console.log(cnt);
-      alert("weightage sum needs to be 100")
+      toast.error("weightage sum needs to be 100")
       return;
     }
     let url = BASE_URL + "/survey/add";
@@ -100,9 +101,9 @@ const SurveyForm = ({ modalCloseHandler }) => {
       }
     );
     if (!response) {
-      alert("Invalid Credentials, Try Again");
+      toast.error("Adding Survey Failed, Please try again.");
     } else {
-      alert("Survey Added Successfully");
+      toast.success("Survey Added Successfully");
       modalCloseHandler();
       dispatch(
         getSurvey({
