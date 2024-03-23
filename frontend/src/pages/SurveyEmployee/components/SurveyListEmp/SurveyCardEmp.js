@@ -5,10 +5,18 @@ import { CustomButton } from "../../../../Components/common";
 import { Modal } from "../../../../Components/common";
 import SurveyEmp from "../SurveyEmp";
 import { useState } from "react";
+import { Tooltip } from "react-tooltip";
 
 const SurveyCardEmp = ({ survey }) => {
-  const { title, description, deadline, createdOn, questions,score } =
-    survey;
+  const {
+    title,
+    description,
+    deadline,
+    createdOn,
+    questions,
+    score,
+    allowResubmit = false,
+  } = survey;
   const [modal, setModal] = useState(false);
   const SurveyHandler = (e) => {
     e.stopPropagation();
@@ -23,8 +31,7 @@ const SurveyCardEmp = ({ survey }) => {
   const createdDate = new Date(createdOn);
   if (score) {
     status = "COMPLETED";
-  }
-  else if (today > deadlineDate) {
+  } else if (today > deadlineDate) {
     status = "MISSED";
   } else {
     status = "ACTIVE";
@@ -34,20 +41,24 @@ const SurveyCardEmp = ({ survey }) => {
   const deadlineDateMonth = getMonthInWords(deadlineDate);
   const createdOnDateMonth = getMonthInWords(createdDate);
   const buttonProps = {
-    type:"button",
-    onClick: (event) => { 
+    type: "button",
+    onClick: (event) => {
       SurveyHandler(event);
     },
-    disabled: status === "MISSED" || status === "COMPLETED",
-    style:{
+    disabled: status === "MISSED" || (status === "COMPLETED" && !allowResubmit),
+    style: {
       padding: "0.5rem 1rem",
       borderRadius: "5px",
-    }
-  }
+    },
+  };
   return (
     <>
       <Modal isOpen={modal}>
-        <SurveyEmp modalCloseHandler={modalCloseHandler} survey={survey} />
+        <SurveyEmp
+          modalCloseHandler={modalCloseHandler}
+          survey={survey}
+          resubmit={status === "COMPLETED" && allowResubmit}
+        />
       </Modal>
       <div className={styles.surveyCard}>
         <div className={styles.surveyHeader}>
@@ -85,7 +96,21 @@ const SurveyCardEmp = ({ survey }) => {
               <div>{score}</div>
             </div>
           )} */}
-          <CustomButton text={"START"} buttonProps={buttonProps} />
+          <Tooltip id="my-tooltip" place="right" />
+          <a
+            data-tooltip-id="my-tooltip"
+            data-tooltip-variant="info"
+            data-tooltip-html={
+              allowResubmit
+                ? "Survey Updated! <br/>Please feel free to submit <br/>your responses again."
+                : ""
+            }
+          >
+            <CustomButton
+              text={!allowResubmit ? "START" : "RESUBMIT"}
+              buttonProps={buttonProps}
+            />
+          </a>
         </div>
       </div>
     </>

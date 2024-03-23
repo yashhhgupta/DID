@@ -3,7 +3,6 @@ import SurveyAdmin from "./SurveyAdmin";
 import SurveyEmployee from "./SurveyEmployee";
 import Error from "./Error";
 import Teams from "./Teams";
-import Home from "./Home";
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
 import ProfileEmp from "./Profile/ProfileEmp";
@@ -16,7 +15,6 @@ export {
   SurveyEmployee,
   Error,
   Teams,
-  Home,
   Login,
   Signup,
   ProfileEmp,

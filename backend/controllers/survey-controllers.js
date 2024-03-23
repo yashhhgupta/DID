@@ -59,6 +59,34 @@ const addSurvey = async (req, res, next) => {
       survey: createdSurvey.toObject({ getters: true }),
     });
 };
+const updateSurvey = async (req, res, next) => {
+  const { id, title, description, deadline, questions,allowResubmit } = req.body;
+  let survey;
+  try {
+    survey = await Survey.findById(id);
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching survey failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  survey.title = title;
+  survey.description = description;
+  survey.deadline = deadline;
+  survey.questions = questions;
+  survey.allowResubmit = allowResubmit;
+  try {
+    await survey.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Survey updation failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Survey updated successfully" });
+}
 
 const multipleSurveyFill = async (req, res, next) => {
   const { surveyId, userIds } = req.body;
@@ -120,3 +148,4 @@ const multipleSurveyFill = async (req, res, next) => {
 exports.getSurvey = getSurvey;
 exports.addSurvey = addSurvey;
 exports.multipleSurveyFill = multipleSurveyFill;
+exports.updateSurvey = updateSurvey;

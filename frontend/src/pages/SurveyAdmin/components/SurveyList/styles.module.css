@@ -8,15 +8,14 @@
   flex-wrap: wrap;
   gap: 1.5rem;
 }
-.container > div {
+
+.surveyCard {
   flex: 49%;
   box-shadow: 0 0 0 1px var(--color-extra);
   margin-bottom: 10px;
   box-sizing: border-box;
   width: 100%;
   background-color: white;
-}
-.surveyCard {
   .surveyHeader {
     color: var(--color-extra);
     font-size: 1.7rem;
@@ -92,4 +91,18 @@
       font-weight: bold;
       gap: 1.5rem;
     }
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  .icon {
+    cursor: pointer;
+    color: var(--color-gray);
+  }
+  .icon:hover {
+    color: var(--color-primary);
+  }
 }

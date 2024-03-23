@@ -11,3 +11,16 @@
 .image {
     width: 70%;
 }
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-primary);
+    .horz {
+        display: flex;
+        gap: 1rem;
+        color: #000;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}

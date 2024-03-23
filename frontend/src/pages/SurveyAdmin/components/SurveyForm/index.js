@@ -14,20 +14,24 @@ import { getSurvey } from "../../../../store/suvrey-slice";
 import { useDispatch } from "react-redux";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "sonner";
-
-const SurveyForm = ({ modalCloseHandler }) => {
+import ToggleButton from "react-toggle-button";
+const SurveyForm = ({ modalCloseHandler,survey={} }) => {
   const dispatch = useDispatch();
   const orgId = useSelector((state) => state.auth.orgId);
   const token = useSelector((state) => state.auth.token);
+  const { title, description, questions, deadline, id } = survey;
+  const [toggle, setToggle] = useState(false);
   const { sendRequest } = useRequest();
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    questions: Array(2).fill({
-      text: "",
-      weightage: undefined,
-    }),
-    deadline: new Date()+1,
+    title: title || "",
+    description: description || "",
+    questions:
+      questions ||
+      Array(2).fill({
+        text: "",
+        weightage: undefined,
+      }),
+    deadline: deadline || new Date() + 1,
   });
   
   const containerRef = useRef(null);
@@ -84,16 +88,24 @@ const SurveyForm = ({ modalCloseHandler }) => {
       toast.error("weightage sum needs to be 100")
       return;
     }
-    let url = BASE_URL + "/survey/add";
+    let url = BASE_URL + "/survey";
+    if (id) { 
+      url += `/update`;
+    }
+    else {
+      url += `/add`;
+    }
     const response = await sendRequest(
       url,
       "POST",
       JSON.stringify({
+        id: id?id:undefined,
         title: formData.title,
         description: formData.description,
         orgId: orgId,
         deadline: formData.deadline,
         questions: formData.questions,
+        allowResubmit: toggle,
       }),
       {
         "Content-Type": "application/json",
@@ -103,7 +115,12 @@ const SurveyForm = ({ modalCloseHandler }) => {
     if (!response) {
       toast.error("Adding Survey Failed, Please try again.");
     } else {
-      toast.success("Survey Added Successfully");
+      if (id) {
+        toast.success("Survey Updated Successfully");
+      }
+      else {
+        toast.success("Survey Added Successfully");
+      }
       modalCloseHandler();
       dispatch(
         getSurvey({
@@ -138,7 +155,20 @@ const SurveyForm = ({ modalCloseHandler }) => {
   return (
     <div className={styles.container}>
       <div ref={containerRef} className={styles.form}>
-        <h1>Add Survey</h1>
+        <div className={styles.heading}>
+          <h1>Add Survey</h1>
+          {survey.id && (
+            <div className={styles.horz}>
+              <h3>Allow employees to resubmit: </h3>
+              <ToggleButton
+                value={toggle}
+                onToggle={(value) => {
+                  setToggle(!value);
+                }}
+              />
+            </div>
+          )}
+        </div>
         <CustomInput
           type="text"
           placeholder="Enter Survey Title"

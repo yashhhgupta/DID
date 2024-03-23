@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <div className={styles.container}>
       <div className={styles.heading}>
-        <h1>Dashboard</h1>
+        <h1>Diversity Dashboard</h1>
         <div className={styles.buttons}>
           <Select
             style={customStyles}

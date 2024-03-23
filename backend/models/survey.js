@@ -29,6 +29,10 @@ const surveySchema = new Schema({
     countOfUsersFilled: {
         type: Number,
     },
+    allowResubmit:{
+        type: Boolean,
+        default: false,
+    },
     questions: []
 });
 module.exports = mongoose.model("Survey", surveySchema);

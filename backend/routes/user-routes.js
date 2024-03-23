@@ -14,5 +14,6 @@ router.post("/logout", usersController.logout);
 router.post("/updateProfile", validateUserToken, usersController.updateProfile);
 router.get("/get/:userId",validateUserToken, usersController.getUser);
 router.post("/fillSurvey", validateUserToken, usersController.fillSurvey);
+router.post("/updateResponse", usersController.updateSurveyResponse);
 router.get("/getSurveys/:userId", usersController.getSurveys);
 module.exports = router;

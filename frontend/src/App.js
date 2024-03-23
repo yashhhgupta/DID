@@ -11,7 +11,7 @@ import {
   ProfileAdmin,
   Employees,
 } from "./pages";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
 import Layout from "./Components/Layout";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
@@ -59,7 +59,7 @@ function App() {
         <Router>
           <Layout>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/survey" element={<SurveyAdmin />} />
               <Route path="/teams" element={<Teams />} />
@@ -75,7 +75,7 @@ function App() {
         <Router>
           <Layout>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/survey" element={<SurveyEmployee />} />
               <Route path="*" element={<Error />} />

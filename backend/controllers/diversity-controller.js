@@ -16,6 +16,19 @@ const getDiversityData = async (req, res, next) => {
     if (!teamId) {
       teamId = undefined;
     }
+    let org;
+    try {
+        org = await Org.findById(orgId);
+    }
+    catch (err) { 
+        console.log(err);
+        const error = new HttpError("Fetching organization failed, please try again later.", 500);
+        return next(error);
+    }
+    if (!org) { 
+        const error = new HttpError("No organization found.", 404);
+        return next(error);
+    }
     // console.log(diversityPipeline(orgId, depId, teamId));
     let diversityData;  
     try {
@@ -32,7 +45,7 @@ const getDiversityData = async (req, res, next) => {
         const error = new HttpError("No diversity data found.", 404);
         return next(error);
     }
-    res.json({ diversityData: diversityData });
+    res.json({ diversityData: diversityData , dataVisibility: org.dataVisibility});
 };
 const getDiversityScore = async (req, res, next) => {
     let { orgId, depId, teamId } = req.params;

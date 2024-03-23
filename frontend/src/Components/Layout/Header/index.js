@@ -18,7 +18,9 @@ const Header = ({ sidebarOpenHandler }) => {
           onClick={handleSidebarClick}
         />
         <div className={styles.logoWrapper}>
-          <img src={Logo} alt="logo" />
+          <img src={Logo} alt="logo" onClick={() => { 
+            navigate('/');
+          }} />
         </div>
       </div>
       <div className={styles.headerRight}>

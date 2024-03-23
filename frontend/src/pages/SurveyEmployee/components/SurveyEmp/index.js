@@ -10,7 +10,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { getUserSurvey } from "../../../../store/suvrey-slice";
 import { toast } from "sonner";
 
-const SurveyEmp = ({ modalCloseHandler, survey }) => {
+const SurveyEmp = ({ modalCloseHandler, survey, allowSubmit=true,resubmit=false }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
@@ -41,7 +41,14 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
       }
       return x + y.score * y.weightage * 0.2;
     },0)
-    let url = BASE_URL + "/user/fillSurvey";
+    let url = BASE_URL + "/user";
+    if (resubmit) { 
+      url += "/updateResponse";
+    }
+    else 
+    {
+      url += "/fillSurvey";
+      }
     const response = await sendRequest(
       url,
       "POST",
@@ -69,9 +76,12 @@ const SurveyEmp = ({ modalCloseHandler, survey }) => {
       modalCloseHandler();
     }
   }
+  const demoSubmit = () => {
+    toast.success("This is just a demo, you can't submit the survey.");
+  }
   const submitButtonProps = {
     type: "button",
-    onClick: submitHandler,
+    onClick: allowSubmit?submitHandler:demoSubmit,
     style: {
       width: "100%",
     },

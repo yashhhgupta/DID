@@ -11,6 +11,9 @@ const organizationSchema = new Schema({
   weightage: {
     type: Object,
   },
+  dataVisibility: {
+    type: Object,
+  },
 });
 const SALT_WORK_FACTOR = 10;
 organizationSchema.pre("save", async function save(next) {

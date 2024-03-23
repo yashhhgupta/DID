@@ -26,3 +26,13 @@
     display: flex;
     gap: 1rem;
 }
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .horz {
+        display: flex;
+        gap: 1rem;
+    }
+}

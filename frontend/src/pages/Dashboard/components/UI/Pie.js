@@ -1,29 +1,60 @@
 import { Chart } from "react-google-charts";
 import { Card } from "../../../../Components/common";
-export const DUMMY_DATA = [
-  ["Gender", "Count"],
-  ["Male", 70],
-  ["Female", 12],
-  ["Other", 3],
-];
+import { diversityMapping } from "./utils";
+import styles from "./styles.module.css";
+import ToggleButton from "react-toggle-button";
+import { useState } from "react";
+import { useRequest } from "../../../../hooks/useRequest";
+import { BASE_URL } from "../../../../consts";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 export const options = {
   is3D: true,
 };
-const Pie = ({data}) => {
-  let graphData = convertData(data.v,data.k);
-  
+const Pie = ({ data, dataVisibility, isAdmin = false }) => {
+  const { sendRequest } = useRequest();
+  const token = useSelector((state) => state.auth.token);
+  const orgId = useSelector((state) => state.auth.orgId);
+  let graphData = convertData(data.v, data.k);
+  const [toggle, setToggle] = useState(dataVisibility[data.k]);
+  const ToggleChangeHandler = async (value) => {
+    setToggle(value);
+    let url = BASE_URL + "/admin/updateDataVisibility";
+    const response = await sendRequest(
+      url,
+      "POST",
+      JSON.stringify({
+        orgId: orgId,
+        field: data.k,
+        visibility: value,
+      }),
+      {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      }
+    );
+    if (!response) {
+      toast.error("Data Visibility Update Failed,please try again later.");
+    } else {
+      toast.success("Data Visibility Updated Successfully.");
+    }
+  };
   return (
     <Card>
-      <div
-        style={{
-          color: "var(--color-extra)",
-          fontSize: "1.7rem",
-          fontWeight: "bold",
-          padding: "0rem",
-        }}
-      >
-        {data.k}
+      <div className={styles.heading}>
+        <h1>{diversityMapping[data.k]}</h1>
+        {isAdmin && (
+          <div className={styles.horz}>
+            <div>Visible to Employees </div>
+            <ToggleButton
+              value={toggle}
+              onToggle={(value) => {
+                ToggleChangeHandler(!value);
+              }}
+            />
+          </div>
+        )}
       </div>
       <Chart
         chartType="PieChart"
@@ -37,7 +68,7 @@ const Pie = ({data}) => {
 };
 export default Pie;
 
-function convertData(data,key) {
+function convertData(data, key) {
   // Create a new array with headers
   const result = [["Count", key]];
 
@@ -47,7 +78,7 @@ function convertData(data,key) {
     if (!item[key]) {
       item[key] = "Not Specified";
     }
-    result.push( [item[key],item.count]);
+    result.push([item[key], item.count]);
   });
 
   return result;
