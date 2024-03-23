@@ -1,8 +1,9 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
-import { CustomButton } from "../../../../Components/common";
+import { CustomButton,TableFooter } from "../../../../Components/common";
 import { CiCircleChevDown } from "react-icons/ci";
 import { toast } from "sonner";
+import useTable from "../../../../hooks/useTable";
 const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
   const [emp, setEmp] = useState([]);
   const [view, setView] = useState("View more");
@@ -16,6 +17,8 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
       setEmp(emp.filter((e) => e !== employeeToAdd.id));
     }
   };
+  const [page, setPage] = useState(1);
+  const { slice, range } = useTable(employees, page, 10);
   const SubmitHandler= (e) => {
     e.preventDefault();
     if(emp.length === 0){
@@ -25,60 +28,30 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
     callback(e,emp);
   }
   const renderEmployees = () => { 
-    if (view === "View less") { 
-      return (
-        employees.map((employee, index) => {
-            let name = employee.firstname;
-            if (employee.lastname) {
-              name = name + " " + employee.lastname;
-            }
-            const depName = deps.find(
-              (dep) => dep.value === employee.departmentId
-            )?.label;
-            return (
-              <tr key={index}>
-                <td>
-                  <input
-                    type="checkbox"
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                </td>
-                <td>{index + 1}</td>
-                <td>{name}</td>
-                <td>{employee.email}</td>
-                <td>{depName}</td>
-              </tr>
-            );
-          })
-      )
-    }
-    else {
-      return (
-        employees.slice(0,10).map((employee, index) => {
-            let name = employee.firstname;
-            if (employee.lastname) {
-              name = name + " " + employee.lastname;
-            }
-            const depName = deps.find(
-              (dep) => dep.value === employee.departmentId
-            )?.label;
-            return (
-              <tr key={index}>
-                <td>
-                  <input
-                    type="checkbox"
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                </td>
-                <td>{index + 1}</td>
-                <td>{name}</td>
-                <td>{employee.email}</td>
-                <td>{depName}</td>
-              </tr>
-            );
-          })
-      )
-    }
+      return slice.map((employee, index) => {
+        let name = employee.firstname;
+        if (employee.lastname) {
+          name = name + " " + employee.lastname;
+        }
+        const depName = deps.find(
+          (dep) => dep.value === employee.departmentId
+        )?.label;
+        return (
+          <tr key={index}>
+            <td>
+              <input
+                type="checkbox"
+                onChange={() => handleCheckboxChange(index)}
+              />
+            </td>
+            <td>{(page-1) * 10 + index + 1}</td>
+            <td>{name}</td>
+            <td>{employee.email}</td>
+            <td>{depName}</td>
+          </tr>
+        );
+      });
+    
   }
   return (
     <div>
@@ -102,24 +75,7 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
         </tr>
         <tbody>{renderEmployees()}</tbody>
       </table>
-      <CustomButton
-        text={view}
-        icon={<CiCircleChevDown />}
-        buttonProps={{
-          onClick: () => {
-            if (view === "View more") {
-              setView("View less");
-            } else {
-              setView("View more");
-            }
-          },
-          style: {
-            backgroundColor: "transparent",
-            color: "black",
-            padding: "10px 0 0 0",
-          },
-        }}
-      />
+      <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
     </div>
   );
 };

@@ -68,7 +68,7 @@ const TeamRow = ({
   return (
     <>
       <Modal isOpen={showModal}>
-        <div className={styles.container}>
+        <div className={styles.containerModal}>
           <div className={styles.form} ref={containerRef}>
             {showModal === "selectEmployee" && (
               <>
@@ -80,7 +80,6 @@ const TeamRow = ({
                       text: "Close",
                       onClick: modalCloseHandler,
                     }}
-                    
                   />
                 ) : (
                   <SelectEmployee

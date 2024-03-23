@@ -7,6 +7,7 @@ import DepartmentFilter from "./DepartmentFilter";
 import EmptyContainer from "./EmptyContainer";
 import Notification from "./Notification";
 import Loader from "./Loader";
+import TableFooter from "./TableFooter";
 export {
   CustomButton,
   CustomInput,
@@ -16,5 +17,6 @@ export {
   DepartmentFilter,
   EmptyContainer,
   Notification,
-  Loader
+  Loader,
+  TableFooter
 }

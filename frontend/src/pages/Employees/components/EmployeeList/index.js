@@ -3,7 +3,9 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { CiCircleChevDown } from "react-icons/ci";
 import { useState } from "react";
-import { CustomButton } from "../../../../Components/common";
+import { CustomButton ,TableFooter} from "../../../../Components/common";
+import useTable from "../../../../hooks/useTable";
+
 const EmployeeList = ({
   employees = [],
   deps = [],
@@ -11,10 +13,10 @@ const EmployeeList = ({
   title = "",
 }) => {
   const [showModal, setShowModal] = useState(null);
-  const [view, setView] = useState("View more");
+  const [page, setPage] = useState(1);
+  const { slice, range } = useTable(employees, page, 10);
   const renderEmployees = () => {
-    if (view === "View less") {
-      return employees.map((employee, index) => {
+      return slice.map((employee, index) => {
         let name = employee.firstname;
         if (employee.lastname) {
           name = name + " " + employee.lastname;
@@ -28,7 +30,7 @@ const EmployeeList = ({
 
         return (
           <tr key={index}>
-            <td>{index + 1}</td>
+            <td>{(page - 1) * 10 + index + 1}</td>
             <td>{name}</td>
             <td>{employee.email}</td>
             <td>{depName}</td>
@@ -41,35 +43,7 @@ const EmployeeList = ({
           </tr>
         );
       });
-    } else {
-      return employees.slice(0, 10).map((employee, index) => {
-        let name = employee.firstname;
-        if (employee.lastname) {
-          name = name + " " + employee.lastname;
-        }
-        const depName = deps.find(
-          (dep) => dep.value === employee.departmentId
-        )?.label;
-        const teamName = teams.find(
-          (team) => team.id === employee.teamId
-        )?.name;
-
-        return (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{name}</td>
-            <td>{employee.email}</td>
-            <td>{depName}</td>
-            <td>{teamName}</td>
-            <td width={20}>
-              <div className={styles.icons}>
-                <MdDelete size={25} className={styles.icon} />
-              </div>
-            </td>
-          </tr>
-        );
-      });
-    }
+    
   };
   return (
     <div>
@@ -87,24 +61,7 @@ const EmployeeList = ({
         </thead>
         <tbody>{renderEmployees()}</tbody>
       </table>
-      <CustomButton
-        text={view}
-        icon={<CiCircleChevDown />}
-        buttonProps={{
-          onClick: () => {
-            if (view === "View more") {
-              setView("View less");
-            } else {
-              setView("View more");
-            }
-          },
-          style: {
-            backgroundColor: "transparent",
-            color: "black",
-            padding: "10px 0 0 0",
-          },
-        }}
-      />
+      <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
     </div>
   );
 };
