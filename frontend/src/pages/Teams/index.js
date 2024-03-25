@@ -10,6 +10,7 @@ import { getTeams } from "../../store/team-slice";
 import { getDepartments } from "../../store/department-slice";
 import { getEmployees } from "../../store/employee-slice";
 import { Loader } from "../../Components/common";
+import Search from "../../Components/common/Search";
 
 const Teams = () => {
   const dispatch = useDispatch();
@@ -21,13 +22,15 @@ const Teams = () => {
   const statusEmployees = useSelector((state) => state.employee.status);
   const statusDepartments = useSelector((state) => state.department.status);
   const statusTeams = useSelector((state) => state.team.status);
-
+  const [search, setSearch] = useState("");
+  const [modal, setModal] = useState(false);
+  let [filteredTeams,setFilteredTeams] = useState([]);
   useEffect(() => {
     dispatch(getTeams({ orgId, token }));
     dispatch(getDepartments({ orgId, token }));
     dispatch(getEmployees({ orgId, token }));
+    
   }, []);
-  const [modal, setModal] = useState(false);
 
   const modalCloseHandler = () => {
     setModal(false);
@@ -36,15 +39,26 @@ const Teams = () => {
     e.stopPropagation();
     setModal(true);
   };
-  if (
-    statusEmployees === "idle" ||
-    statusEmployees === "loading" ||
-    statusDepartments === "idle" ||
-    statusDepartments === "loading" ||
-    statusTeams === "idle" ||
-    statusTeams === "loading"
-  ) {
+  useEffect(() => {
+    if (statusTeams === "succeeded") {
+      setFilteredTeams(teams);
+    }
+  }, [statusEmployees, statusDepartments, statusTeams]);
+  if (statusTeams === "idle" || statusTeams === "loading") {
     return <Loader isLoading={true} />;
+  }
+  
+  const handleSearchChange = (value) => {
+    setSearch(value);
+    if (value === "") {
+      setFilteredTeams(teams);
+      return;
+    }
+    let temp = teams.filter((team) => {
+      return team.name.toLowerCase().includes(value.toLowerCase());
+    });
+    setFilteredTeams(temp);
+
   }
   return (
     <>
@@ -68,12 +82,18 @@ const Teams = () => {
         <div className={styles.teamContainer}>
           <Card
             style={{
-              padding: "2rem",
+              padding: "1rem 2rem",
               minHeight: "55vh",
               backgroundColor: "var(--color-light)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
             }}
           >
-            {teams.length === 0 ? (
+            <div className={styles.horz}>
+              <Search search={search} onChangeSearch={handleSearchChange} text="Search by Team name"/>
+            </div>
+            {filteredTeams.length === 0 ? (
               <EmptyContainer
                 title="No Team Found"
                 description="Choose another filters to see data or add team"
@@ -86,7 +106,11 @@ const Teams = () => {
                 }}
               />
             ) : (
-              <TeamList teams={teams} employees={employees} deps={deps} />
+              <TeamList
+                teams={filteredTeams}
+                employees={employees}
+                deps={deps}
+              />
             )}
           </Card>
         </div>

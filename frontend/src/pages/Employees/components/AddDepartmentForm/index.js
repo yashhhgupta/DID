@@ -8,8 +8,12 @@ import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import { getDepartments } from "../../../../store/department-slice";
+import { useDispatch } from "react-redux";
+
 
 const AddDepartmentForm = ({ modalCloseHandler }) => {
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
   const { sendRequest, isError } = useRequest();
@@ -49,6 +53,8 @@ const AddDepartmentForm = ({ modalCloseHandler }) => {
       toast.error("Departments Adding Failed");
     } else {
       toast.success("Departments Added Successfully");
+    dispatch(getDepartments({ orgId, token }));
+
       modalCloseHandler();
     }
   };

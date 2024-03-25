@@ -25,20 +25,7 @@ const SurveyDashboard = ({ totalUsers }) => {
     let deadlineDate = new Date(survey.deadline)
       return deadlineDate> date
   });
-  const surveyDate = [
-    {
-      date: "22",
-      month: "August",
-      title: "Survey 1",
-      supportText: "Next Survey",
-    },
-    {
-      date: "16",
-      month: "March",
-      title: "Survey 4",
-      supportText: "Current Survey Deadline",
-    },
-  ];
+  
   if (participation === Infinity || isNaN(participation)) {
     participation = 0;
   }
@@ -86,7 +73,7 @@ const SurveyDashboard = ({ totalUsers }) => {
       <div className={styles.dashboardBottom}>
         <div>Last 5 surveys</div>
         <div>Inclusion score</div>
-        <div>dfnsdjl kjdfsj</div>
+        <div>Surveys</div>
       </div>
     </div>
   );

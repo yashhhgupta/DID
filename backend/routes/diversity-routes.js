@@ -11,15 +11,6 @@ router.get(
   diversityController.getDiversityData
 );
 router.get(
-  "/get/:orgId/:depId",
-  validateUserToken,
-  diversityController.getDiversityData
-);
-router.get(
-  "/get/:orgId/:depId/:teamId",
-  validateUserToken,diversityController.getDiversityData
-);
-router.get(
   "/getScore/:orgId",
   validateUserToken,diversityController.getDiversityScore
 );

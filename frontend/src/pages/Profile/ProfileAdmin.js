@@ -35,6 +35,7 @@ const ProfileAdmin = () => {
     dispatch(getTeams({ orgId, token }));
     dispatch(getEmployees({ orgId, token }));
 
+
     const getUser = async () => {
       let url = BASE_URL + "/admin/get/" + userId;
       const response = await sendRequest(url, "GET", null, {
@@ -126,7 +127,7 @@ const ProfileAdmin = () => {
           updateFormData={updateProfileData}
           dep={deps.length}
           team={teams.length}
-          emp={emp.length}
+          emp={emp}
         />
         <SetWeightage weightage={weightage} />
       </div>

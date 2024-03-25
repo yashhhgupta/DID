@@ -1,0 +1,17 @@
+/* CustomToggle.module.css */
+.custom-toggle {
+  display: flex;
+}
+
+.custom-toggle button {
+  padding: 8px 16px;
+  background-color : var(--color-input);
+  cursor: pointer;
+  border:none;
+  
+}
+
+.custom-toggle button.active {
+  background-color: #007bff;
+  color: #fff;
+}

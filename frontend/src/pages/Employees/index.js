@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDepartments } from "../../store/department-slice";
 import { getEmployees } from "../../store/employee-slice";
 import { getTeams } from "../../store/team-slice";
-import {Loader} from "../../Components/common";
+import {Loader,Search,CustomToggle} from "../../Components/common";
 
 const Employees = () => {
   const dispatch = useDispatch();
@@ -21,12 +21,12 @@ const Employees = () => {
   const orgId = useSelector((state) => state.auth.orgId);
   const employees = useSelector((state) => state.employee.employees);
   const statusEmployees = useSelector((state) => state.employee.status);
-  const statusDepartments = useSelector((state) => state.department.status);
-  const statusTeams = useSelector((state) => state.team.status);
   const deps = useSelector((state) => state.department.departments);
   const teams = useSelector((state) => state.team.teams);
   const [showModal, setShowModal] = useState(null);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [search, setSearch] = useState("");
+  const [toggle, setToggle] = useState(false);
   const modalCloseHandler = () => {
     setShowModal(null);
   };
@@ -34,14 +34,10 @@ const Employees = () => {
     dispatch(getDepartments({ orgId, token }));
     dispatch(getEmployees({ orgId, token }));
     dispatch(getTeams({ orgId, token }));
-  }, [showModal]);
+  }, []);
   if (
     statusEmployees === "idle" ||
-    statusEmployees === "loading" ||
-    statusDepartments === "idle" ||
-    statusDepartments === "loading" ||
-    statusTeams === "idle" ||
-    statusTeams === "loading"
+    statusEmployees === "loading"
   ) {
     return (
       <Loader isLoading={true} />
@@ -57,7 +53,28 @@ const Employees = () => {
     });
     setFilteredEmployees(temp);
   };
-
+  const handleSearchChange = (value) => {
+    setSearch(value);
+    if (value === "") {
+      setFilteredEmployees(employees);
+      return;
+    }
+    let temp = employees.filter((emp) => {
+      
+      if (
+        emp.firstname === undefined ||
+        emp.lastname === undefined ||
+        emp.email === undefined
+      )
+        return false;
+      return (
+        emp.firstname.toLowerCase().includes(value.toLowerCase()) ||
+        emp.lastname.toLowerCase().includes(value.toLowerCase()) ||
+        emp.email.toLowerCase().includes(value.toLowerCase())
+      );
+    });
+    setFilteredEmployees(temp);
+  }
   return (
     <>
       <Modal isOpen={showModal}>
@@ -105,12 +122,16 @@ const Employees = () => {
             flexDirection: "column",
           }}
         >
-          <DepartmentFilter
-            deps={deps}
-            setFilteredDeps={(filteredDeps) =>
-              HandleFilterEmployee(filteredDeps)
-            }
-          />
+          <div className={styles.horz}>
+            <DepartmentFilter
+              deps={deps}
+              setFilteredDeps={(filteredDeps) =>
+                HandleFilterEmployee(filteredDeps)
+              }
+            />
+            {/* <CustomToggle selected={toggle} handleClick={(value)=>setToggle(value)}/> */}
+            <Search search={search} onChangeSearch={handleSearchChange} text="Search by Name or Email"/>
+          </div>
           {filteredEmployees.length === 0 ? (
             <EmptyContainer
               title="No Employee Found"

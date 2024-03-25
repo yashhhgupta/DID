@@ -108,7 +108,7 @@ const LineGraph = ({
           <ResponsiveContainer width="95%" height="100%">
             <LineChart data={orgData}>
               <XAxis dataKey="label" />
-              <YAxis type="number" domain={[50, 60]} />
+              <YAxis type="number" domain={[50, 70]} />
               <Tooltip />
               <Legend />
               <Line

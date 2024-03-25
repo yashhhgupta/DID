@@ -6,6 +6,7 @@ import {useSelector,useDispatch} from "react-redux";
 import { useEffect,useState } from "react";
 import { getDepartments } from "../../store/department-slice";
 import { getTeams } from "../../store/team-slice";
+import { CustomToggle } from "../../Components/common";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const deps = useSelector((state) => state.department.departments);
@@ -34,6 +35,7 @@ const Dashboard = () => {
     <div className={styles.container}>
       <div className={styles.heading}>
         <h1>Diversity Dashboard</h1>
+
         <div className={styles.buttons}>
           <Select
             style={customStyles}

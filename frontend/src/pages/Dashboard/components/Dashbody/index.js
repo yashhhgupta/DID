@@ -3,6 +3,7 @@ import { LineGraph, Pie } from "../UI";
 import { useSelector } from "react-redux";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useEffect, useState } from "react";
+import { Loader, CustomToggle } from "../../../../Components/common";
 import { BASE_URL } from "../../../../consts";
 
 const Dashbody = ({ department, team }) => {
@@ -11,15 +12,22 @@ const Dashbody = ({ department, team }) => {
   const token = useSelector((state) => state.auth.token);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const [orgData, setOrgData] = useState(null);
+  const [toggle, setToggle] = useState(false);
   useEffect(() => {
     const fetchOrgData = async () => {
       let url = BASE_URL + "/diversity/get/" + orgId;
+
+      if (toggle) {
+        url += `?current=${true}`;
+      }
+
       if (department) {
-        url += "/" + department.value;
+        url += `${toggle ? "&" : "?"}depId=${department.value}`;
         if (team) {
-          url += "/" + team.value;
+          url += `&teamId=${team.value}`;
         }
       }
+
       const response = await sendRequest(url, "GET", null, {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -28,9 +36,17 @@ const Dashbody = ({ department, team }) => {
       else setOrgData(response);
     };
     fetchOrgData();
-  }, [department, team]);
-  if (!orgData) return <div>Loading...</div>;
+  }, [department, team, toggle]);
+  if (!orgData) return <Loader isLoading={true} />;
   let visibility = orgData.dataVisibility;
+  const renderToggle = () => {
+    return (
+      <CustomToggle
+        selected={toggle}
+        handleClick={(value) => setToggle(value)}
+      />
+    );
+  };
   return (
     <div className={styles.container}>
       {isAdmin && (
@@ -41,6 +57,7 @@ const Dashbody = ({ department, team }) => {
             isAdmin={isAdmin}
             visibility={orgData.dataVisibility["diversityScore"]}
           />
+          {renderToggle()}
           <div className={styles.pies}>
             {orgData.diversityData.map((data, index) => {
               return (
@@ -65,10 +82,11 @@ const Dashbody = ({ department, team }) => {
               isAdmin={isAdmin}
             />
           )}
+          {renderToggle()}
+
           <div className={styles.pies}>
             {orgData.diversityData.map((data, index) => {
-              if (!visibility[data.k])
-                return;
+              if (!visibility[data.k]) return;
               return (
                 <Pie
                   key={index}

@@ -20,3 +20,8 @@
     display: flex;
     gap:1rem;
 }
+.horz{
+    display: flex;
+    gap:1rem;
+    justify-content: end;
+}

@@ -1,18 +1,21 @@
 const mongoose = require("mongoose");
 
-const diversityPipeline = (orgId,depId,teamId) => {
+const diversityPipeline = (orgId, depId, teamId,current) => {
    const matchStage = {
      $match: {
        orgId: new mongoose.Types.ObjectId(orgId),
      },
    };
-
+  if (current) {
+    matchStage.$match.dateOfLeaving = null;
+  }
   if (depId) {
     matchStage.$match.departmentId = new mongoose.Types.ObjectId(depId);
     if (teamId) {
       matchStage.$match.teamId = new mongoose.Types.ObjectId(teamId);
     }
   }
+  console.log(matchStage);
   return [
     matchStage,
     {

@@ -8,8 +8,11 @@ import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { getEmployees } from "../../../../store/employee-slice";
 
 const CsvUpload = ({ closeModal }) => {
+  const dispatch = useDispatch();
   const orgId = useSelector((state) => state.auth.orgId);
   const token = useSelector((state) => state.auth.token);
   const { sendRequest } = useRequest();
@@ -59,6 +62,8 @@ const CsvUpload = ({ closeModal }) => {
     } else {
       toast.success("Employee Added Successfully");
       modalCloseHandler();
+      dispatch(getEmployees({ orgId, token }));
+
       closeModal();
     }
   };

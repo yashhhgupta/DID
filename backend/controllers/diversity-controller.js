@@ -9,13 +9,9 @@ const { TIMERANGE } = require("../utils");
 const Employee = require("../models/employee");
 const Org = require("../models/organization");
 const getDiversityData = async (req, res, next) => {
-    let { orgId,depId,teamId } = req.params;
-    if (!depId) {
-        depId = undefined;
-    }
-    if (!teamId) {
-      teamId = undefined;
-    }
+    let { orgId } = req.params;
+    let { current, depId, teamId } = req.query;
+    
     let org;
     try {
         org = await Org.findById(orgId);
@@ -33,7 +29,7 @@ const getDiversityData = async (req, res, next) => {
     let diversityData;  
     try {
         diversityData = await Employee.aggregate(
-          diversityPipeline(orgId,depId,teamId)
+          diversityPipeline(orgId,depId,teamId,current)
         );
     }
     catch (err) {

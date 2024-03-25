@@ -28,7 +28,10 @@ const TableFooter = ({ range, setPage, page, slice }) => {
           className={`${styles.button} ${
             page === el ? styles.activeButton : styles.inactiveButton
           }`}
-          onClick={() => setPage(el)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setPage(el);
+          }}
         >
           {el}
         </button>

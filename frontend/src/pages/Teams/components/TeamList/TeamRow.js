@@ -47,13 +47,13 @@ const TeamRow = ({
   employeeWithThisTeam = employees.filter(
     (employee) => employee.teamId === team.id
   );
-  const addToTeamHandler = (e, emp) => {
+  const addToTeamHandler = async (e, emp) => {
     let url = BASE_URL + "/team/addEmployee";
     let data = {
       teamId: team.id,
       members: emp,
     };
-    const response = sendRequest(url, "POST", JSON.stringify(data), {
+    const response = await sendRequest(url, "POST", JSON.stringify(data), {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     });

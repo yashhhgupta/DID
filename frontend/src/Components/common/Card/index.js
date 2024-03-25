@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-const Card = ({ children,style }) => {
+const Card = ({ children, style }) => {
     return (
       <div className={styles.box} style={{ ...style }}>
         {children}

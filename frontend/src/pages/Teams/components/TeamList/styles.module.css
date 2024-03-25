@@ -54,7 +54,7 @@ text-align: center;
     border-radius: 1rem;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: auto;
 
 }

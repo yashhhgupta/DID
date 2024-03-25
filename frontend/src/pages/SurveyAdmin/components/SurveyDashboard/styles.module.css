@@ -14,6 +14,10 @@
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--color-extra  );
+  
 }
 .dashboardBottom > div {
   flex: 1;

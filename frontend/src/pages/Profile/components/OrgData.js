@@ -4,12 +4,20 @@ import { GoOrganization, GoGoal } from "react-icons/go";
 import styles from "../styles.module.css";
 import { BASE_URL } from "../../../consts";
 import { useSelector } from "react-redux";
-const OrgData = ({ orgData, updateFormData, emp = 0, dep = 0, team = 0 }) => {
-  const { name, email, image, diversityGoalScore } = orgData;
+const OrgData = ({
+  orgData,
+  updateFormData,
+  emp=[],
+  dep = 0,
+  team = 0,
+}) => {
+  const { name, email, image } = orgData;
   const token = useSelector((state) => state.auth.token);
   const EditProfileHandler = () => {
     document.getElementById("adminfile").click();
   };
+  const empLength = emp.length;
+  const currentEmployee = emp.filter((emp) => emp.dateOfLeaving === undefined).length;
   const ProfileImageHandler = async (e) => {
     const profileImage = e.target.files[0];
     const formData = new FormData();
@@ -73,28 +81,24 @@ const OrgData = ({ orgData, updateFormData, emp = 0, dep = 0, team = 0 }) => {
           value={email}
           icon={<AiOutlineMail />}
         />
-        <CustomInput
-          type="number"
-          placeholder="Enter Diversity Goal Score"
-          style={{ width: "100%" }}
-          label="Goal"
-          value={diversityGoalScore}
-          icon={<GoGoal />}
-          onChange={(e) => {
-            updateFormData({
-              ...orgData,
-              diversityGoalScore: e.target.value,
-            });
-          }}
-        />
+
         <div className={styles.horz}>
           <CustomInput
             type="number"
             style={{ width: "100%" }}
-            label="Number of Employees"
-            value={emp}
+            label="Total Employees"
+            value={empLength}
             readOnly="true"
           />
+          <CustomInput
+            type="number"
+            style={{ width: "100%" }}
+            label="Current Employees"
+            value={currentEmployee}
+            readOnly="true"
+          />
+        </div>
+        <div className={styles.horz}>
           <CustomInput
             type="number"
             style={{ width: "100%" }}

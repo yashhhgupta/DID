@@ -8,6 +8,8 @@ import EmptyContainer from "./EmptyContainer";
 import Notification from "./Notification";
 import Loader from "./Loader";
 import TableFooter from "./TableFooter";
+import Search from "./Search";
+import CustomToggle from "./CustomToggle";
 export {
   CustomButton,
   CustomInput,
@@ -18,5 +20,7 @@ export {
   EmptyContainer,
   Notification,
   Loader,
-  TableFooter
+  TableFooter,
+  Search,
+  CustomToggle,
 }

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { getDepartments } from "../../../../store/department-slice";
+import { getEmployees } from "../../../../store/employee-slice";
 import Select from "react-select";
 import { customStyles } from "../../../../consts";
 import { toast } from "sonner";
@@ -63,6 +64,7 @@ const Form = ({ modalCloseHandler }) => {
       toast.error("Adding Employee Failed, Please try again.");
     } else {
       toast.success("Employee Added Successfully");
+    dispatch(getEmployees({ orgId, token }));
       modalCloseHandler();
     }
   };
