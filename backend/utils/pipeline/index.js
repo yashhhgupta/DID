@@ -15,7 +15,6 @@ const diversityPipeline = (orgId, depId, teamId,current) => {
       matchStage.$match.teamId = new mongoose.Types.ObjectId(teamId);
     }
   }
-  console.log(matchStage);
   return [
     matchStage,
     {

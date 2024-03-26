@@ -4,7 +4,8 @@ import styles from "./styles.module.css";
 
 const CustomInput = ({ label, ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const handleTogglePassword = () => {
+  const handleTogglePassword = (e) => {
+    e.stopPropagation();
     setShowPassword(!showPassword);
   };
 

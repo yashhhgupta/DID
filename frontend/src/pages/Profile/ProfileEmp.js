@@ -3,11 +3,15 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRequest } from "../../hooks/useRequest";
 import { BASE_URL } from "../../consts";
-import { PrimaryData, SecondaryData } from "./components";
+import { PrimaryData, SecondaryData,ChangePassword } from "./components";
 import { useDispatch } from "react-redux";
 import { getDepartments } from "../../store/department-slice";
 import { getTeams } from "../../store/team-slice";
-import { ConfirmationPopUp, CustomButton, Modal } from "../../Components/common";
+import {
+  ConfirmationPopUp,
+  CustomButton,
+  Modal,
+} from "../../Components/common";
 import { toast } from "sonner";
 import { Loader } from "../../Components/common";
 
@@ -19,13 +23,13 @@ const ProfileEmp = () => {
   const userId = useSelector((state) => state.auth.userId);
   const token = useSelector((state) => state.auth.token);
   const orgId = useSelector((state) => state.auth.orgId);
-  
+
   const status = useSelector((state) => state.department.status);
   const status2 = useSelector((state) => state.team.status);
   const [user, setUser] = useState(null);
-  const modalCloseHandler = () => { 
+  const modalCloseHandler = () => {
     setShowModal(false);
-  }
+  };
   useEffect(() => {
     dispatch(getDepartments({ orgId, token }));
     dispatch(getTeams({ orgId, token }));
@@ -80,27 +84,44 @@ const ProfileEmp = () => {
   return (
     <>
       <Modal isOpen={showModal}>
-        <ConfirmationPopUp
-          title="Edit Profile"
-          subTitle={`Do you really want to edit the profile?`}
-          onCancel={modalCloseHandler}
-          onConfirm={EditProfileHandler}
-          modalCloseHandler={modalCloseHandler}
-        />
+        {showModal === "password" && (
+          <ChangePassword
+            modalCloseHandler={modalCloseHandler}
+          />
+        )}
+        {showModal === "edit" && (
+          <ConfirmationPopUp
+            title="Edit Profile"
+            subTitle={`Do you really want to edit the profile?`}
+            onCancel={modalCloseHandler}
+            onConfirm={EditProfileHandler}
+            modalCloseHandler={modalCloseHandler}
+          />
+        )}
       </Modal>
       <div className={styles.container}>
         <div className={styles.heading}>
           <h1>PROFILE</h1>
           <div className={styles.buttons}>
             <CustomButton
+              text="Change Password"
+              buttonProps={{
+                type: "button",
+                onClick: (e) => {
+                  e.stopPropagation();
+                  setShowModal("password");
+                },
+              }}
+            />
+            <CustomButton
               text="Edit Profile"
               buttonProps={{
                 type: "button",
-                disabled:!datatoUpdate || Object.keys(datatoUpdate).length === 0,
+                disabled:
+                  !datatoUpdate || Object.keys(datatoUpdate).length === 0,
                 onClick: (e) => {
-                  console.log("clicked", datatoUpdate);
                   e.stopPropagation();
-                  setShowModal(true);
+                  setShowModal("edit");
                 },
               }}
             />

@@ -80,6 +80,7 @@ const login = async (req, res, next) => {
   }
   if (!existingUser) {
     // console.log(password,existingUser.password)
+
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
       401
@@ -96,6 +97,7 @@ const login = async (req, res, next) => {
     let pass = await bcrypt.compare(password, existingUser.password);
 
     if (!pass) {
+
       const error = new HttpError(
         "Invalid credentials, could not log you in.",
         401
@@ -133,9 +135,41 @@ const login = async (req, res, next) => {
   });
   // res.json({message:"Logged in", user: existingUser.toObject({ getters: true }) });
 };
+
 const logout = async (req, res, next) => {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
+};
+
+const updatePassword = async (req, res, next) => {
+  const { userId, oldPassword, newPassword } = req.body;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Cant find User, please try again later.", 500);
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+  let pass = await bcrypt.compare(oldPassword, user.password);
+  if (!pass) {
+    const error = new HttpError("Invalid credentials", 401);
+    return next(error);
+  }
+  user.password = newPassword;
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Could not update password, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Password updated" });
 };
 
 const getUser = async (req, res, next) => {
@@ -318,3 +352,4 @@ exports.getSurveys = getSurveys;
 exports.getUser = getUser;
 exports.updateProfile = updateProfile;
 exports.updateSurveyResponse = updateSurveyResponse;
+exports.updatePassword = updatePassword;

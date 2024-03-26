@@ -11,9 +11,10 @@ router.post("/login", [
     check("password").isLength({ min: 8 })
 ], usersController.login);
 router.post("/logout", usersController.logout);
+router.post("/updatePassword", usersController.updatePassword);
 router.post("/updateProfile", validateUserToken, usersController.updateProfile);
 router.get("/get/:userId",validateUserToken, usersController.getUser);
 router.post("/fillSurvey", validateUserToken, usersController.fillSurvey);
-router.post("/updateResponse", usersController.updateSurveyResponse);
-router.get("/getSurveys/:userId", usersController.getSurveys);
+router.post("/updateResponse",validateUserToken, usersController.updateSurveyResponse);
+router.get("/getSurveys/:userId",validateUserToken, usersController.getSurveys);
 module.exports = router;

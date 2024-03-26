@@ -4,19 +4,17 @@ import {
   EmptyContainer,
   ConfirmationPopUp,
 } from "../../../../Components/common";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
 import { EmployeeList, SelectEmployee } from "../../../Employees/components";
 import styles from "./styles.module.css";
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector, useDispatch } from "react-redux";
 import { getEmployees } from "../../../../store/employee-slice";
 import { toast } from "sonner";
-import AddTeamForm from "../AddTeamForm";
 
 const TeamRow = ({
   team,
@@ -87,7 +85,7 @@ const TeamRow = ({
       <Modal isOpen={showModal}>
         {showModal === "deleteTeam" && (
           <ConfirmationPopUp
-            title={"Delete " + "Team " + team.name}
+            title={"Delete Team " + team.name}
             subTitle={`Do you really want to delete this team?`}
             onCancel={modalCloseHandler}
             onConfirm={deleteTeamHandler}

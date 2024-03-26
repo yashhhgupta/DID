@@ -34,7 +34,7 @@ export const useRequest = () => {
         dispatch(stopLoading());
       }
     },
-    []
+    [dispatch]
   );
 
   const clearError = () => {

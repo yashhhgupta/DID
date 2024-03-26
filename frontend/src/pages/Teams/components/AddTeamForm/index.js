@@ -3,7 +3,6 @@ import useOutsideClick from "../../../../hooks/useOutsideClick";
 import { useRef, useState, useEffect } from "react";
 import { CustomInput, CustomButton } from "../../../../Components/common";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
-import { FaPlus } from "react-icons/fa";
 import { BASE_URL } from "../../../../consts";
 import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector, useDispatch } from "react-redux";

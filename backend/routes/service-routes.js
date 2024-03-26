@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const { validateUserToken } = require("../middlewares/authUser");
 
 const router = express.Router();
 
@@ -15,6 +16,10 @@ const upload = multer({
   storage: storage,
 });
 
-router.post("/upload", upload.single("file"), uploadImageToAWS);
+router.post(
+  "/upload",
+  validateUserToken,upload.single("file"),
+  uploadImageToAWS
+);
 
 module.exports = router;
