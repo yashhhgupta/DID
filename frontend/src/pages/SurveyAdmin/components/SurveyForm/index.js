@@ -112,6 +112,7 @@ const SurveyForm = ({ modalCloseHandler,survey={} }) => {
         Authorization: "Bearer " + token,
       }
     );
+    modalCloseHandler();
     if (!response) {
       toast.error("Adding Survey Failed, Please try again.");
     } else {
@@ -121,7 +122,6 @@ const SurveyForm = ({ modalCloseHandler,survey={} }) => {
       else {
         toast.success("Survey Added Successfully");
       }
-      modalCloseHandler();
       dispatch(
         getSurvey({
           orgId: orgId,

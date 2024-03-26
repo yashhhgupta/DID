@@ -71,6 +71,7 @@ const Login = () => {
         "Content-Type": "application/json",
       }
     );
+    console.log(response);
     if (!response) {
       toast.error("Invalid Credentials, Try Again");
     }

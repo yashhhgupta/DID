@@ -2,6 +2,7 @@ import {
   CustomButton,
   Modal,
   EmptyContainer,
+  ConfirmationPopUp,
 } from "../../../../Components/common";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
@@ -15,6 +16,7 @@ import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector, useDispatch } from "react-redux";
 import { getEmployees } from "../../../../store/employee-slice";
 import { toast } from "sonner";
+import AddTeamForm from "../AddTeamForm";
 
 const TeamRow = ({
   team,
@@ -65,9 +67,35 @@ const TeamRow = ({
       dispatch(getEmployees({ orgId, token }));
     }
   };
+  const deleteTeamHandler = async () => {
+    let url = BASE_URL + "/team/delete/" + team.id;
+
+    const response = await sendRequest(url, "DELETE", null, {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    });
+    if (!response) {
+      toast.error("Team deletion failed, please try again later");
+    } else {
+      modalCloseHandler();
+      toast.success("Team deleted successfully");
+      dispatch(getEmployees({ orgId, token }));
+    }
+  };
   return (
     <>
       <Modal isOpen={showModal}>
+        {showModal === "deleteTeam" && (
+          <ConfirmationPopUp
+            title={"Delete " + "Team " + team.name}
+            subTitle={`Do you really want to delete this team?`}
+            onCancel={modalCloseHandler}
+            onConfirm={deleteTeamHandler}
+            modalCloseHandler={modalCloseHandler}
+            deleteButtonColor={true}
+          />
+        )}
+        
         <div className={styles.containerModal}>
           <div className={styles.form} ref={containerRef}>
             {showModal === "selectEmployee" && (
@@ -147,8 +175,15 @@ const TeamRow = ({
                 setShowModal("selectEmployee");
               }}
             />
-            <MdEdit size={25} className={styles.icon} />
-            <MdDelete size={25} className={styles.icon} />
+            
+            <MdDelete
+              size={25}
+              className={styles.icon}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowModal("deleteTeam");
+              }}
+            />
           </div>
         </td>
       </tr>

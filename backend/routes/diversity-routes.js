@@ -14,14 +14,7 @@ router.get(
   "/getScore/:orgId",
   validateUserToken,diversityController.getDiversityScore
 );
-router.get(
-  "/getScore/:orgId/:depId",
-  validateUserToken,diversityController.getDiversityScore
-);
-router.get(
-  "/getScore/:orgId/:depId/:teamId",
-  validateUserToken,diversityController.getDiversityScore
-);
+
 
 
 module.exports = router;

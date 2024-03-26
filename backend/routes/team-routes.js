@@ -12,5 +12,6 @@ router.get(
   teamController.getTeams
 );
 router.post("/addEmployee", validateAdminToken, teamController.addTeamMembers);
+router.delete("/delete/:teamId",teamController.deleteTeam);
 
 module.exports = router;

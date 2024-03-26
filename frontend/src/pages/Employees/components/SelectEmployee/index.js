@@ -1,9 +1,18 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
-import { CustomButton,Search,TableFooter } from "../../../../Components/common";
+import {
+  CustomButton,
+  Search,
+  TableFooter,
+} from "../../../../Components/common";
 import { toast } from "sonner";
 import useTable from "../../../../hooks/useTable";
-const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
+const SelectEmployee = ({
+  employees = [],
+  deps = [],
+  teamName = "",
+  callback,
+}) => {
   const [emp, setEmp] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
   const handleCheckboxChange = (empId) => {
@@ -19,12 +28,12 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
   const [search, setSearch] = useState("");
   const SubmitHandler = (e) => {
     e.preventDefault();
-    if(emp.length === 0){
+    if (emp.length === 0) {
       toast.error("Please select atleast one employee");
       return;
     }
-    callback(e,emp);
-  }
+    callback(e, emp);
+  };
   const renderEmployees = () => {
     const employeesToRender =
       slice.length >= 10
@@ -32,7 +41,7 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
         : [...slice, ...Array(10 - slice.length).fill({})];
 
     return employeesToRender.map((employee, index) => {
-      if (!employee.id) { 
+      if (!employee.id) {
         return (
           <tr key={index}>
             <td></td>
@@ -43,6 +52,7 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
           </tr>
         );
       }
+
       let name = employee.firstname || "";
       if (employee.lastname) {
         name = name + " " + employee.lastname;
@@ -50,7 +60,7 @@ const SelectEmployee = ({ employees=[], deps=[], teamName="",callback }) => {
       const depName = employee.departmentId
         ? deps.find((dep) => dep.value === employee.departmentId)?.label
         : "";
-
+     
       return (
         <tr key={index}>
           <td>

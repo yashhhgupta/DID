@@ -33,9 +33,9 @@ const LineGraph = ({
       setOrgData(null);
       let url = BASE_URL + "/diversity/getScore/" + orgId;
       if (selectedDep) {
-        url += "/" + selectedDep.value;
+        url += `?depId=${selectedDep.value}`;
         if (selectedTeam) {
-          url += "/" + selectedTeam.value;
+          url += `&teamId=${selectedTeam.value}`;
         }
       }
       const response = await sendRequest(url, "GET", null, {
@@ -108,7 +108,7 @@ const LineGraph = ({
           <ResponsiveContainer width="95%" height="100%">
             <LineChart data={orgData}>
               <XAxis dataKey="label" />
-              <YAxis type="number" domain={[50, 70]} />
+              <YAxis type="number" domain={[50, 65]} />
               <Tooltip />
               <Legend />
               <Line

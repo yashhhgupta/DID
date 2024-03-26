@@ -98,8 +98,41 @@ const addTeamMembers = async (req, res,next) => {
     }
     res.json({ message: 'Team members added successfully' });
 }
+const deleteTeam = async (req, res, next) => {
+    const { teamId } = req.params;
+    try {
+        await Team.findByIdAndDelete(teamId);
+    }
+    catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            'Deleting team failed, please try again later.',
+            500
+        );
+        return next(error);
+    }
+    //remove teamId from employees having team id as teamId
+    try {
+        await Employee.updateMany
+            ({ teamId: teamId },
+                { $unset: { teamId: 1 } },
+                { multi: true }
+        );  
+    }
+    catch (err) {
+        const error = new HttpError(
+            console.log(err),
+            'Deleting team failed, please try again later.',
+            500
+        );
+        return next(error);
+    }
+
+    res.json({ message: 'Team deleted successfully' });
+}
 
 
 exports.addTeam = addTeam;
 exports.getTeams = getTeams;
 exports.addTeamMembers = addTeamMembers;
+exports.deleteTeam = deleteTeam;

@@ -44,13 +44,8 @@ const getDiversityData = async (req, res, next) => {
     res.json({ diversityData: diversityData , dataVisibility: org.dataVisibility});
 };
 const getDiversityScore = async (req, res, next) => {
-    let { orgId, depId, teamId } = req.params;
-    if (!depId) {
-      depId = undefined;
-    }
-    if (!teamId) {
-      teamId = undefined;
-    }
+    let { orgId } = req.params;
+    let { depId, teamId } = req.query;
     let diversityData;
     let weightage;
     try {

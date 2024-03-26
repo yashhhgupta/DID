@@ -15,6 +15,8 @@ router.post("/login", [
 router.post("/logout", adminController.logout);
 router.get("/get/:orgId", validateAdminToken, adminController.getOrg);
 router.post("/updateProfile", validateAdminToken, adminController.updateOrg);
+router.post("/removeEmployee", validateAdminToken, adminController.removeEmployee);
+router.post("/removeEmployeeTeam", validateAdminToken, adminController.removeEmployeeTeam);
 router.post("/updateDataVisibility", validateAdminToken, adminController.updateDataVisibility);
 router.post("/add-employee", validateAdminToken, adminController.addEmployee);
 router.post("/add-employees", validateAdminToken, adminController.addMultipleEmployees);

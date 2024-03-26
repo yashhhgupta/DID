@@ -390,8 +390,7 @@ const getUsersCount = async (req, res, next) => {
   const { orgId } = req.params;
   let count;
   try {
-    count = await User.countDocuments({ orgId: orgId,
-     });
+    count = await User.countDocuments({ orgId: orgId });
     res.json({ count: count });
   } catch (err) {
     const error = new HttpError(
@@ -401,6 +400,65 @@ const getUsersCount = async (req, res, next) => {
     return next(error);
   }
 };
+const removeEmployee = async (req, res, next) => {
+  const { userId } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const error = new HttpError('Invalid user ID', 400);
+    return next(error);
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $set: { dateOfLeaving: new Date() } }, 
+      { new: true }
+    ).lean();
+
+    if (!user) {
+      const error = new HttpError('User not found', 404);
+      return next(error);
+    }
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      'Removing employee failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: 'Employee removed successfully' });
+};
+const removeEmployeeTeam = async (req, res, next) => {
+  const { userId } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const error = new HttpError('Invalid user ID', 400);
+    return next(error);
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $unset: { teamId: 1 } },
+      { new: true }
+    ).lean();
+
+    if (!user) {
+      const error = new HttpError('User not found', 404);
+      return next(error);
+    }
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      'Removing employee team failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: 'Employee team removed successfully' });
+}
+
 
 exports.signupAsAdmin = signupAsAdmin;
 exports.loginAsAdmin = loginAsAdmin;
@@ -412,3 +470,5 @@ exports.getUsersCount = getUsersCount;
 exports.getOrg = getOrg;
 exports.updateOrg = updateOrg;
 exports.updateDataVisibility = updateDataVisibility;
+exports.removeEmployee = removeEmployee;
+exports.removeEmployeeTeam = removeEmployeeTeam;

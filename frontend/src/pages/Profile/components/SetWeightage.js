@@ -4,6 +4,8 @@ import styles from "../styles.module.css";
 import { useState } from "react";
 import { BASE_URL } from "../../../consts";
 import { useRequest } from "../../../hooks/useRequest";
+import { RxCross1 } from "react-icons/rx";
+
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 const SetWeightage = ({ weightage }) => {
@@ -94,6 +96,13 @@ const SetWeightage = ({ weightage }) => {
                     setWeightageForm({
                       ...weightageForm,
                       [option.value]: e.target.value,
+                    });
+                  }}
+                  endIcon={<RxCross1 size={20} />}
+                  onEndIconClick={() => {
+                    setWeightageForm({
+                      ...weightageForm,
+                      [option.value]: 0,
                     });
                   }}
                 />

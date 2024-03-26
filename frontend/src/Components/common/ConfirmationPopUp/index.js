@@ -10,6 +10,7 @@ const ConfirmationPopUp = ({
   onConfirm,
   onCancel,
   modalCloseHandler,
+  deleteButtonColor = false,
 }) => {
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => {
@@ -29,8 +30,10 @@ const ConfirmationPopUp = ({
   const confirmProps = {
     type: "button",
     style: {
-      backgroundColor: "rgba(0, 0, 255, 0.2)",
-      color: "blue",
+      backgroundColor: deleteButtonColor
+        ? `rgba(255,0,0,0.2)`
+        : "rgba(0, 0, 255, 0.2)",
+      color: deleteButtonColor ? "red" : "blue",
       borderRadius: "5px",
     },
     onClick: (e) => {
@@ -38,7 +41,6 @@ const ConfirmationPopUp = ({
       onConfirm();
     },
   };
-
 
   return (
     <div className={styles.container}>
