@@ -1,7 +1,6 @@
 const HttpError = require("../utils/http-error");
-const { validationResult } = require("express-validator");
-const { diversityPipeline } = require("../utils/pipeline");
-const { diversityScorePipeline } = require("../utils/pipeline/temp");
+const { diversityPipeline } = require("../utils/pipeline/diveristyData");
+const { diversityScorePipeline } = require("../utils/pipeline/diversityScore");
 const { calculateDiversityScore } = require("../utils/score");
 const { TIMERANGE } = require("../utils");
 
