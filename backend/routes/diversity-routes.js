@@ -14,6 +14,11 @@ router.get(
   "/getScore/:orgId",
   validateUserToken,diversityController.getDiversityScore
 );
+router.post(
+  "/updateDataVisibility",
+  validateAdminToken,
+  diversityController.updateDataVisibility
+);
 
 
 

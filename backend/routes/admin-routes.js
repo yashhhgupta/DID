@@ -27,11 +27,7 @@ router.post(
   validateAdminToken,
   adminController.removeEmployeeTeam
 );
-router.post(
-  "/updateDataVisibility",
-  validateAdminToken,
-  adminController.updateDataVisibility
-);
+
 router.post("/add-employee", validateAdminToken, adminController.addEmployee);
 router.post(
   "/add-employees",

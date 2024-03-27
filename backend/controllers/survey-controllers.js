@@ -145,7 +145,134 @@ const multipleSurveyFill = async (req, res, next) => {
   res.json({ message: "Survey filled successfully" });
 };
 
+const getSurveys = (req, res, next) => {
+  const userId = req.params.userId;
+  User.findById(userId)
+    .then((user) => {
+      res.json({ surveys: user.surveyResponses });
+    })
+    .catch((err) => {
+      const error = new HttpError(
+        "Fetching surveys failed, please try again later.",
+        500
+      );
+      return next(error);
+    });
+};
+
+const updateSurveyResponse = async (req, res, next) => {
+  const { userId, surveyId, score } = req.body;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Cant find User, please try again later.", 500);
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+
+  let existingSurvey;
+  try {
+    existingSurvey = await Survey.findById(surveyId);
+  } catch (err) {
+    const error = new HttpError(
+      "Cant find Survey, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!existingSurvey) {
+    const error = new HttpError("Survey not found", 404);
+    return next(error);
+  }
+  let prevScore = user.surveyResponses.find(
+    (survey) => survey.surveyId == surveyId
+  ).score;
+  //update survey score in user surveyResponses array and in survey model same as fillSurvey
+  user.surveyResponses.map((survey) => {
+    if (survey.surveyId == surveyId) survey.score = score;
+  });
+  existingSurvey.inclusionScore =
+    (existingSurvey.inclusionScore * existingSurvey.countOfUsersFilled -
+      prevScore +
+      score) /
+    existingSurvey.countOfUsersFilled;
+
+  try {
+    await user.save();
+    await existingSurvey.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Updating survey failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Survey updated" });
+};
+const fillSurvey = async (req, res, next) => {
+  const { userId, surveyId, score } = req.body;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Cant find User, please try again later.", 500);
+    return next(error);
+  }
+  if (!user) {
+    const error = new HttpError("User not found", 404);
+    return next(error);
+  }
+  //if user has already filled the survey then return
+  let survey = user.surveyResponses.find(
+    (survey) => survey.surveyId == surveyId
+  );
+  if (survey) {
+    const error = new HttpError("Survey already filled", 400);
+    return next(error);
+  }
+  user.surveyResponses.push({ surveyId: surveyId, score: score });
+  let existingSurvey;
+  try {
+    existingSurvey = await Survey.findById(surveyId);
+  } catch (err) {
+    const error = new HttpError(
+      "Cant update Survey Score, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  if (!existingSurvey) {
+    const error = new HttpError("Survey not found", 404);
+    return next(error);
+  }
+  existingSurvey.countOfUsersFilled += 1;
+  existingSurvey.inclusionScore =
+    (existingSurvey.inclusionScore * (existingSurvey.countOfUsersFilled - 1) +
+      score) /
+    existingSurvey.countOfUsersFilled;
+
+  try {
+    await user.save();
+    await existingSurvey.save();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      "Filling survey failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Survey filled successfully" });
+};
+
 exports.getSurvey = getSurvey;
 exports.addSurvey = addSurvey;
 exports.multipleSurveyFill = multipleSurveyFill;
 exports.updateSurvey = updateSurvey;
+exports.getSurveys = getSurveys;
+exports.fillSurvey = fillSurvey;
+exports.updateSurveyResponse = updateSurveyResponse;

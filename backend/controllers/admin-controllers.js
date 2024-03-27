@@ -14,10 +14,8 @@ const signupAsAdmin = async (req, res, next) => {
       new HttpError("Invalid inputs passed, please check your data.", 422)
     );
   }
-  // console.log(req.body);
   const { name, email, password } = req.body;
 
-  //   console.log(req.body);
   let existingEmail;
   try {
     existingEmail = await Org.findOne({ email: email });
@@ -84,7 +82,6 @@ const signupAsAdmin = async (req, res, next) => {
 
 const loginAsAdmin = async (req, res, next) => {
   const { email, password } = req.body;
-  // console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -102,7 +99,6 @@ const loginAsAdmin = async (req, res, next) => {
     return next(error);
   }
   if (!existingUser) {
-    // console.log(password,existingUser.password)
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
       401
@@ -112,7 +108,6 @@ const loginAsAdmin = async (req, res, next) => {
     return next(error);
   } else {
     const pass = await bcrypt.compare(password, existingUser.password);
-    // console.log(pass)
     if (!pass) {
       const error = new HttpError(
         "Invalid credentials, could not log you in.",
@@ -208,33 +203,7 @@ const updateOrg = async (req, res, next) => {
   }
   res.json({ org: org.toObject({ getters: true }) });
 };
-const updateDataVisibility = async (req, res, next) => {
-  const { orgId, field, visibility } = req.body;
 
-  try {
-    const updatedOrg = await Org.findByIdAndUpdate(
-      orgId,
-      {
-        $set: { [`dataVisibility.${field}`]: visibility },
-      },
-      { new: true }
-    );
-
-    if (!updatedOrg) {
-      const error = new HttpError("No organization found", 404);
-      return next(error);
-    }
-
-    res.status(200).json({ message: "Visibility Updated" });
-  } catch (err) {
-    console.error("Error:", err);
-    const error = new HttpError(
-      "Updating organization failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-};
 
 const addEmployee = async (req, res, next) => {
   const errors = validationResult(req);
@@ -469,6 +438,5 @@ exports.getAllUsers = getAllUsers;
 exports.getUsersCount = getUsersCount;
 exports.getOrg = getOrg;
 exports.updateOrg = updateOrg;
-exports.updateDataVisibility = updateDataVisibility;
 exports.removeEmployee = removeEmployee;
 exports.removeEmployeeTeam = removeEmployeeTeam;

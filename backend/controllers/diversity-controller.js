@@ -74,5 +74,35 @@ const getDiversityScore = async (req, res, next) => {
     }
     res.json({ diversityData: score });
 }
+
+const updateDataVisibility = async (req, res, next) => {
+  const { orgId, field, visibility } = req.body;
+
+  try {
+    const updatedOrg = await Org.findByIdAndUpdate(
+      orgId,
+      {
+        $set: { [`dataVisibility.${field}`]: visibility },
+      },
+      { new: true }
+    );
+
+    if (!updatedOrg) {
+      const error = new HttpError("No organization found", 404);
+      return next(error);
+    }
+
+    res.status(200).json({ message: "Visibility Updated" });
+  } catch (err) {
+    console.error("Error:", err);
+    const error = new HttpError(
+      "Updating organization failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+};
 exports.getDiversityData = getDiversityData;
 exports.getDiversityScore = getDiversityScore;
+exports.updateDataVisibility = updateDataVisibility;
+
