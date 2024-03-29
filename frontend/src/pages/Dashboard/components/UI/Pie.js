@@ -8,6 +8,7 @@ import { useRequest } from "../../../../hooks/useRequest";
 import { BASE_URL } from "../../../../consts";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import { Tooltip as Tootltip2 } from "react-tooltip";
 
 export const options = {
   is3D: true,
@@ -46,13 +47,20 @@ const Pie = ({ data, dataVisibility, isAdmin = false }) => {
         <h1>{diversityMapping[data.k]}</h1>
         {isAdmin && (
           <div className={styles.horz}>
-            <div>Visible to Employees </div>
-            <ToggleButton
-              value={toggle}
-              onToggle={(value) => {
-                ToggleChangeHandler(!value);
-              }}
-            />
+            <Tootltip2 id="pie-tooltip" place="bottom" />
+            <a
+              data-tooltip-id="pie-tooltip"
+              data-tooltip-variant="info"
+              data-tooltip-content="Visible to employees"
+            >
+              {" "}
+              <ToggleButton
+                value={toggle}
+                onToggle={(value) => {
+                  ToggleChangeHandler(!value);
+                }}
+              />
+            </a>
           </div>
         )}
       </div>

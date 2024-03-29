@@ -2,7 +2,6 @@ const HttpError = require("../utils/http-error");
 const { diversityPipeline } = require("../utils/pipeline/diveristyData");
 const { diversityScorePipeline } = require("../utils/pipeline/diversityScore");
 const { calculateDiversityScore } = require("../utils/score");
-const { TIMERANGE } = require("../utils");
 
 
 const Employee = require("../models/employee");
@@ -44,9 +43,19 @@ const getDiversityData = async (req, res, next) => {
 };
 const getDiversityScore = async (req, res, next) => {
     let { orgId } = req.params;
-    let { depId, teamId } = req.query;
+  let { depId, teamId } = req.query;
+  let { startYear, endYear } = req.body;
+
     let diversityData;
-    let weightage;
+  let weightage;
+  if (!startYear && !endYear) {
+    startYear = new Date("2015-01-01");
+    endYear = new Date("2024-04-01");
+  }
+  else {
+    startYear = new Date(startYear);
+    endYear = new Date(endYear);
+  }
     try {
         weightage = await Org.findById(orgId).select("weightage");
     }
@@ -59,19 +68,22 @@ const getDiversityScore = async (req, res, next) => {
         const error = new HttpError("No weightage found.", 404);
         return next(error);
     }
-    let score = [];
-    for (let i = 0; i < TIMERANGE.length; i++) {
-        diversityData = await Employee.aggregate(diversityScorePipeline(orgId,
-            TIMERANGE[i].start,
-            TIMERANGE[i].end,
-            depId,
-            teamId
-        ));
-        score.push({
-            label: TIMERANGE[i].label,
-            score: calculateDiversityScore(diversityData, weightage.weightage)
-        });
+  let score = [];
+  //check for each year from starting year to ending year
+  for (let i = startYear.getFullYear(); i <= endYear.getFullYear(); i++) {
+    for (let j = 0; j < 4; j++){
+      let start = new Date(i, j * 3, 1);
+      let end = new Date(i, (j + 1) * 3, 0);
+      diversityData = await Employee.aggregate(
+        diversityScorePipeline(orgId, start, end, depId, teamId)
+      );
+      //set label as quarter number
+      score.push({
+        label: i + "-Q" + (j + 1),
+        score: calculateDiversityScore(diversityData, weightage.weightage),
+      });
     }
+  }
     res.json({ diversityData: score });
 }
 

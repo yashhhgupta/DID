@@ -3,61 +3,7 @@ const User = require("../models/employee");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
-const Survey = require("../models/survey");
 
-const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
-  // console.log(req.body);
-  const { firstname, email, password, orgId, departmentId, dateOfJoining } =
-    req.body;
-
-  //   console.log(req.body);
-  let existingEmail;
-  try {
-    existingEmail = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    console.log(err);
-    return next(error);
-  }
-
-  if (existingEmail) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
-    return next(error);
-  }
-
-  const createdUser = new User({
-    firstname: firstname,
-    email: email,
-    password: password,
-    orgId: orgId,
-    departmentId: departmentId,
-    dateOfJoining: dateOfJoining,
-  });
-  try {
-    await createdUser.save();
-    // console.log(newuser,'no new user error')
-  } catch (err) {
-    console.log(err);
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
-};
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -85,7 +31,6 @@ const login = async (req, res, next) => {
       "Invalid credentials, could not log you in.",
       401
     );
-    res.json(existingUser);
 
     return next(error);
   } else {
@@ -151,7 +96,7 @@ const updatePassword = async (req, res, next) => {
     return next(error);
   }
   if (!user) {
-    const error = new HttpError("User not found", 404);
+    const error = new HttpError("User not found", 401);
     return next(error);
   }
   let pass = await bcrypt.compare(oldPassword, user.password);
@@ -169,7 +114,7 @@ const updatePassword = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ message: "Password updated" });
+  res.status(200).json({ message: "Password updated" });
 };
 
 const getUser = async (req, res, next) => {
@@ -185,10 +130,10 @@ const getUser = async (req, res, next) => {
     return next(error);
   }
   if (!user) {
-    const error = new HttpError("User not found", 404);
+    const error = new HttpError("User not found", 401);
     return next(error);
   }
-  res.json({ user: user.toObject({ getters: true }) });
+  res.status(200).json({ user: user});
 };
 
 
@@ -202,7 +147,7 @@ const updateProfile = async (req, res, next) => {
     return next(error);
   }
   if (!user) {
-    const error = new HttpError("User not found", 404);
+    const error = new HttpError("User not found", 401);
     return next(error);
   }
   //update certain fields of user given in dateToUpdate
@@ -218,10 +163,9 @@ const updateProfile = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ message: "User updated" });
+  res.status(200).json({ message: "Profile updated" });
 };
 
-exports.signup = signup;
 exports.login = login;
 exports.logout = logout;
 exports.getUser = getUser;

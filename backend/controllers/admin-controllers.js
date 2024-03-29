@@ -8,12 +8,6 @@ const Department = require("../models/department");
 const mongoose = require("mongoose");
 
 const signupAsAdmin = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
   const { name, email, password } = req.body;
 
   let existingEmail;
@@ -24,14 +18,12 @@ const signupAsAdmin = async (req, res, next) => {
       "Signing up failed, please try again later.",
       500
     );
-    console.log(err);
     return next(error);
   }
-
   if (existingEmail) {
     const error = new HttpError(
       "User exists already, please login instead.",
-      422
+      409
     );
     return next(error);
   }
@@ -68,9 +60,7 @@ const signupAsAdmin = async (req, res, next) => {
   });
   try {
     await createdOrg.save();
-    // console.log(newuser,'no new user error')
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
       "Signing up failed, please try again later.",
       500
@@ -103,7 +93,6 @@ const loginAsAdmin = async (req, res, next) => {
       "Invalid credentials, could not log you in.",
       401
     );
-    res.json(existingUser);
 
     return next(error);
   } else {
@@ -146,7 +135,7 @@ const loginAsAdmin = async (req, res, next) => {
 };
 const logout = async (req, res, next) => {
   res.clearCookie("token");
-  res.json({ message: "Logged out" });
+  res.json({ message: "Admin logged out" });
 };
 const getOrg = async (req, res, next) => {
   const orgId = req.params.orgId;
@@ -164,16 +153,9 @@ const getOrg = async (req, res, next) => {
     const error = new HttpError("No organization found", 404);
     return next(error);
   }
-  res.json({ org: org.toObject({ getters: true }) });
+  res.status(200).json({ org: org });
 };
 const updateOrg = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
-
   const { orgId, dataToUpdate } = req.body;
   let org;
   try {
@@ -196,22 +178,15 @@ const updateOrg = async (req, res, next) => {
     await org.save();
   } catch (err) {
     const error = new HttpError(
-      "Updating organization failed, please try again later.",
+      "Updating organization(saving) failed, please try again later.",
       500
     );
     return next(error);
   }
-  res.json({ org: org.toObject({ getters: true }) });
+  res.json({ org: org, message: "Organization updated successfully" });
 };
 
-
 const addEmployee = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
   // console.log(req.body);
   const { firstname, email, orgId, departmentId } = req.body;
 
@@ -224,14 +199,13 @@ const addEmployee = async (req, res, next) => {
       "Signing up failed, please try again later.",
       500
     );
-    console.log(err);
     return next(error);
   }
 
   if (existingEmail) {
     const error = new HttpError(
       "User exists already, please login instead.",
-      422
+      409
     );
     return next(error);
   }
@@ -248,23 +222,15 @@ const addEmployee = async (req, res, next) => {
     await createdUser.save();
     // console.log(newuser,'no new user error')
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
       "Signing up failed, please try again later.",
       500
     );
     return next(error);
   }
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+  res.status(201).json({ message: "Employee added successfully" });
 };
 const addMultipleEmployees = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
-
   const employees = req.body.employees;
   const orgId = req.body.orgId;
 
@@ -296,10 +262,6 @@ const addMultipleEmployees = async (req, res, next) => {
       })
     );
 
-    // Update employee objects with department ids
-    // console.log(departmentMap);
-    // const salt = await bcrypt.genSalt(10);
-    // const pass = await bcrypt.hash("12345678", salt);
     const pass = "12345678";
     await Promise.all(
       employees.map(async (employee) => {
@@ -322,11 +284,9 @@ const addMultipleEmployees = async (req, res, next) => {
         // employee.password = pass;
       })
     );
-    // Insert employees into the database
-    // console.log(employees);
+
     await User.insertMany(employees);
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
       "Adding employees failed, please try again later.",
       500
@@ -352,7 +312,9 @@ const getAllUsers = async (req, res, next) => {
     const error = new HttpError("No users found", 404);
     return next(error);
   }
-  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+  res
+    .status(200)
+    .json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 const getUsersCount = async (req, res, next) => {
@@ -371,40 +333,30 @@ const getUsersCount = async (req, res, next) => {
 };
 const removeEmployee = async (req, res, next) => {
   const { userId } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    const error = new HttpError('Invalid user ID', 400);
-    return next(error);
-  }
 
   try {
     const user = await User.findByIdAndUpdate(
       userId,
-      { $set: { dateOfLeaving: new Date() } }, 
+      { $set: { dateOfLeaving: new Date() } },
       { new: true }
     ).lean();
-
     if (!user) {
-      const error = new HttpError('User not found', 404);
+      const error = new HttpError("User not found", 404);
       return next(error);
     }
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
-      'Removing employee failed, please try again later.',
+      "Removing employee failed, please try again later.",
       500
     );
     return next(error);
   }
 
-  res.json({ message: 'Employee removed successfully' });
+  res.json({ message: "Employee removed successfully" });
 };
 const removeEmployeeTeam = async (req, res, next) => {
   const { userId } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    const error = new HttpError('Invalid user ID', 400);
-    return next(error);
-  }
-
+  
   try {
     const user = await User.findByIdAndUpdate(
       userId,
@@ -413,21 +365,19 @@ const removeEmployeeTeam = async (req, res, next) => {
     ).lean();
 
     if (!user) {
-      const error = new HttpError('User not found', 404);
+      const error = new HttpError("User not found", 404);
       return next(error);
     }
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
-      'Removing employee team failed, please try again later.',
+      "Removing employee team failed, please try again later.",
       500
     );
     return next(error);
   }
 
-  res.json({ message: 'Employee team removed successfully' });
-}
-
+  res.json({ message: "Employee removed from team removed successfully" });
+};
 
 exports.signupAsAdmin = signupAsAdmin;
 exports.loginAsAdmin = loginAsAdmin;

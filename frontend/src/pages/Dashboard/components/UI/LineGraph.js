@@ -16,6 +16,10 @@ import { useSelector } from "react-redux";
 import Loader from "../../../../assets/lineload.gif";
 import ToggleButton from "react-toggle-button";
 import { toast } from "sonner";
+import { customStyles } from "../../../../consts";
+import Select from "react-select";
+import { yearOptions } from "./utils";
+import { Tooltip as Tootltip2 } from "react-tooltip";
 
 const LineGraph = ({
   selectedDep,
@@ -27,9 +31,15 @@ const LineGraph = ({
   const { sendRequest } = useRequest();
   const orgId = useSelector((state) => state.auth.orgId);
   const token = useSelector((state) => state.auth.token);
+  const [startYear, setStartYear] = useState(null);
+  const [endYear, setEndYear] = useState(null);
+  const [customYearOptions, setCustomYearOptions] = useState(yearOptions);
   const [orgData, setOrgData] = useState(null);
+  const [max, setMax] = useState(40);
+  const [min, setMin] = useState(65);
   useEffect(() => {
     const fetchOrgData = async () => {
+      console.log("calling");
       setOrgData(null);
       let url = BASE_URL + "/diversity/getScore/" + orgId;
       if (selectedDep) {
@@ -38,15 +48,25 @@ const LineGraph = ({
           url += `&teamId=${selectedTeam.value}`;
         }
       }
-      const response = await sendRequest(url, "GET", null, {
+      const response = await sendRequest(url, "POST", JSON.stringify({
+        startYear: startYear ? startYear.value : null,
+        endYear: endYear ? endYear.value : null,
+      }), {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       });
       if (!response) return;
-      else setOrgData(response.diversityData);
+      else {
+        setOrgData(response.diversityData)
+        let max = response.diversityData.reduce((max, p) => p.score > max ? p.score : max, response.diversityData[0].score);
+        let min = response.diversityData.reduce((min, p) => p.score < min ? p.score : min, response.diversityData[0].score);
+        setMax(Math.ceil(max));
+        setMin(Math.ceil(min));
+      };
     };
+    if ((startYear && endYear)||(!startYear && !endYear))
     fetchOrgData();
-  }, [selectedDep, selectedTeam]);
+  }, [selectedDep, selectedTeam,endYear,startYear]);
   const ToggleChangeHandler = async (value) => {
     setToggle(value);
     let url = BASE_URL + "/admin/updateDataVisibility";
@@ -69,22 +89,65 @@ const LineGraph = ({
       toast.success("Data Visibility Updated Successfully.");
     }
   };
-
+  const yearChangeHandler = (e) => {
+    if (!e) {
+      setStartYear(null);
+      setEndYear(null);
+      return;
+    
+    };
+    setStartYear(e);
+    setEndYear(null);
+    let customOptions = yearOptions.filter((option) => {
+      return option.value > e.value && option.value.getFullYear() - e.value.getFullYear() >= 3;
+    });
+    setCustomYearOptions(customOptions);
+  }
+  
+  console.log(min,max)
   return (
     <Card>
       <div className={styles.heading}>
         <h1>Diversity Score</h1>
-        {isAdmin && (
-          <div className={styles.horz}>
-            <div>Visible to Employees </div>
-            <ToggleButton
-              value={toggle}
-              onToggle={(value) => {
-                ToggleChangeHandler(!value);
-              }}
-            />
-          </div>
-        )}
+        <div className={styles.yearOptions}>
+          <Select
+            style={customStyles}
+            options={yearOptions}
+            placeholder="Select start year"
+            onChange={yearChangeHandler}
+            value={startYear}
+            isClearable={true}
+          />
+          <Select
+            style={customStyles}
+            options={customYearOptions}
+            placeholder="Select end year"
+            onChange={(e) => {
+              setEndYear(e);
+            }}
+            value={endYear}
+            isClearable={true}
+            isDisabled={!startYear}
+          />
+          {isAdmin && (
+            <div className={styles.horz}>
+              <Tootltip2 id="graph-tip" place="top" />
+              <a
+                data-tooltip-id="graph-tip"
+                data-tooltip-variant="info"
+                data-tooltip-content="Visible to employees"
+              >
+                {" "}
+                <ToggleButton
+                  value={toggle}
+                  onToggle={(value) => {
+                    ToggleChangeHandler(!value);
+                  }}
+                />
+              </a>
+            </div>
+          )}
+        </div>
       </div>
       {!orgData && (
         <div className={styles.linegraph}>
@@ -108,7 +171,7 @@ const LineGraph = ({
           <ResponsiveContainer width="95%" height="100%">
             <LineChart data={orgData}>
               <XAxis dataKey="label" />
-              <YAxis type="number" domain={[50, 65]} />
+              <YAxis type="number" domain={[min-1, max]} />
               <Tooltip />
               <Legend />
               <Line

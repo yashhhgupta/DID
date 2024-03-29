@@ -10,7 +10,7 @@ router.get(
   validateUserToken,
   diversityController.getDiversityData
 );
-router.get(
+router.post(
   "/getScore/:orgId",
   validateUserToken,diversityController.getDiversityScore
 );
