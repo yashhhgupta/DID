@@ -9,7 +9,7 @@ const getSurvey = async (req, res, next) => {
   const { orgId } = req.params;
   let surveys;
   try {
-    surveys = await Survey.find({ orgId: orgId });
+    surveys = await Survey.find({ orgId: orgId }).sort({ createdOn: -1 });
   } catch (err) {
     const error = new HttpError(
       "Fetching surveys failed, please try again later.",
@@ -17,18 +17,13 @@ const getSurvey = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({
+  res.status(200).json({
     surveys: surveys.map((survey) => survey.toObject({ getters: true })),
   });
 };
 
 const addSurvey = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
+  
   const date = new Date();
   const { title, description, orgId, deadline, questions } = req.body;
   const createdSurvey = new Survey({
@@ -45,7 +40,6 @@ const addSurvey = async (req, res, next) => {
     // console.log(createdSurvey);
     await createdSurvey.save();
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
       "Survey creation failed, please try again later.",
       500
@@ -66,16 +60,23 @@ const updateSurvey = async (req, res, next) => {
     survey = await Survey.findById(id);
   } catch (err) {
     const error = new HttpError(
-      "Fetching survey failed, please try again later.",
+      "Survey fetching failed, please try again later.",
       500
     );
     return next(error);
   }
+  if (!survey) { 
+    const error = new HttpError("Survey not found", 409);
+    return next(error);
+  }
+
+
   survey.title = title;
   survey.description = description;
   survey.deadline = deadline;
   survey.questions = questions;
   survey.allowResubmit = allowResubmit;
+
   try {
     await survey.save();
   } catch (err) {
@@ -88,67 +89,15 @@ const updateSurvey = async (req, res, next) => {
   res.json({ message: "Survey updated successfully" });
 }
 
-const multipleSurveyFill = async (req, res, next) => {
-  const { surveyId, userIds } = req.body;
-  //in all the employees push a object containing surveyId radndom score in the surveyReesponses array
-  let employees;
-  try {
-    employees = await Employee.find({ _id: { $in: userIds } });
-  } catch (err) {
-    const error = new HttpError(
-      "Fetching employees failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  let sum = 0;
-  employees.forEach(async (employee) => {
-    let random = Math.floor(Math.random() * 100 + 1);
-    sum += random;
-    employee.surveyResponses.push({ surveyId: surveyId, score: random });
-    try {
-      await employee.save();
-    } catch (err) {
-      const error = new HttpError(
-        "Survey filling failed, please try again later.",
-        500
-      );
-      return next(error);
-    }
-  });
-  //update the survey count of users filled and the inclusion score
-  let survey;
-  try {
-    survey = await Survey.findById(surveyId);
-  } catch (err) {
-    const error = new HttpError(
-      "Fetching survey failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  survey.countOfUsersFilled += employees.length;
-  survey.inclusionScore =
-    (survey.inclusionScore * (survey.countOfUsersFilled - employees.length) +
-      sum) /
-    survey.countOfUsersFilled;
-  try {
-    await survey.save();
-  } catch (err) {
-    const error = new HttpError(
-      "Survey filling failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
 
-  res.json({ message: "Survey filled successfully" });
-};
-
-const getSurveys = (req, res, next) => {
+const getUserSurveys = (req, res, next) => {
   const userId = req.params.userId;
-  User.findById(userId)
+  Employee.findById(userId)
     .then((user) => {
+      if (!user) {
+        const error = new HttpError("User not found", 404);
+        return next(error);
+      }
       res.json({ surveys: user.surveyResponses });
     })
     .catch((err) => {
@@ -164,7 +113,7 @@ const updateSurveyResponse = async (req, res, next) => {
   const { userId, surveyId, score } = req.body;
   let user;
   try {
-    user = await User.findById(userId);
+    user = await Employee.findById(userId);
   } catch (err) {
     const error = new HttpError("Cant find User, please try again later.", 500);
     return next(error);
@@ -173,7 +122,6 @@ const updateSurveyResponse = async (req, res, next) => {
     const error = new HttpError("User not found", 404);
     return next(error);
   }
-
   let existingSurvey;
   try {
     existingSurvey = await Survey.findById(surveyId);
@@ -188,6 +136,8 @@ const updateSurveyResponse = async (req, res, next) => {
     const error = new HttpError("Survey not found", 404);
     return next(error);
   }
+  
+  
   let prevScore = user.surveyResponses.find(
     (survey) => survey.surveyId == surveyId
   ).score;
@@ -200,7 +150,7 @@ const updateSurveyResponse = async (req, res, next) => {
       prevScore +
       score) /
     existingSurvey.countOfUsersFilled;
-
+ 
   try {
     await user.save();
     await existingSurvey.save();
@@ -211,13 +161,13 @@ const updateSurveyResponse = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ message: "Survey updated" });
+  return res.status(200).json({ message: "Survey response updated successfully" });
 };
 const fillSurvey = async (req, res, next) => {
   const { userId, surveyId, score } = req.body;
   let user;
   try {
-    user = await User.findById(userId);
+    user = await Employee.findById(userId);
   } catch (err) {
     const error = new HttpError("Cant find User, please try again later.", 500);
     return next(error);
@@ -228,7 +178,7 @@ const fillSurvey = async (req, res, next) => {
   }
   //if user has already filled the survey then return
   let survey = user.surveyResponses.find(
-    (survey) => survey.surveyId == surveyId
+    (survey) => survey.surveyId ==surveyId
   );
   if (survey) {
     const error = new HttpError("Survey already filled", 400);
@@ -259,20 +209,18 @@ const fillSurvey = async (req, res, next) => {
     await user.save();
     await existingSurvey.save();
   } catch (err) {
-    console.log(err);
     const error = new HttpError(
       "Filling survey failed, please try again later.",
       500
     );
     return next(error);
   }
-  res.json({ message: "Survey filled successfully" });
+  res.status(200).json({ message: "Survey filled successfully" });
 };
 
 exports.getSurvey = getSurvey;
 exports.addSurvey = addSurvey;
-exports.multipleSurveyFill = multipleSurveyFill;
 exports.updateSurvey = updateSurvey;
-exports.getSurveys = getSurveys;
+exports.getUserSurveys = getUserSurveys;
 exports.fillSurvey = fillSurvey;
 exports.updateSurveyResponse = updateSurveyResponse;

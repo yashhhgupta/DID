@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const diversityPipeline = (orgId, depId, teamId,current) => {
+const diversityPipeline = (orgId, depId, teamId, current) => {
    const matchStage = {
      $match: {
        orgId: new mongoose.Types.ObjectId(orgId),

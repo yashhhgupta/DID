@@ -21,7 +21,7 @@ export const getUserSurvey = createAsyncThunk("fetchUserSurveys", async (obj) =>
         "Content-Type": "application/json",
       },
     }),
-    fetch(`${BASE_URL}/user/getSurveys/${obj.userId}`, {
+    fetch(`${BASE_URL}/survey/getSurveys/${obj.userId}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + obj.token,
@@ -51,9 +51,11 @@ export const getUserSurvey = createAsyncThunk("fetchUserSurveys", async (obj) =>
         }
       : survey;
   });
-   console.log("surveys", surveys);
-  console.log("userSurveys", userSurveys);
-  console.log("updatedSurveys", updatedSurveys);
+
+  console.log(surveys);
+  console.log(userSurveys);
+  console.log("u",updatedSurveys);
+
 
   return updatedSurveys;
 });

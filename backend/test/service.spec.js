@@ -51,8 +51,7 @@ describe("Test cases while uploading to S3", () => {
   it("Should return statusCode 500 if there is error while sending file to S3", (done) => {
     const s3ClientStub = sinon
       .stub(S3Client.prototype, "send")
-      .rejects(new Error("Test Error"));
-
+      .rejects();
     chai
       .request(app)
       .post("/service/upload")

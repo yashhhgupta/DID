@@ -43,10 +43,10 @@ const EmployeeList = ({
       }
     );
     if (!response) {
-      toast.error("Team deletion failed, please try again later");
+      toast.error("User deletion failed, please try again later");
     } else {
       modalCloseHandler();
-      toast.success("Team deleted successfully");
+      toast.success("User removed from org successfully");
       dispatch(getEmployees({ orgId, token }));
     }
   };

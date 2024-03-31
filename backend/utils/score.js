@@ -1,4 +1,5 @@
 const calculateDiversityScore = (data, weightage) => {
+  
   let score = 0;
   for (const item of data) {
     const { k, v } = item;

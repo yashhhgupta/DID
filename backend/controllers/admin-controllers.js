@@ -300,7 +300,9 @@ const getAllUsers = async (req, res, next) => {
   const { orgId } = req.params;
   let users;
   try {
-    users = await User.find({ orgId: orgId });
+    users = await User.find({
+      orgId: orgId,
+    }).sort({ dateOfJoining: -1 });
   } catch (err) {
     const error = new HttpError(
       "Fetching users failed, please try again later.",

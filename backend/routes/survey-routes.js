@@ -8,7 +8,6 @@ const surveyController = require("../controllers/survey-controllers");
 router.get("/get/:orgId", validateUserToken ,surveyController.getSurvey);
 router.post("/add", validateAdminToken, surveyController.addSurvey);
 router.post("/update", validateAdminToken, surveyController.updateSurvey);
-router.post("/multifill", surveyController.multipleSurveyFill);
 router.post("/fillSurvey", validateUserToken, surveyController.fillSurvey);
 router.post(
   "/updateResponse",
@@ -18,7 +17,7 @@ router.post(
 router.get(
   "/getSurveys/:userId",
   validateUserToken,
-  surveyController.getSurveys
+  surveyController.getUserSurveys
 );
 
 module.exports = router;

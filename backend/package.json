@@ -9,9 +9,7 @@
     "test:watch": "mocha --watch ./test/*.spec.js",
     "coverage": "nyc --reporter=lcov --reporter=text npm test"
   },
-  "nyc" :{
-    "include" : "controllers"
-  },
+ 
   "author": "",
   "license": "ISC",
   "dependencies": {

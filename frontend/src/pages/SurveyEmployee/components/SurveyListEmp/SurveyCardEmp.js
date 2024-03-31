@@ -107,7 +107,7 @@ const SurveyCardEmp = ({ survey }) => {
             }
           >
             <CustomButton
-              text={!allowResubmit ? "START" : "RESUBMIT"}
+              text={allowResubmit && score ? "RESUBMIT" : "START"}
               buttonProps={buttonProps}
             />
           </a>

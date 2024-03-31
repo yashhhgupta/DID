@@ -41,7 +41,7 @@ const SurveyEmp = ({ modalCloseHandler, survey, allowSubmit=true,resubmit=false 
       }
       return x + y.score * y.weightage * 0.2;
     },0)
-    let url = BASE_URL + "/user";
+    let url = BASE_URL + "/survey";
     if (resubmit) { 
       url += "/updateResponse";
     }

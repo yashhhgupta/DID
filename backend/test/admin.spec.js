@@ -760,7 +760,9 @@ describe("Admin get all users route", () => {
   });
   it("should get all users", (done) => {
     const userModelMock = {
-      find: () => Promise.resolve([mockUser2]),
+      find: () => ({
+        sort: () => Promise.resolve([mockUser2]),
+      }),
     };
     Object.assign(User, userModelMock);
     chai
@@ -775,7 +777,9 @@ describe("Admin get all users route", () => {
   });
   it("should not get all users as users do not exist", (done) => {
     const userModelMock = {
-      find: () => Promise.resolve(null),
+      find: () => ({
+        sort: () => Promise.resolve(null),
+      }),
     };
     Object.assign(User, userModelMock);
     chai
@@ -789,7 +793,9 @@ describe("Admin get all users route", () => {
   });
   it("should give 500 when something unusual happens", (done) => {
     const userModelMock = {
-      find: () => Promise.reject({}),
+      find: () => ({
+        sort: () => Promise.rejects()
+      }),
     };
     Object.assign(User, userModelMock);
     chai
