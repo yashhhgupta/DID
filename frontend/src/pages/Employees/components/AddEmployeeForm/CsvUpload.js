@@ -43,7 +43,6 @@ const CsvUpload = ({ closeModal }) => {
     setModal(true);
   };
   const handleSubmit = async () => {
-    // console.log(employeesToAdd);
     let url = BASE_URL + "/admin/add-employees";
     const response = await sendRequest(
       url,

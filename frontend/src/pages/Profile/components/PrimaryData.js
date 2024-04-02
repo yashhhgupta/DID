@@ -35,7 +35,6 @@ const PrimaryData = ({ user, updateProfileData, currentUpdateData }) => {
   const EditProfileHandler = () => {
     document.getElementById("file").click();
   };
-  // console.log(profileImage);
   const ProfileImageHandler = async (e) => {
     const profileImage = e.target.files[0];
     const formData = new FormData();

@@ -3,11 +3,7 @@ const jwt = require("jsonwebtoken");
 const validateUserToken = (req, res, next) => {
   const { TokenExpiredError } = jwt;
 
-  const catchError = (error, res) => {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized! Please login as a user" });
-  };
+ 
 
   const tokenHeader = req.headers.authorization;
 
@@ -29,7 +25,9 @@ const validateUserToken = (req, res, next) => {
     if (decoded && (decoded.role === "User"||decoded.role === "Admin")) {
       next();
     } else {
-      return catchError(err, res);
+      return res
+      .status(401)
+      .json({ message: "Unauthorized! Please login as a user" });;
     }
   });
 };

@@ -39,7 +39,6 @@ const LineGraph = ({
   const [min, setMin] = useState(65);
   useEffect(() => {
     const fetchOrgData = async () => {
-      console.log("calling");
       setOrgData(null);
       let url = BASE_URL + "/diversity/getScore/" + orgId;
       if (selectedDep) {
@@ -104,7 +103,6 @@ const LineGraph = ({
     setCustomYearOptions(customOptions);
   }
   
-  console.log(min,max)
   return (
     <Card>
       <div className={styles.heading}>

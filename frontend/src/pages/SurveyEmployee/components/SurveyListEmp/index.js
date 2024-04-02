@@ -25,7 +25,6 @@ const SurveyListEmp = ({callOn=false}) => {
   if (status === "loading" || status === "idle") {
     return <Loader isLoading={true} />;
   }
-  console.log("component",surveys);
   return (
     <>
       

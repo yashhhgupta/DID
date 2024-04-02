@@ -60,7 +60,6 @@ const SurveyForm = ({ modalCloseHandler,survey={} }) => {
   };
 
   const submitHandler = async () => {
-    // console.log(formData);
     if(formData.title === "" || formData.description === ""){
       toast.error("Please fill all the fields");
       return;
@@ -84,7 +83,6 @@ const SurveyForm = ({ modalCloseHandler,survey={} }) => {
       cnt += Number(formData.questions[i].weightage);
     }
     if (cnt != 100) {
-      console.log(cnt);
       toast.error("weightage sum needs to be 100")
       return;
     }

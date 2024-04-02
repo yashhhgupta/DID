@@ -19,11 +19,10 @@ const SurveyList = ({ totalUsers }) => {
       })
     );
   }, []);
+  if (status === "loading" || status === "idle") return;
   return (
     <>
-      {status === "loading" || status === "idle" ? (
-        <div>Loading...</div>
-      ) : (
+      
         <div className={styles.container}>
             {surveys.length === 0 && <EmptyContainer title={"No Survey Found"}
               description="Create a new survey to see it here"
@@ -37,7 +36,6 @@ const SurveyList = ({ totalUsers }) => {
               />
             ))}
         </div>
-      )}
     </>
   );
 };

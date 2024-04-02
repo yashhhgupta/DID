@@ -9,7 +9,11 @@
     "test:watch": "mocha --watch ./test/*.spec.js",
     "coverage": "nyc --reporter=lcov --reporter=text npm test"
   },
- 
+  "nyc" : {
+    "exclude": [
+      "test","models/employee.js","models/organization.js"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

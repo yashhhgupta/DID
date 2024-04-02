@@ -52,9 +52,7 @@ export const getUserSurvey = createAsyncThunk("fetchUserSurveys", async (obj) =>
       : survey;
   });
 
-  console.log(surveys);
-  console.log(userSurveys);
-  console.log("u",updatedSurveys);
+
 
 
   return updatedSurveys;

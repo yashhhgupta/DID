@@ -105,7 +105,6 @@ const Form = ({ modalCloseHandler }) => {
       <div
         onClick={(e) => {
           e.stopPropagation();
-          console.log("clicked");
         }}
       >
         <Select

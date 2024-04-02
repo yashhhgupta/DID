@@ -3,11 +3,7 @@ const jwt = require("jsonwebtoken");
 const validateAdminToken = (req, res, next) => {
   const { TokenExpiredError } = jwt;
 
-  const catchError = (error, res) => {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized! Please login as an admin" });
-  };
+ 
 
   const tokenHeader = req.headers.authorization;
 
@@ -28,8 +24,9 @@ const validateAdminToken = (req, res, next) => {
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (decoded && decoded.role === "Admin") {
       next();
-    } else {
-      return catchError(err, res);
+    } else {res
+      .status(401)
+      .json({ message: "Unauthorized! Please login as an admin" });
     }
   });
 };

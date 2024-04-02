@@ -7,7 +7,7 @@ const SurveyDashboard = ({ totalUsers }) => {
   const surveys = useSelector((state) => state.survey.survey);
   const status = useSelector((state) => state.survey.status);
   if (status === "idle" || status === "loading") {
-    return <div>Loading...</div>;
+    return ;
   }
   let averageScore =
     surveys.map((survey) => survey.inclusionScore).reduce((a, b) => a + b, 0) /

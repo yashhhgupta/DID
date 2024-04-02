@@ -11,14 +11,19 @@ import {
   ProfileAdmin,
   Employees,
 } from "./pages";
-import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Layout from "./Components/Layout";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
-import { login } from "./store/auth-slice";
+import { login, logout } from "./store/auth-slice";
 import { useDispatch } from "react-redux";
-import {Loader} from "./Components/common";
+import { Loader } from "./Components/common";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,8 +33,8 @@ function App() {
   // const userId = useSelector((state) => state.auth.userId);
   // const orgId = useSelector((state) => state.auth.orgId);
   // const token = useSelector((state) => state.auth.token);
+  let token = Cookies.get("token");
   useEffect(() => {
-    let token = Cookies.get("token");
     if (token) {
       let id = Cookies.get("userId");
       let orgId = Cookies.get("orgId");
@@ -40,8 +45,15 @@ function App() {
           token: token,
         })
       );
+    } else {
+      if (isLoggedIn) {
+        logout();
+        Cookies.remove("userId");
+        Cookies.remove("orgId");
+        window.location.reload();
+      }
     }
-  }, []);
+  }, [token]);
   let routes;
   if (!isLoggedIn) {
     routes = (
@@ -49,7 +61,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<Error />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     );

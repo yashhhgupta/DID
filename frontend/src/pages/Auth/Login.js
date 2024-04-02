@@ -78,7 +78,7 @@ const Login = () => {
       dispatch(
         login({userId:response.userId, orgId:response.orgId,token: response.token})
       );
-      Cookies.set("token", response.token, { expires: 7 });
+      Cookies.set("token", response.token, { expires: 1 });
       Cookies.set("userId", response.userId);
       Cookies.set("orgId", response.orgId);
       toast.success("Logged in successfully");
