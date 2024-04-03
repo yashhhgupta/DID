@@ -68,7 +68,7 @@ const LineGraph = ({
   }, [selectedDep, selectedTeam,endYear,startYear]);
   const ToggleChangeHandler = async (value) => {
     setToggle(value);
-    let url = BASE_URL + "/admin/updateDataVisibility";
+    let url = BASE_URL + "/diversity/updateDataVisibility";
     const response = await sendRequest(
       url,
       "POST",

@@ -21,7 +21,7 @@ const Pie = ({ data, dataVisibility, isAdmin = false }) => {
   const [toggle, setToggle] = useState(dataVisibility[data.k]);
   const ToggleChangeHandler = async (value) => {
     setToggle(value);
-    let url = BASE_URL + "/admin/updateDataVisibility";
+    let url = BASE_URL + "/diversity/updateDataVisibility";
     const response = await sendRequest(
       url,
       "POST",
