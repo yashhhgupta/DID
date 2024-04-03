@@ -1,5 +1,8 @@
 # Diversity and Inclusion Dashboard
 
+Link :- https://did-hjb3.onrender.com
+
+
 ## Introduction
 
 A dashboard that tracks diversity and inclusion scores within the organization. It empowers organizations to set meaningful goals, providing a comparative analysis against their current scores. Utilizing advanced data visualization techniques, the dashboard presents insightful diversity pie charts.
