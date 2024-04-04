@@ -52,10 +52,7 @@ const SurveyCard = ({ survey, totalUsers }) => {
           />
         )}
         {showModal === "Edit" && (
-          <SurveyForm
-            survey={survey}
-            modalCloseHandler={modalCloseHandler}
-          />
+          <SurveyForm survey={survey} modalCloseHandler={modalCloseHandler} />
         )}
       </Modal>
       <div className={styles.surveyCard}>
@@ -67,14 +64,17 @@ const SurveyCard = ({ survey, totalUsers }) => {
             </div>
           </div>
           <div className={styles.icons}>
-            <GrEdit
-              className={styles.icon}
-              size={20}
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowModal("Edit");
-              }}
-            />
+            {status !==
+              "ENDED"&&(
+                <GrEdit
+                  className={styles.icon}
+                  size={20}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowModal("Edit");
+                  }}
+                />
+              )}
             <GrFormView
               className={styles.icon}
               size={28}
