@@ -63,13 +63,11 @@ const Employees = () => {
       
       if (
         emp.firstname === undefined ||
-        emp.lastname === undefined ||
         emp.email === undefined
       )
         return false;
       return (
         emp.firstname.toLowerCase().includes(value.toLowerCase()) ||
-        emp.lastname.toLowerCase().includes(value.toLowerCase()) ||
         emp.email.toLowerCase().includes(value.toLowerCase())
       );
     });

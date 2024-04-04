@@ -101,7 +101,7 @@ const SurveyCardEmp = ({ survey }) => {
             data-tooltip-id="my-tooltip"
             data-tooltip-variant="info"
             data-tooltip-html={
-              allowResubmit
+              allowResubmit && score
                 ? "Survey Updated! <br/>Please feel free to submit <br/>your responses again."
                 : ""
             }
