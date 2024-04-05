@@ -94,7 +94,6 @@ const SelectEmployee = ({
       );
     });
     setFilteredEmployees(temp);
-    console.log(temp);
   };
   return (
     <div>
