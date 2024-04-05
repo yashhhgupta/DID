@@ -90,11 +90,11 @@ const SelectEmployee = ({
     let temp = employees.filter((employee) => {
       return (
         employee.firstname.toLowerCase().includes(value.toLowerCase()) ||
-        employee.lastname.toLowerCase().includes(value.toLowerCase()) ||
         employee.email.toLowerCase().includes(value.toLowerCase())
       );
     });
     setFilteredEmployees(temp);
+    console.log(temp);
   };
   return (
     <div>
