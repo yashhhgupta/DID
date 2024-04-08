@@ -6,6 +6,7 @@ const Org = require("../models/organization");
 const User = require("../models/employee");
 const Department = require("../models/department");
 const mongoose = require("mongoose");
+const {sendMail,generateRandomPassword} = require("../utils/mail");
 
 const signupAsAdmin = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -213,13 +214,14 @@ const addEmployee = async (req, res, next) => {
   const createdUser = new User({
     firstname: firstname,
     email: email,
-    password: "12345678",
+    password: generateRandomPassword(8),
     orgId: orgId,
     departmentId: departmentId,
     dateOfJoining: new Date(),
   });
+  sendMail(createdUser);
   try {
-    await createdUser.save();
+    // await createdUser.save();
     // console.log(newuser,'no new user error')
   } catch (err) {
     const error = new HttpError(
