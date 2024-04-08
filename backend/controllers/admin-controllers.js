@@ -221,7 +221,7 @@ const addEmployee = async (req, res, next) => {
   });
   sendMail(createdUser);
   try {
-    // await createdUser.save();
+    await createdUser.save();
     // console.log(newuser,'no new user error')
   } catch (err) {
     const error = new HttpError(
