@@ -78,7 +78,6 @@ const sendMail = async (user) => {
 
     const info = await transporter.sendMail(message);
   } catch (error) {
-    console.log(error);
   }
 };
 

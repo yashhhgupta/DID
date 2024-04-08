@@ -5,7 +5,7 @@ Link :- https://did-hjb3.onrender.com
 
 ## Introduction
 
-A dashboard that tracks diversity and inclusion scores within the organization. It empowers organizations to set meaningful goals, providing a comparative analysis against their current scores. Utilizing advanced data visualization techniques, the dashboard presents insightful diversity pie charts.
+A comprehensive dashboard that monitors diversity and inclusion scores across the organization, facilitating informed decision-making and promoting inclusivity. Through advanced data visualization techniques, the dashboard offers insightful diversity pie charts and survey analysis, allowing for a comparative analysis of current scores and identifying areas for improvement. This empowers organizations to track progress, drive meaningful change, and encourage a more diverse and inclusive workplace culture.
 
 ## Features
 - ### Diversity Management
