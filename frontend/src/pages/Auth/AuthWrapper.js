@@ -12,16 +12,16 @@ const AuthWrapper = ({ children }) => {
           <div className={styles.images}>
             <div className={styles.img2}>
               <Card>
-                <img src={Bar} alt="bar" height={200} />
+                <img src={Bar} alt="bar" height={150} />
               </Card>
               <div className={styles.img1}>
                 <Card style={{ padding: "1rem 3rem" }}>
-                  <img src={Pie} alt="pie" height={90} />
+                  <img src={Pie} alt="pie" height={50} />
                 </Card>
               </div>
               <div className={styles.img3}>
                 <Card style={{ padding: "1rem 3rem" }}>
-                  <img src={Score} alt="pie" height={90} />
+                  <img src={Score} alt="pie" height={50       } />
                 </Card>
               </div>
             </div>
