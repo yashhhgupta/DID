@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
 import styles from "./styles.module.css";
 import { useRequest } from "../../../../hooks/useRequest";
@@ -169,7 +170,7 @@ const LineGraph = ({
           <ResponsiveContainer width="95%" height="100%">
             <LineChart data={orgData}>
               <XAxis dataKey="label" />
-              <YAxis type="number" domain={[min-1, max]} />
+              <YAxis type="number" domain={[min - 1, max]} />
               <Tooltip />
               <Legend />
               <Line
@@ -178,6 +179,7 @@ const LineGraph = ({
                 stroke="#0359E0"
                 strokeWidth={3}
               />
+              <Brush dataKey="label" height={20} />
             </LineChart>
           </ResponsiveContainer>
         </div>
