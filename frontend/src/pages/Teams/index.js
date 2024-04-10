@@ -24,12 +24,11 @@ const Teams = () => {
   const statusTeams = useSelector((state) => state.team.status);
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);
-  let [filteredTeams,setFilteredTeams] = useState([]);
+  let [filteredTeams, setFilteredTeams] = useState([]);
   useEffect(() => {
-    dispatch(getTeams({ orgId, token }));
     dispatch(getDepartments({ orgId, token }));
+    dispatch(getTeams({ orgId, token }));
     dispatch(getEmployees({ orgId, token }));
-    
   }, []);
 
   const modalCloseHandler = () => {
@@ -47,7 +46,7 @@ const Teams = () => {
   if (statusTeams === "idle" || statusTeams === "loading") {
     return <Loader isLoading={true} />;
   }
-  
+
   const handleSearchChange = (value) => {
     setSearch(value);
     if (value === "") {
@@ -58,8 +57,7 @@ const Teams = () => {
       return team.name.toLowerCase().includes(value.toLowerCase());
     });
     setFilteredTeams(temp);
-
-  }
+  };
   return (
     <>
       <Modal isOpen={modal}>
@@ -91,7 +89,11 @@ const Teams = () => {
             }}
           >
             <div className={styles.horz}>
-              <Search search={search} onChangeSearch={handleSearchChange} text="Search by Team name"/>
+              <Search
+                search={search}
+                onChangeSearch={handleSearchChange}
+                text="Search by Team name"
+              />
             </div>
             {filteredTeams.length === 0 ? (
               <EmptyContainer

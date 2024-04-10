@@ -15,6 +15,7 @@ import { useRequest } from "../../../../hooks/useRequest";
 import { useSelector, useDispatch } from "react-redux";
 import { getEmployees } from "../../../../store/employee-slice";
 import { toast } from "sonner";
+import { getTeams } from "../../../../store/team-slice";
 
 const TeamRow = ({
   team,
@@ -60,9 +61,9 @@ const TeamRow = ({
     if (!response) {
       toast.error("Employee adding to team failed, please try again later");
     } else {
+      dispatch(getEmployees({ orgId, token }));
       modalCloseHandler();
       toast.success("Employee added to team successfully");
-      dispatch(getEmployees({ orgId, token }));
     }
   };
   const deleteTeamHandler = async () => {
@@ -75,9 +76,10 @@ const TeamRow = ({
     if (!response) {
       toast.error("Team deletion failed, please try again later");
     } else {
+      dispatch(getEmployees({ orgId, token }));
+      dispatch(getTeams({ orgId, token }));
       modalCloseHandler();
       toast.success("Team deleted successfully");
-      dispatch(getEmployees({ orgId, token }));
     }
   };
   return (
@@ -93,7 +95,7 @@ const TeamRow = ({
             deleteButtonColor={true}
           />
         )}
-        
+
         <div className={styles.containerModal}>
           <div className={styles.form} ref={containerRef}>
             {showModal === "selectEmployee" && (
@@ -173,7 +175,7 @@ const TeamRow = ({
                 setShowModal("selectEmployee");
               }}
             />
-            
+
             <MdDelete
               size={25}
               className={styles.icon}

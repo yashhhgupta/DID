@@ -45,9 +45,9 @@ const EmployeeList = ({
     if (!response) {
       toast.error("User deletion failed, please try again later");
     } else {
+      dispatch(getEmployees({ orgId, token }));
       modalCloseHandler();
       toast.success("User removed from org successfully");
-      dispatch(getEmployees({ orgId, token }));
     }
   };
 
