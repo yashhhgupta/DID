@@ -47,10 +47,9 @@ app.use("/service", serviceRoutes);
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => {
-    console.log("MongoDB Connected");
     app.listen(process.env.PORT);
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {});
 
 
 module.exports = app;

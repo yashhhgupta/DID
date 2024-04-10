@@ -65,6 +65,10 @@ let mockDiversityData = [
         count: 5,
         sexualOrientation: "Homosexual",
       },
+      {
+        count: 18,
+        sexualOrientation: null,
+      },
     ],
   },
 ];
